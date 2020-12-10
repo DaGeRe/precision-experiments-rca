@@ -1,0 +1,244 @@
+{
+  "measurementConfig" : {
+    "timeout" : 7200000,
+    "vms" : 3,
+    "type1error" : 0.05,
+    "type2error" : 0.01,
+    "version" : "20b511cbe608c97e5b3020858202fda01bbbe004",
+    "versionOld" : "20b511cbe608c97e5b3020858202fda01bbbe004~1",
+    "earlyStop" : false,
+    "warmup" : 10,
+    "iterations" : 10,
+    "repetitions" : 10000,
+    "logFullData" : true,
+    "useKieker" : true,
+    "redirectToNull" : true,
+    "useGC" : false,
+    "kiekerAggregationInterval" : 5000,
+    "javaVersion" : "1.8.0_252"
+  },
+  "causeConfig" : {
+    "useAggregation" : true,
+    "saveAll" : true,
+    "outlierFactor" : 5.0,
+    "splitAggregated" : true,
+    "minTime" : 0.1,
+    "ignoreEOIs" : true,
+    "testCase" : {
+      "clazz" : "de.peass.MainTest",
+      "method" : "testMe",
+      "module" : ""
+    }
+  },
+  "nodes" : {
+    "call" : "de.peass.MainTest#testMe",
+    "kiekerPattern" : "public void de.peass.MainTest.testMe()",
+    "otherKiekerPattern" : "public void de.peass.MainTest.testMe()",
+    "statistic" : {
+      "meanOld" : 46.34066333333333,
+      "meanCurrent" : 51.24299333333333,
+      "deviationOld" : 3.6511711856928923,
+      "deviationCurrent" : 2.3097894253013065,
+      "vms" : 3,
+      "callsOld" : 300000,
+      "calls" : 300000,
+      "tvalue" : -1.9653299196343936
+    },
+    "childs" : [ {
+      "call" : "de.peass.C0_0#method0",
+      "kiekerPattern" : "public void de.peass.C0_0.method0()",
+      "otherKiekerPattern" : "public void de.peass.C0_0.method0()",
+      "statistic" : {
+        "meanOld" : 20.425283333333343,
+        "meanCurrent" : 24.552753333333225,
+        "deviationOld" : 2.006970790777079,
+        "deviationCurrent" : 1.451070037742455,
+        "vms" : 3,
+        "callsOld" : 300000,
+        "calls" : 300000,
+        "tvalue" : -2.886616521891896
+      },
+      "childs" : [ {
+        "call" : "de.peass.C1_0#method0",
+        "kiekerPattern" : "public void de.peass.C1_0.method0()",
+        "otherKiekerPattern" : "public void de.peass.C1_0.method0()",
+        "statistic" : {
+          "meanOld" : 7.04604,
+          "meanCurrent" : 10.389146666666734,
+          "deviationOld" : 0.38513059239692743,
+          "deviationCurrent" : 0.48751825364118195,
+          "vms" : 3,
+          "callsOld" : 300000,
+          "calls" : 300000,
+          "tvalue" : -9.320032395828688
+        },
+        "childs" : [ {
+          "call" : "de.peass.C2_0#method1",
+          "kiekerPattern" : "public void de.peass.C2_0.method1()",
+          "otherKiekerPattern" : "public void de.peass.C2_0.method1()",
+          "statistic" : {
+            "meanOld" : 1.3842833333333238,
+            "meanCurrent" : 1.3803699999999979,
+            "deviationOld" : 0.5491400796093254,
+            "deviationCurrent" : 0.5335877925889956,
+            "vms" : 3,
+            "callsOld" : 300000,
+            "calls" : 300000,
+            "tvalue" : 0.008852345434138643
+          },
+          "childs" : [ ]
+        } ]
+      }, {
+        "call" : "de.peass.C1_0#method1",
+        "kiekerPattern" : "public void de.peass.C1_0.method1()",
+        "otherKiekerPattern" : "public void de.peass.C1_0.method1()",
+        "statistic" : {
+          "meanOld" : 8.373323333333339,
+          "meanCurrent" : 8.842443333333426,
+          "deviationOld" : 0.8898678602092102,
+          "deviationCurrent" : 0.548468315432405,
+          "vms" : 3,
+          "callsOld" : 300000,
+          "calls" : 300000,
+          "tvalue" : -0.777316025810459
+        },
+        "childs" : [ {
+          "call" : "de.peass.C2_1#method0",
+          "kiekerPattern" : "public void de.peass.C2_1.method0()",
+          "otherKiekerPattern" : "public void de.peass.C2_1.method0()",
+          "statistic" : {
+            "meanOld" : 1.4265699999999892,
+            "meanCurrent" : 1.478173333333342,
+            "deviationOld" : 0.5581305391313978,
+            "deviationCurrent" : 0.4238320598748845,
+            "vms" : 3,
+            "callsOld" : 900000,
+            "calls" : 900000,
+            "tvalue" : -0.12753643270505394
+          },
+          "childs" : [ ]
+        }, {
+          "call" : "de.peass.C2_1#method1",
+          "kiekerPattern" : "public void de.peass.C2_1.method1()",
+          "otherKiekerPattern" : "public void de.peass.C2_1.method1()",
+          "statistic" : {
+            "meanOld" : 1.4312077777777796,
+            "meanCurrent" : 1.5170988888888908,
+            "deviationOld" : 0.5499675816843347,
+            "deviationCurrent" : 0.4166910583571886,
+            "vms" : 3,
+            "callsOld" : 900000,
+            "calls" : 900000,
+            "tvalue" : -0.2156064171535689
+          },
+          "childs" : [ ]
+        } ]
+      } ]
+    }, {
+      "call" : "de.peass.C0_0#method1",
+      "kiekerPattern" : "public void de.peass.C0_0.method1()",
+      "otherKiekerPattern" : "public void de.peass.C0_0.method1()",
+      "statistic" : {
+        "meanOld" : 22.717553333333452,
+        "meanCurrent" : 23.408016666666583,
+        "deviationOld" : 1.2105953089423045,
+        "deviationCurrent" : 0.5577013702991642,
+        "vms" : 3,
+        "callsOld" : 300000,
+        "calls" : 300000,
+        "tvalue" : -0.8972425548857361
+      },
+      "childs" : [ {
+        "call" : "de.peass.C1_1#method0",
+        "kiekerPattern" : "public void de.peass.C1_1.method0()",
+        "otherKiekerPattern" : "public void de.peass.C1_1.method0()",
+        "statistic" : {
+          "meanOld" : 8.366630000000011,
+          "meanCurrent" : 8.75860333333336,
+          "deviationOld" : 0.908110412449946,
+          "deviationCurrent" : 0.5409140077066392,
+          "vms" : 3,
+          "callsOld" : 300000,
+          "calls" : 300000,
+          "tvalue" : -0.6423052693517344
+        },
+        "childs" : [ {
+          "call" : "de.peass.C2_1#method0",
+          "kiekerPattern" : "public void de.peass.C2_1.method0()",
+          "otherKiekerPattern" : "public void de.peass.C2_1.method0()",
+          "statistic" : {
+            "meanOld" : 1.4265699999999892,
+            "meanCurrent" : 1.478173333333342,
+            "deviationOld" : 0.5581305391313978,
+            "deviationCurrent" : 0.4238320598748845,
+            "vms" : 3,
+            "callsOld" : 900000,
+            "calls" : 900000,
+            "tvalue" : -0.12753643270505394
+          },
+          "childs" : [ ]
+        }, {
+          "call" : "de.peass.C2_1#method1",
+          "kiekerPattern" : "public void de.peass.C2_1.method1()",
+          "otherKiekerPattern" : "public void de.peass.C2_1.method1()",
+          "statistic" : {
+            "meanOld" : 1.4312077777777796,
+            "meanCurrent" : 1.5170988888888908,
+            "deviationOld" : 0.5499675816843347,
+            "deviationCurrent" : 0.4166910583571886,
+            "vms" : 3,
+            "callsOld" : 900000,
+            "calls" : 900000,
+            "tvalue" : -0.2156064171535689
+          },
+          "childs" : [ ]
+        } ]
+      }, {
+        "call" : "de.peass.C1_1#method1",
+        "kiekerPattern" : "public void de.peass.C1_1.method1()",
+        "otherKiekerPattern" : "public void de.peass.C1_1.method1()",
+        "statistic" : {
+          "meanOld" : 8.705253333333323,
+          "meanCurrent" : 9.000773333333305,
+          "deviationOld" : 0.4918472377001302,
+          "deviationCurrent" : 0.296256638294075,
+          "vms" : 3,
+          "callsOld" : 300000,
+          "calls" : 300000,
+          "tvalue" : -0.8914563529972097
+        },
+        "childs" : [ {
+          "call" : "de.peass.C2_2#method0",
+          "kiekerPattern" : "public void de.peass.C2_2.method0()",
+          "otherKiekerPattern" : "public void de.peass.C2_2.method0()",
+          "statistic" : {
+            "meanOld" : 1.441923333333329,
+            "meanCurrent" : 1.5708100000000027,
+            "deviationOld" : 0.57680138976369,
+            "deviationCurrent" : 0.45262367823613636,
+            "vms" : 3,
+            "callsOld" : 300000,
+            "calls" : 300000,
+            "tvalue" : -0.3044751828525344
+          },
+          "childs" : [ ]
+        }, {
+          "call" : "de.peass.C2_2#method1",
+          "kiekerPattern" : "public void de.peass.C2_2.method1()",
+          "otherKiekerPattern" : "public void de.peass.C2_2.method1()",
+          "statistic" : {
+            "meanOld" : 1.4342566666666667,
+            "meanCurrent" : 1.565506666666676,
+            "deviationOld" : 0.5453552585547544,
+            "deviationCurrent" : 0.4545678996952355,
+            "vms" : 3,
+            "callsOld" : 300000,
+            "calls" : 300000,
+            "tvalue" : -0.32020312869561585
+          },
+          "childs" : [ ]
+        } ]
+      } ]
+    } ]
+  }
+}
