@@ -8,10 +8,10 @@ The performance changes currently can be used for an addition and RAM workloads.
 # Before all tests
 
 To be able to use all measurement methods, the following commands need to be run to locally install dependencies in the correct version:
-- kieker:
-- KoPeMe:
-- peass:
-TODO
+- kieker: `git clone https://github.com/DaGeRe/kieker && cd kieker && git checkout testLessData && ./gradlew clean aspectJJar mainJar -x check -x test && cp build/libs/*.jar ~/.m2/repository/net/kieker-monitoring/kieker/1.14/`
+- KoPeMe: `git clone https://github.com/DaGeRe/KoPeMe.git && cd KoPeMe && git checkout kiekerLessData && mvn clean install -DskipTests`
+- peass: `git clone https://github.com/DaGeRe/peass.git && cd peass && mvn clean install -DskipTests && export PEASS_PROJECT=$(pwd)`
+If you do not reuse the console where you installed Peass, remember to still set $PEASS_PROJECT to the folder where Peass is installed.
 
 # Test Execution
 
