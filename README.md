@@ -8,9 +8,10 @@ The performance changes currently can be used for an addition and RAM workloads.
 # Before all tests
 
 To be able to use all measurement methods, the following commands need to be run to locally install dependencies in the correct version:
-- kieker: `git clone https://github.com/DaGeRe/kieker && cd kieker && git checkout testLessData && ./gradlew clean aspectJJar mainJar -x check -x test && cp build/libs/*.jar ~/.m2/repository/net/kieker-monitoring/kieker/1.14/`
-- KoPeMe: `git clone https://github.com/DaGeRe/KoPeMe.git && cd KoPeMe && git checkout kiekerLessData && mvn clean install -DskipTests`
+- kieker: `git clone https://github.com/DaGeRe/kieker && cd kieker && git checkout testLessData && ./gradlew clean aspectJJar mainJar -x check -x test && cp build/libs/*.jar ~/.m2/repository/net/kieker-monitoring/kieker/1.14/` (This will replace Kieker 1.14; if you want to use original Kieker 1.14, execute `rm -rf ~/.m2/repository/net/kieker-monitoring/kieker/1.14/` and let maven download the orginal)
+- KoPeMe: `git clone https://github.com/DaGeRe/KoPeMe.git && cd KoPeMe && git checkout kiekerLessData && mvn clean install -DskipTests` (This will install a SNAPSHOT version of KoPeMe to your local maven repository; maven will replace this on the next day. If you want to reuse this KoPeMe-version, re-install it on the days you want to use it) 
 - peass: `git clone https://github.com/DaGeRe/peass.git && cd peass && mvn clean install -DskipTests && export PEASS_PROJECT=$(pwd)`
+
 If you do not reuse the console where you installed Peass, remember to still set $PEASS_PROJECT to the folder where Peass is installed.
 
 # Test Execution
@@ -24,7 +25,7 @@ These will be described in the following.
 
 When measuring the performance of single methods, these need to be instrumented (sampling-based techniques are not considered here). This instrumentation causes performance overhead. Additionally, the measurement itself causes overhead if it is activated (if Kiekers adaptive instrumentation feature is used, instrumentation may be activated and deactivated at runtime). It is possibe to instrument using AspectJ or to instrument using peass source instrumentation. The measurement may be done using Kieker's `OperationexecutionRecord` or the `ReducedOperationExecutionRecord`, which omits every information of the original record except start time, end time and method name (potentially increasing performance). Furthermore, as a baseline, measurement may be done with no instrumentation at all.
 
-The experiments may be executed using `for val in 7 6 5 3 4 0 1; do export MEASURE=$val; ./runSingleNodeTree.sh; done`. By specification of the environment variable $MEASURE, the used measurement method is set. For details, see `scripts/runSingleNodeTree.sh`.
+The experiments may be executed using `for val in {0..7}; do export MEASURE=$val; ./runSingleNodeTree.sh; done`. By specification of the environment variable $MEASURE, the used measurement method is set. For details, see `scripts/runSingleNodeTree.sh`.
 
 
 After successfull execution of the experiments, the results may be analyzed using `scripts/singlenode/analyzeSingleNodeAll.sh`. This may result in the following graph:
