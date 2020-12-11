@@ -8,7 +8,7 @@ The performance changes currently can be used for an addition and RAM workloads.
 # Before all tests
 
 To be able to use all measurement methods, the following commands need to be run to locally install dependencies in the correct version:
-- kieker: `git clone https://github.com/DaGeRe/kieker && cd kieker && git checkout testLessData && ./gradlew clean aspectJJar mainJar -x check -x test && cp build/libs/*.jar ~/.m2/repository/net/kieker-monitoring/kieker/1.14/` (This will replace Kieker 1.14; if you want to use original Kieker 1.14, execute `rm -rf ~/.m2/repository/net/kieker-monitoring/kieker/1.14/` and let maven download the orginal)
+- kieker: `git clone https://github.com/DaGeRe/kieker && cd kieker && git checkout testLessData && ./gradlew clean aspectJJar mainJar -x check -x test && cp build/libs/*.jar ~/.m2/repository/net/kieker-monitoring/kieker/1.14/` (This will replace Kieker 1.14 by a version containing an additional Aspect, therefore, your other projects will still run. However, if you want to use original Kieker 1.14, execute `rm -rf ~/.m2/repository/net/kieker-monitoring/kieker/1.14/` and let maven download the orginal)
 - KoPeMe: `git clone https://github.com/DaGeRe/KoPeMe.git && cd KoPeMe && git checkout kiekerLessData && mvn clean install -DskipTests` (This will install a SNAPSHOT version of KoPeMe to your local maven repository; maven will replace this on the next day. If you want to reuse this KoPeMe-version, re-install it on the days you want to use it) 
 - peass: `git clone https://github.com/DaGeRe/peass.git && cd peass && mvn clean install -DskipTests && export PEASS_PROJECT=$(pwd)`
 
