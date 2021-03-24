@@ -15,9 +15,9 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import de.peass.measurement.analysis.Relation;
-import de.peass.measurement.analysis.StatisticUtil;
 import de.peass.measurement.rca.data.CauseSearchData;
 import de.peass.measurement.rca.serialization.MeasuredNode;
+import de.peass.statistics.StatisticUtil;
 import de.peass.utils.Constants;
 
 public class GetMinEarlyStopVM {

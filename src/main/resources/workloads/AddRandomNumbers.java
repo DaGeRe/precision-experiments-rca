@@ -10,15 +10,17 @@ import java.util.Random;
  */
 public class AddRandomNumbers {
 
-	private static final Random r = new Random();
+   private static final Random RANDOM = new Random();
 
-	int x = 0;
+   int x = 0;
 
-	public void addSomething() {
-		x += r.nextInt(100);
-	}
+   public int addSomething(int count) {
+      for (int i = 0; i < count; i++)
+         x += RANDOM.nextInt(100);
+      return x;
+   }
 
-	public int getValue() {
-		return x;
-	}
+   public int getValue() {
+      return x;
+   }
 }

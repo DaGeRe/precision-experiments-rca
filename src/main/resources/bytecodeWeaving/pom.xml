@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>de.peass.validate_rca</groupId>
+	<artifactId>validate_rca_bytecodeweaving</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>validate_rca_bytecodeweaving</name>
+	<dependencies>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.9.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm</artifactId>
+			<version>9.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.30</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jctools</groupId>
+			<artifactId>jctools-core</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>de.dagere.kopeme</groupId>
+			<artifactId>kopeme-junit</artifactId>
+			<version>0.14-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>net.kieker-monitoring</groupId>
+					<artifactId>kieker</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<!-- This is only realy needed for post-compile-weaving -->
+		<dependency>
+			<groupId>net.kieker-monitoring</groupId>
+			<artifactId>kieker</artifactId>
+			<version>1.14</version>
+			<classifier>aspectj-minimal</classifier>
+			<scope></scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.0</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>aspectj-maven-plugin</artifactId>
+				<version>1.8</version>
+				<configuration>
+					<complianceLevel>1.8</complianceLevel>
+					<source>1.8</source>
+					<target>1.8</target>
+					<showWeaveInfo>true</showWeaveInfo>
+					<Xlint>ignore</Xlint>
+					<encoding>UTF-8 </encoding>
+					<includes>
+						<include>**/C*.java</include>
+						<include>**/MainTest.java</include>
+					</includes>
+					<weaveDependencies>
+						<weaveDependency>
+							<groupId>net.kieker-monitoring</groupId>
+							<artifactId>kieker</artifactId>
+							<classifier>aspectj-minimal</classifier>
+						</weaveDependency>
+					</weaveDependencies>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<!-- use this goal to weave all your main classes -->
+							<goal>compile</goal>
+							<!-- use this goal to weave all your test classes -->
+							<goal>test-compile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

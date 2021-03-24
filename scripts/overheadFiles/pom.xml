@@ -18,8 +18,19 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M3</version>
+				<configuration>
+				  <forkCount>1</forkCount>
+				  <reuseForks>false</reuseForks>
+				  <runOrder>alphabetical</runOrder>
+				  <argLine>-javaagent:${user.home}/.m2/repository/net/kieker-monitoring/kieker/1.14/kieker-1.14-aspectj.jar -Djava.io.tmpdir=kieker_temp -Dkieker.monitoring.adaptiveMonitoring.enabled=true -Dkieker.monitoring.adaptiveMonitoring.configFile=config/kieker.adaptiveMonitoring.conf -Dkieker.monitoring.adaptiveMonitoring.readInterval=15</argLine>
+				</configuration>
+	      		</plugin>
 		</plugins>
 	</build>
+	
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -27,5 +38,11 @@
 			<version>4.13.1</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+		      	<groupId>de.dagere.kopeme</groupId>
+		      	<artifactId>kopeme-junit</artifactId>
+		      	<version>0.12-SNAPSHOT</version>
+		      	<scope>test</scope>
+	    	</dependency>
 	</dependencies>
 </project>

@@ -1,0 +1,39 @@
+<!DOCTYPE aspectj PUBLIC "-//AspectJ//DTD//EN" "http://www.aspectj.org/dtd/aspectj_1_5_0.dtd">
+<aspectj>
+ <weaver options="-verbose">
+   <include within="de.peass.C4_14" />
+   <include within="de.peass.C3_2" />
+   <include within="de.peass.C4_4" />
+   <include within="de.peass.C3_7" />
+   <include within="de.peass.C4_15" />
+   <include within="de.peass.C1_0" />
+   <include within="de.peass.C4_6" />
+   <include within="de.peass.C4_10" />
+   <include within="de.peass.C4_0" />
+   <include within="de.peass.C2_1" />
+   <include within="de.peass.C4_5" />
+   <include within="de.peass.C4_1" />
+   <include within="de.peass.C0_0" />
+   <include within="de.peass.C2_2" />
+   <include within="de.peass.C3_1" />
+   <include within="de.peass.C2_3" />
+   <include within="de.peass.C3_6" />
+   <include within="de.peass.C3_3" />
+   <include within="de.peass.C4_11" />
+   <include within="de.peass.C3_4" />
+   <include within="de.peass.C4_9" />
+   <include within="de.peass.C4_13" />
+   <include within="de.peass.C3_5" />
+   <include within="de.peass.C3_0" />
+   <include within="de.peass.C4_2" />
+   <include within="de.peass.C4_3" />
+   <include within="de.peass.C1_1" />
+   <include within="de.peass.C2_0" />
+   <include within="de.peass.C4_12" />
+   <include within="de.peass.C4_8" />
+   <include within="de.peass.AddRandomNumbers" />
+   <include within="de.peass.C4_7" />
+   <include within="de.peass.MainTest" />
+ </weaver>
+ <aspects>    <aspect name="kieker.monitoring.probe.aspectj.operationExecution.OperationExecutionAspectFull" /> </aspects>
+</aspectj>

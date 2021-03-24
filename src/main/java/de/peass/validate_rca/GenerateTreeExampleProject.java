@@ -31,10 +31,14 @@ public class GenerateTreeExampleProject implements Callable<Integer> {
    private int childCount = 2;
 
    @Option(names = { "-type", "--type" }, description = "Type of slowed down workload", required = false)
-   private String type = "BUSY_WAITING";
+   private String type = "ADD";
 
    @Option(names = { "-leafsHaveWorkloads", "--leafsHaveWorkloads" }, description = "Whether leafs have workloads", required = false)
    private boolean leafsHaveWorkloads = false;
+
+   @Option(names = { "-createBytecodeweavingEnvironment",
+         "--createBytecodeweavingEnvironment" }, description = "Whether to make the project bytecode-weaving ready", required = false)
+   private boolean createBytecodeweavingEnvironment = false;
 
    @Option(names = { "-out", "--out" }, description = "Result folder for the project; defaults to target/project_$X where $X is the tree depth", required = false)
    private File out = null;
@@ -53,7 +57,16 @@ public class GenerateTreeExampleProject implements Callable<Integer> {
          out = new File("target/project_" + nodeInfos.getTreeDepth());
       }
 
-      GenerateProject.initEmptyProject(out);
+      if (!createBytecodeweavingEnvironment) {
+         GenerateProject.initEmptyProject(out, "pom.xml");
+      } else {
+         GenerateProject.initEmptyProject(out, "bytecodeWeaving/pom.xml");
+         URL pomResource = GenerateProject.class.getClassLoader().getResource("bytecodeWeaving/kieker.monitoring.properties");
+         File metaInfFolder = new File(out, "src/main/resources/META-INF");
+         metaInfFolder.mkdirs();
+         FileUtils.copyURLToFile(pomResource, new File(metaInfFolder, "kieker.monitoring.properties"));
+      }
+
       out.mkdir();
 
       createFastVersion(out);
@@ -72,7 +85,7 @@ public class GenerateTreeExampleProject implements Callable<Integer> {
       }
    }
 
-   private void createFastVersion(final File projectFolder) throws IOException, InterruptedException {
+   public void createFastVersion(final File projectFolder) throws IOException, InterruptedException {
       generateClasses(projectFolder, -1);
 
       GenerateProject.init(projectFolder);
@@ -81,14 +94,14 @@ public class GenerateTreeExampleProject implements Callable<Integer> {
    }
 
    private void createSlowVersion(final File projectFolder) throws IOException, InterruptedException {
-      FileUtils.deleteQuietly(new File(projectFolder, "src"));
+      FileUtils.deleteQuietly(new File(projectFolder, "src/main/java"));
 
       generateClasses(projectFolder, nodeInfos.getSlowerLevel());
       GenerateProject.createVersion(projectFolder, "Slow Version");
       System.out.println("Slow version created");
    }
 
-   private void generateClasses(final File projectFolder, int slowLevel) throws IOException {
+   private void generateClasses(final File projectFolder, final int slowLevel) throws IOException {
       final File clazzFolder = new File(projectFolder, "src/main/java/de/peass");
       clazzFolder.mkdirs();
       writeWorkladClasses(clazzFolder);
@@ -109,7 +122,7 @@ public class GenerateTreeExampleProject implements Callable<Integer> {
 
       final File testFolder = new File(projectFolder, "src/test/java/de/peass");
       testFolder.mkdirs();
-      createTest(testFolder);
+      new TestCreator(createBytecodeweavingEnvironment, 5, 100000, childCount).createTest(testFolder);
    }
 
    private void writeWorkladClasses(final File clazzFolder) throws IOException {
@@ -117,54 +130,40 @@ public class GenerateTreeExampleProject implements Callable<Integer> {
          URL addResource = GenerateProject.class.getClassLoader().getResource("workloads/AddRandomNumbers.java");
          FileUtils.copyURLToFile(addResource, new File(clazzFolder, "AddRandomNumbers.java"));
       } else if (type.equals("RAM") || type.equals("RESERVE_RAM")) {
-         final File reserveRAM = new File("src/main/resources/workloads/ReserveRAM.java");
-         FileUtils.copyFile(reserveRAM, new File(clazzFolder, "ReserveRAM.java"));
+         URL reserveRAM = GenerateProject.class.getClassLoader().getResource("workloads/ReserveRAM.java");
+         FileUtils.copyURLToFile(reserveRAM, new File(clazzFolder, "ReserveRAM.java"));
       } else if (type.equals("SYSOUT") || type.equals("WRITE_TO_SYSOUT")) {
-         final File writeSysout = new File("src/main/resources/workloads/WriteToSystemOut.java");
-         FileUtils.copyFile(writeSysout, new File(clazzFolder, "WriteToSystemOut.java"));
+         URL writeSysout = GenerateProject.class.getClassLoader().getResource("workloads/WriteToSystemOut.java");
+         FileUtils.copyURLToFile(writeSysout, new File(clazzFolder, "WriteToSystemOut.java"));
       } else if (type.equals("THROW")) {
          final File trowSomething = new File("src/main/resources/workloads/ThrowSomething.java");
          FileUtils.copyFile(trowSomething, new File(clazzFolder, "ThrowSomething.java"));
+      } else {
+         throw new RuntimeException("Unknown workload type: " + type);
       }
    }
 
-   private void createTest(final File clazzFolder) throws IOException {
-      final File clazz = new File(clazzFolder, "MainTest.java");
-      try (BufferedWriter writer = new BufferedWriter(new FileWriter(clazz))) {
-         writer.write("package de.peass;\n\n");
-
-         writer.write("import org.junit.Test;\n\n");
-
-         writer.write("public class MainTest{ \n");
-         writer.write(" @Test \n");
-         writer.write(" public void testMe(){\n");
-         writer.write("  C0_0 object = new C0_0();\n");
-         for (int i = 0; i < childCount; i++) {
-            writer.write("  object.method" + i + "();\n");
-         }
-         writer.write(" }\n");
-         writer.write("}");
-
-         writer.flush();
-      }
-   }
-
-   private void createClass(final int methods, final File clazzFolder, final String className, final int classIndex, final int treeLevel, int[] durations) throws IOException {
+   private void createClass(final int methods, final File clazzFolder, final String className, final int classIndex, final int treeLevel, final int[] durations)
+         throws IOException {
       final File clazz = new File(clazzFolder, className + ".java");
       try (BufferedWriter writer = new BufferedWriter(new FileWriter(clazz))) {
          writer.write("package de.peass;\n\n");
 
          writer.write("class " + className + "{ \n");
          for (int method = 0; method < methods; method++) {
-            writer.write(" public void method" + method + "(){\n");
+            writer.write(" public int method" + method + "(){\n");
             if (treeLevel < nodeInfos.getTreeDepth() - 1) {
                String name = "  C" + (treeLevel + 1) + "_" + (2 * classIndex + method);
                writer.write(name + " object = new " + name + "();\n");
+               writer.write("  int value = 0;\n");
                for (int i = 0; i < childCount; i++) {
-                  writer.write("  object.method" + i + "();\n");
+                  writer.write("  value += object.method" + i + "();\n");
                }
+               writer.write("  return value;");
+            } else {
+               writeWorkload(writer, durations[method]);
             }
-            writeWorkload(writer, durations[method]);
+
             writer.write(" }\n");
          }
          writer.write("}");
@@ -173,30 +172,25 @@ public class GenerateTreeExampleProject implements Callable<Integer> {
       }
    }
 
-   private void writeWorkload(BufferedWriter writer, int parameter) throws IOException {
+   private void writeWorkload(final BufferedWriter writer, final int parameter) throws IOException {
       if (parameter > 0) {
          if (type.equals("BUSY_WAITING")) {
             writer.write("         final long exitTime = System.nanoTime() + " + parameter + ";\n" +
                   "         long currentTime;\n" +
                   "         do {\n" +
                   "            currentTime = System.nanoTime();\n" +
-                  "         } while (currentTime < exitTime);\n");
+                  "         } while (currentTime < exitTime);" +
+                  "         return (int)exitTime;\n");
          } else if (type.equals("ADD") || type.equals("ADDITION")) {
             writer.write("         final AddRandomNumbers rm = new AddRandomNumbers();\n" +
-                  "         for (int i = 0; i < " + parameter + "; i++) {\n" +
-                  "            rm.addSomething();\n" +
-                  "         }");
+                  "            return rm.addSomething(" + parameter + ");\n");
 
          } else if (type.equals("RAM") || type.equals("RESERVE_RAM")) {
-            writer.write("         final ReserveRAM rm = new ReserveRAM(" + parameter + ");\n" +
-                  "         for (int i = 0; i < 100; i++) {\n" +
-                  "            rm.doSomething();\n" +
-                  "         }");
+            writer.write("         final ReserveRAM rm = new ReserveRAM();\n" +
+                  "            return rm.doSomething(" + parameter + ");\n");
          } else if (type.equals("SYSOUT") || type.equals("WRITE_TO_SYSOUT")) {
             writer.write("         final WriteToSystemOut rm = new WriteToSystemOut();\n" +
-                  "         for (int i = 0; i < " + parameter + "; i++) {\n" +
-                  "            rm.doSomething();\n" +
-                  "         }");
+                  "            return rm.doSomething(" + parameter + ");\n");
          } else if (type.equals("THROW")) {
             writer.write("         final AddRandomNumbers rm = new AddRandomNumbers();\n" +
                   "         for (int i = 0; i < " + parameter + "; i++) {\n" +
@@ -209,6 +203,8 @@ public class GenerateTreeExampleProject implements Callable<Integer> {
          } else {
             throw new RuntimeException("Unexpected type: " + type);
          }
+      } else {
+         writer.write("return 0;");
       }
    }
 
@@ -216,15 +212,23 @@ public class GenerateTreeExampleProject implements Callable<Integer> {
       return nodeInfos;
    }
 
-   public void setNodeInfos(SlowerNodeInfos nodeInfos) {
+   public void setNodeInfos(final SlowerNodeInfos nodeInfos) {
       this.nodeInfos = nodeInfos;
+   }
+
+   public String getType() {
+      return type;
+   }
+
+   public void setType(final String type) {
+      this.type = type;
    }
 
    public int getChildCount() {
       return childCount;
    }
 
-   public void setChildCount(int childCount) {
+   public void setChildCount(final int childCount) {
       this.childCount = childCount;
    }
 
@@ -232,7 +236,7 @@ public class GenerateTreeExampleProject implements Callable<Integer> {
       return out;
    }
 
-   public void setOut(File out) {
+   public void setOut(final File out) {
       this.out = out;
    }
 }

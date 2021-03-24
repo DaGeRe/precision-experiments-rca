@@ -10,24 +10,27 @@ import java.util.Random;
  */
 public class ReserveRAM {
 
-	private static final Random RANDOM = new Random();
+   private static final Random RANDOM = new Random();
 
-	int[][] ram;
+   final int sizeFactor = 2;
+   
+   int[][] ram;
 
-	public ReserveRAM(final int size) {
-		ram = new int[size][];
-	}
+   public ReserveRAM() {
+   }
 
-	public void doSomething() {
-		for (int i = 0; i < ram.length; i++) {
-			ram[i] = new int[20 + RANDOM.nextInt(5)];
-			for (int j = 0; j < ram[i].length; j++) {
-				ram[i][j] = RANDOM.nextInt();
-			}
-		}
-	}
+   public int doSomething(int size) {
+      ram = new int[size][];
+      for (int i = 0; i < ram.length; i++) {
+         ram[i] = new int[sizeFactor + RANDOM.nextInt(sizeFactor)];
+         for (int j = 0; j < ram[i].length; j++) {
+            ram[i][j] = RANDOM.nextInt();
+         }
+      }
+      return ram[0][0];
+   }
 
-	public int[][] getInts() {
-		return ram;
-	}
+   public int[] getInts() {
+      return ram[0];
+   }
 }

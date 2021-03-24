@@ -14,9 +14,12 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import de.peass.PeassGlobalInfos;
+import de.peass.config.MeasurementConfiguration;
+import de.peass.config.StatisticsConfigurationMixin;
 import de.peass.dependency.CauseSearchFolders;
 import de.peass.dependency.analysis.data.TestCase;
-import de.peass.dependency.execution.MeasurementConfiguration;
+import de.peass.dependency.execution.EnvironmentVariables;
+import de.peass.dependency.execution.ExecutionConfigMixin;
 import de.peass.dependency.execution.MeasurementConfigurationMixin;
 import de.peass.dependency.persistence.Dependencies;
 import de.peass.dependency.persistence.Version;
@@ -27,7 +30,6 @@ import de.peass.measurement.rca.CauseTester;
 import de.peass.measurement.rca.data.CallTreeNode;
 import de.peass.measurement.rca.kieker.TreeReader;
 import de.peass.measurement.rca.kieker.TreeReaderFactory;
-import de.peass.testtransformation.JUnitTestTransformer;
 import de.peass.utils.Constants;
 import kieker.analysis.exception.AnalysisConfigurationException;
 import picocli.CommandLine;
@@ -39,10 +41,16 @@ import picocli.CommandLine.Option;
 public class RunSomeNodeMeasurement implements Callable<Void> {
 
    @Mixin
+   ExecutionConfigMixin executionMixin;
+   
+   @Mixin
    CauseSearcherConfigMixin causeSearchConfigMixin;
 
    @Mixin
    MeasurementConfigurationMixin measurementConfigMixin;
+   
+   @Mixin
+   private StatisticsConfigurationMixin statisticConfigMixin;
 
    @Option(names = { "-nodeCount", "--nodeCount" }, description = "Number of nodes that should be measures", required = true)
    int nodeCount;
@@ -56,7 +64,7 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
    @Option(names = { "-version", "--version" }, description = "Only version to analyze - do not use together with startversion and endversion!")
    protected String version;
 
-   public static void main(String[] args) {
+   public static void main(final String[] args) {
       final RunSomeNodeMeasurement command = new RunSomeNodeMeasurement();
       final CommandLine commandLine = new CommandLine(command);
       commandLine.execute(args);
@@ -72,15 +80,14 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
 
       CauseSearchFolders folders = new CauseSearchFolders(projectFolder);
 
-      MeasurementConfiguration measurementConfiguration = new MeasurementConfiguration(measurementConfigMixin);
+      MeasurementConfiguration measurementConfiguration = new MeasurementConfiguration(measurementConfigMixin, executionMixin, statisticConfigMixin);
       measurementConfiguration.setVersion(version);
       measurementConfiguration.setVersionOld(predecessor);
       measurementConfiguration.setUseKieker(true);
 
       List<CallTreeNode> includedNodes = getIncludedNodes(causeSearchConfig, folders, measurementConfiguration);
 
-      JUnitTestTransformer transformer = new JUnitTestTransformer(projectFolder, measurementConfiguration);
-      CauseTester tester = new CauseTester(folders, transformer, causeSearchConfig);
+      CauseTester tester = new CauseTester(folders, measurementConfiguration, causeSearchConfig, new EnvironmentVariables());
 
       PeassGlobalInfos.isTwoVersionRun = false;
 
@@ -95,12 +102,12 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
       return null;
    }
 
-   private List<CallTreeNode> getIncludedNodes(CauseSearcherConfig causeSearchConfig, CauseSearchFolders folders, MeasurementConfiguration measurementConfiguration)
+   private List<CallTreeNode> getIncludedNodes(final CauseSearcherConfig causeSearchConfig, final CauseSearchFolders folders, final MeasurementConfiguration measurementConfiguration)
          throws InterruptedException, IOException, FileNotFoundException, XmlPullParserException, ViewNotFoundException, AnalysisConfigurationException, JsonGenerationException,
          JsonMappingException {
       final TreeReader resultsManager = TreeReaderFactory.createTreeReader(folders, measurementConfiguration.getVersionOld(),
-            measurementConfiguration.getTimeoutInMinutes(),
-            causeSearchConfig.isIgnoreEOIs());
+            measurementConfiguration,
+            causeSearchConfig.isIgnoreEOIs(), new EnvironmentVariables());
       CallTreeNode root = resultsManager.getTree(new TestCase("de.peass.MainTest#testMe"), measurementConfiguration.getVersionOld());
 
       File potentialCacheFileOld = new File(folders.getTreeCacheFolder(measurementConfiguration.getVersion(), causeSearchConfig.getTestCase()),

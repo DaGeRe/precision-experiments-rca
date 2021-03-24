@@ -6,10 +6,14 @@ overhead
 dependency-reduced-pom.xml
 duration*
 queuespeed*
-scripts/singlenode/*
+scripts/probeOverhead/*
 debug/
 server/ADDITION/
 server/BUSY_WAITING/
 server/RESERVE_RAM/
 server/THROW/
 install.txt
+scripts/analysis/*txt
+scripts/analysis/LEVELWISE_*
+scripts/analysis/COMPLETE_*
+scripts/treeDepth/
