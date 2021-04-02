@@ -103,7 +103,7 @@ do
 		--useSourceInstrumentation \
 		--useCircularQueue \
 		--useSampling \
-		--statisticTest ANY \
+		--statisticTest ANY_NO_AGNOSTIC \
 		--propertyFolder=$resultfolder/results/properties_$folder \
 		-test de.peass.MainTest#testMe &> $resultfolder/rca.txt
     mv ../target/"$folder"_peass/ $resultfolder/

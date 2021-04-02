@@ -10,6 +10,7 @@ import org.apache.commons.math3.stat.descriptive.StatisticalSummary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.peass.config.StatisticsConfiguration;
 import de.peass.measurement.analysis.Relation;
 import de.peass.measurement.rca.serialization.MeasuredNode;
 import de.peass.measurement.rca.serialization.MeasuredValues;
@@ -26,13 +27,13 @@ public class NodePrecisionPlotGenerator {
 
    private final int vmCount = 20;
    private final int iterationCount = 10;
-   private final boolean removeOutliers;
+   private final StatisticsConfiguration statisticsConfig;
 
    private final MeasuredNode node;
    private final Relation expectedRelation;
 
-   public NodePrecisionPlotGenerator(final MeasuredNode node, final Relation expectedRelation, final boolean removeOutliers) {
-      this.removeOutliers = removeOutliers;
+   public NodePrecisionPlotGenerator(final MeasuredNode node, final Relation expectedRelation, final StatisticsConfiguration statisticsConfig) {
+      this.statisticsConfig = statisticsConfig;
       this.node = node;
       this.expectedRelation = expectedRelation;
    }
@@ -67,8 +68,8 @@ public class NodePrecisionPlotGenerator {
       final int vmStepSize = node.getPureVMs() / vmCount;
       LOG.info("VM step size: " + vmStepSize + " Iterations: " + iterations);
       for (int vms = vmStepSize; vms <= vmStepSize * vmCount; vms += vmStepSize) {
-         final SamplingConfig config = new SamplingConfig(vms, removeOutliers, "TestMe", true, false, 1000);
-         final PrecisionComparer comparer = new PrecisionComparer(config);
+         final SamplingConfig config = new SamplingConfig(vms, "TestMe", true, false, 1000);
+         final PrecisionComparer comparer = new PrecisionComparer(config, statisticsConfig);
 
          for (int i = 0; i < config.getSamplingExecutions(); i++) {
             executeComparison(data_changed, config, comparer, expectedRelation);
@@ -90,7 +91,7 @@ public class NodePrecisionPlotGenerator {
    }
 
    private void executeComparison(final CompareData data, final SamplingConfig config, final PrecisionComparer comparer, final Relation expected) {
-      SamplingExecutor executor = new SamplingExecutor(config, data, comparer);
+      SamplingExecutor executor = new SamplingExecutor(config, statisticsConfig, data, comparer);
       executor.executeComparisons(expected);
    }
 

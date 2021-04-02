@@ -6,6 +6,7 @@ import java.util.concurrent.Callable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.peass.config.StatisticsConfiguration;
 import de.peass.dependency.CauseSearchFolders;
 import de.peass.measurement.analysis.Relation;
 import de.peass.measurement.rca.data.CauseSearchData;
@@ -20,12 +21,17 @@ public class GenerateRCAPrecisionPlot implements Callable<Void> {
 
    @Option(names = { "-removeOutliers", "--removeOutliers" }, description = "Whether to remove outliers")
    private boolean removeOutliers;
+   
+   @Option(names = { "-type1error", "--type1error" }, description = "Type 1 error of executed statistic tests")
+   private double type1error;
 
    @Option(names = { "-data", "--data" }, description = "Data-Folder for analysis", required = true)
    private String[] data;
 
    @Option(names = { "-alsoPlotChilds", "--alsoPlotChilds" }, description = "Plot childs", required = false)
    private boolean alsoPlotChilds = false;
+   
+   private StatisticsConfiguration config;
 
    public static void main(final String[] args) {
 
@@ -36,6 +42,13 @@ public class GenerateRCAPrecisionPlot implements Callable<Void> {
 
    @Override
    public Void call() throws Exception {
+      
+      config = new StatisticsConfiguration();
+      if (removeOutliers) {
+         config.setOutlierFactor(StatisticsConfiguration.DEFAULT_OUTLIER_FACTOR);
+      }
+      config.setType1error(type1error);
+      
       for (String folder : data) {
          final File basicFolder = new File(folder);
          CauseSearchFolders folders = new CauseSearchFolders(basicFolder);
@@ -58,7 +71,7 @@ public class GenerateRCAPrecisionPlot implements Callable<Void> {
 
    private void plotNode(final MeasuredNode rootNode, final File resultFolder) {
       LOG.info("Checking LESS_THAN: {}", rootNode.getCall());
-      new NodePrecisionPlotGenerator(rootNode, Relation.LESS_THAN, removeOutliers).generate(resultFolder);
+      new NodePrecisionPlotGenerator(rootNode, Relation.LESS_THAN, config).generate(resultFolder);
 
       if (alsoPlotChilds) {
          for (MeasuredNode child : rootNode.getChildren()) {
@@ -66,7 +79,7 @@ public class GenerateRCAPrecisionPlot implements Callable<Void> {
                plotNode(child, resultFolder);
             } else {
                LOG.info("Checking EQUAL: {}", child.getCall());
-               new NodePrecisionPlotGenerator(child, Relation.EQUAL, removeOutliers).generate(resultFolder);
+               new NodePrecisionPlotGenerator(child, Relation.EQUAL, config).generate(resultFolder);
             }
          }
       }
