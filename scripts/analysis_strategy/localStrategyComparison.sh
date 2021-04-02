@@ -12,9 +12,16 @@ function plotStuff {
                 de.peass.precision.rca.analyze.GenerateRCAPrecisionPlot \
                 -data $dataFolder \
                 -removeOutliers -alsoPlotChilds \
-                &> $resultfolder.txt \
+                &> $resultfolder"_outlierremoval".txt \
+                && \
+                java -cp ../../target/precision-experiments-rca-0.1-SNAPSHOT.jar \
+                de.peass.precision.rca.analyze.GenerateRCAPrecisionPlot \
+                -data $dataFolder \
+                -alsoPlotChilds \
+                &> $resultfolder"_nooutlierremoval".txt \
                 && \
                 ./plotAll.sh $dataFolder/../ $resultfolder
+
         echo "Plotting $dataFolder finished"
         echo
 }

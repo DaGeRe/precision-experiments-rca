@@ -27,9 +27,8 @@ function plot {
 	for file in $(ls $folder | grep ".csv" | grep -v "_current_[0-9]*.csv" | grep -v "_predecessor_[0-9]*.csv")
 	do
 		outputName=$(echo $file | awk -F'.' '{$NF=""; print $0".pdf"}' | tr -d " ")
-		echo "Plotting $file, moving to $outputName"
-		gnuplot -c plotHeatmap.plt $folder/$file
-		mv resultTemp.pdf $folder/$outputName
+		echo "Plotting $file, output goes to $outputName"
+		gnuplot -c plotHeatmap.plt $folder/$file $folder/$outputName
 	done
 }
 
@@ -47,6 +46,15 @@ output=$start/$2
 echo "Creating output folder $output"
 
 #createPlotableFile $output $folder "noOutlierRemoval" 13
+
+if [ -d $folder/results_noOutlierRemoval ]
+then
+        cd $folder/results_noOutlierRemoval
+        createPlotableFile $output $folder "noOutlierRemoval" 13
+        createPlotableFile $output $folder "noOutlierRemoval_bimodal" 17
+        createPlotableFile $output $folder "noOutlierRemoval_mannWhitney" 25
+        cd $start
+fi
 
 cd $folder/results_"outlierRemoval"
 createPlotableFile $output $folder "outlierRemoval" 13
