@@ -23,7 +23,7 @@ public class GenerateRCAPrecisionPlot implements Callable<Void> {
    private boolean removeOutliers;
    
    @Option(names = { "-type1error", "--type1error" }, description = "Type 1 error of executed statistic tests")
-   private double type1error;
+   private double type1error = 0.01;
 
    @Option(names = { "-data", "--data" }, description = "Data-Folder for analysis", required = true)
    private String[] data;
