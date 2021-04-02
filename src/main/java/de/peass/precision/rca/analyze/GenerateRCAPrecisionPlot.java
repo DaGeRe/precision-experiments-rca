@@ -21,7 +21,7 @@ public class GenerateRCAPrecisionPlot implements Callable<Void> {
 
    @Option(names = { "-removeOutliers", "--removeOutliers" }, description = "Whether to remove outliers")
    private boolean removeOutliers;
-   
+
    @Option(names = { "-type1error", "--type1error" }, description = "Type 1 error of executed statistic tests")
    private double type1error = 0.01;
 
@@ -30,7 +30,7 @@ public class GenerateRCAPrecisionPlot implements Callable<Void> {
 
    @Option(names = { "-alsoPlotChilds", "--alsoPlotChilds" }, description = "Plot childs", required = false)
    private boolean alsoPlotChilds = false;
-   
+
    private StatisticsConfiguration config;
 
    public static void main(final String[] args) {
@@ -42,13 +42,15 @@ public class GenerateRCAPrecisionPlot implements Callable<Void> {
 
    @Override
    public Void call() throws Exception {
-      
+
       config = new StatisticsConfiguration();
       if (removeOutliers) {
          config.setOutlierFactor(StatisticsConfiguration.DEFAULT_OUTLIER_FACTOR);
+      } else {
+         config.setOutlierFactor(0.0);
       }
       config.setType1error(type1error);
-      
+
       for (String folder : data) {
          final File basicFolder = new File(folder);
          CauseSearchFolders folders = new CauseSearchFolders(basicFolder);
