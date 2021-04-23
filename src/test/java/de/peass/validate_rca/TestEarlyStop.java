@@ -28,7 +28,7 @@ public class TestEarlyStop {
       Map<Integer, List<StatisticalSummary>> values = buildValues(1.0);
       Map<Integer, List<StatisticalSummary>> valuesPredecessor = buildValues(2.0);
 
-      final MeasuredNode node = new MeasuredNode();
+      final MeasuredNode node = new MeasuredNode("ClassA#MethodA", "public void ClassA.MethodA()", null);
       node.setValues(new MeasuredValues());
       node.getValues().setValues(values);
       node.setValuesPredecessor(new MeasuredValues());
@@ -45,7 +45,7 @@ public class TestEarlyStop {
       for (int measuredVMs = 0; measuredVMs < VMS; measuredVMs++) {
          final LinkedList<StatisticalSummary> value = new LinkedList<>();
          for (int iterations = 0; iterations < ITERATIONS; iterations++) {
-            value.add(new DescriptiveStatistics(new double[] { start, start + 0.9, start + ((double) iterations) }));
+            value.add(new DescriptiveStatistics(new double[] { start, start + 0.9, start + (iterations) }));
          }
          values.put(measuredVMs, value);
       }
