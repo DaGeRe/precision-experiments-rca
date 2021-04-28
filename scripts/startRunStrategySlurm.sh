@@ -13,11 +13,11 @@ do
 		logfolder=/nfs/user/do820mize/processlogs/precision-rca/$workload/
 		mkdir -p $logfolder
 		sbatch \
-                --nice=1 \
-                --time=10-0 \
-                --output=$logfolder/"%j"_"%n".out \
-		--export=repetitions=$repetitions,vms=$vms,RCA_STRATEGY=$strategy,iterations=$iterations,nodes=$nodes,slower=$slower,workload=$workload \
-		 runStrategySlurm.sh
+                	--nice=1 \
+                	--time=10-0 \
+                	--output=$logfolder/"%j"_"%n".out \
+			--export=repetitions=$repetitions,vms=$vms,RCA_STRATEGY=$strategy,iterations=$iterations,nodes=$nodes,slower=$slower,workload=$workload \
+			runStrategySlurm.sh
 		echo "Log of $nodes $strategy goes to $logfolder"
 	done
 done 
