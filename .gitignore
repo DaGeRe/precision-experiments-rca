@@ -17,3 +17,10 @@ scripts/analysis/*txt
 scripts/analysis/LEVELWISE_*
 scripts/analysis/COMPLETE_*
 scripts/treeDepth/
+
+# Analysis data should not be versioned
+scripts/analysis_sampling/*txt
+scripts/analysis_strategy/parallel/
+scripts/analysis_strategy/COMPLETE/
+scripts/analysis_strategy/LEVELWISE
+scripts/analysis_strategy/UNTIL_SOURCE_CHANGE/

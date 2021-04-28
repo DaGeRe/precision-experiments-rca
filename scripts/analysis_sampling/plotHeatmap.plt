@@ -7,11 +7,12 @@ set out 'resultTemp.pdf'
 
 set cbrange [0:100]
 
-#set xrange [0:1000]
+set xrange [0:1000]
 set xlabel 'VMs'
 set ylabel 'Iterationen'
-set cblabel 'F1-Ma{\337}'
-#set yrange [0:50000]
+#set cblabel 'F1-Ma{\337}'
+set cblabel 'F1 Score'
+set yrange [0:10000000]
 
 set title 'T-Test'
 set colorbox
