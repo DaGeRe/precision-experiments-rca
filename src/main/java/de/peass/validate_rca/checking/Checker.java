@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.apache.commons.math3.distribution.TDistribution;
 
-import de.peass.measurement.rca.data.CauseSearchData;
-import de.peass.measurement.rca.serialization.MeasuredNode;
+import de.dagere.peass.measurement.rca.data.CauseSearchData;
+import de.dagere.peass.measurement.rca.serialization.MeasuredNode;
 import de.peass.validate_rca.SlowerNodeInfos;
 
 public class Checker {
@@ -19,7 +19,7 @@ public class Checker {
 
    final double type_1_error = 0.01;
 
-   public Checker(CauseSearchData data, SlowerNodeInfos nodeInfos) {
+   public Checker(final CauseSearchData data, final SlowerNodeInfos nodeInfos) {
       this.data = data;
       this.nodeInfos = nodeInfos;
    }
@@ -43,7 +43,7 @@ public class Checker {
       return incorrectlyChanged.size() == 0 && incorrectlyUnchanged.size() == 0;
    }
 
-   private void checkUnchangedNodes(MeasuredNode node) {
+   private void checkUnchangedNodes(final MeasuredNode node) {
       boolean isChange = isNodeChange(node);
       if (isChange) {
          incorrectlyChanged.add(node);
@@ -75,7 +75,7 @@ public class Checker {
       }
    }
 
-   private void checkNode(MeasuredNode node, boolean expected) {
+   private void checkNode(final MeasuredNode node, final boolean expected) {
       boolean isChange = isNodeChange(node);
       if (isChange != expected) {
          if (expected == true) {
@@ -86,7 +86,7 @@ public class Checker {
       }
    }
 
-   private boolean isNodeChange(MeasuredNode node) {
+   private boolean isNodeChange(final MeasuredNode node) {
       final long degreesOfFreedom = node.getStatistic().getVMs() * 2 - 2;
       final TDistribution distribution = new TDistribution(null, degreesOfFreedom);
       double pValue = 2.0 * distribution.cumulativeProbability(-Math.abs(node.getStatistic().getTvalue()));

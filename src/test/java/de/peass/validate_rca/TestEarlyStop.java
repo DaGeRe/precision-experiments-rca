@@ -10,10 +10,10 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.descriptive.StatisticalSummary;
 import org.junit.Test;
 
-import de.peass.config.MeasurementConfiguration;
-import de.peass.measurement.rca.data.CauseSearchData;
-import de.peass.measurement.rca.serialization.MeasuredNode;
-import de.peass.measurement.rca.serialization.MeasuredValues;
+import de.dagere.peass.config.MeasurementConfiguration;
+import de.dagere.peass.measurement.rca.data.CauseSearchData;
+import de.dagere.peass.measurement.rca.serialization.MeasuredNode;
+import de.dagere.peass.measurement.rca.serialization.MeasuredValues;
 import de.peass.validate_rca.analyze.EarlyStopIterationAnalyzer;
 
 public class TestEarlyStop {

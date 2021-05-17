@@ -9,8 +9,8 @@ import org.junit.Test;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
-import de.peass.measurement.rca.data.CauseSearchData;
-import de.peass.utils.Constants;
+import de.dagere.peass.measurement.rca.data.CauseSearchData;
+import de.dagere.peass.utils.Constants;
 import de.peass.validate_rca.checking.Checker;
 
 public class TestTreeCheck {

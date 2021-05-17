@@ -5,24 +5,17 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Arrays;
 
-import javax.management.RuntimeErrorException;
-
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
-import de.peass.measurement.rca.data.CauseSearchData;
-import de.peass.measurement.rca.serialization.MeasuredNode;
-import de.peass.steadyStateNodewise.GetSteadyStateNodewise;
-import de.peass.utils.Constants;
-
 public class AnalyseRCADeviations {
 
    private static final String type = "EarlyStopIteration";
 
-   public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException {
+   public static void main(final String[] args) throws JsonParseException, JsonMappingException, IOException {
 
       File folder = new File(args[0]);
 
@@ -67,7 +60,7 @@ public class AnalyseRCADeviations {
 
    }
 
-   private static void analyzeFolder(FolderAnalyzer analyzer, File durationFolder, File peassFolder)
+   private static void analyzeFolder(final FolderAnalyzer analyzer, final File durationFolder, final File peassFolder)
          throws IOException, JsonParseException, JsonMappingException {
       File rcaFolder = new File(peassFolder, "rca/tree/");
       File versionFolder = rcaFolder.listFiles()[0];

@@ -1,15 +1,13 @@
 package de.peass.validate_rca;
 
 import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.Callable;
 
-import de.peass.measurement.rca.data.CauseSearchData;
-import de.peass.measurement.rca.serialization.MeasuredNode;
-import de.peass.utils.Constants;
+import de.dagere.peass.measurement.rca.data.CauseSearchData;
+import de.dagere.peass.measurement.rca.serialization.MeasuredNode;
+import de.dagere.peass.utils.Constants;
+import de.dagere.peass.visualization.RCAFolderSearcher;
 import de.peass.validate_rca.checking.Checker;
-import de.peass.visualization.RCAFolderSearcher;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Mixin;
@@ -24,7 +22,7 @@ public class CheckTree implements Callable<Integer> {
    @Option(names = { "-resultFolder", "--resultFolder" }, description = "File of the result folder", required = true)
    private File resultFolderFile;
 
-   public static void main(String[] args) {
+   public static void main(final String[] args) {
       final CheckTree command = new CheckTree();
       final CommandLine commandLine = new CommandLine(command);
       commandLine.execute(args);

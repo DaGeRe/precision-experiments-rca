@@ -10,10 +10,10 @@ import org.apache.commons.math3.stat.descriptive.StatisticalSummary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.peass.config.StatisticsConfiguration;
-import de.peass.measurement.analysis.Relation;
-import de.peass.measurement.rca.serialization.MeasuredNode;
-import de.peass.measurement.rca.serialization.MeasuredValues;
+import de.dagere.peass.config.StatisticsConfiguration;
+import de.dagere.peass.measurement.analysis.Relation;
+import de.dagere.peass.measurement.rca.serialization.MeasuredNode;
+import de.dagere.peass.measurement.rca.serialization.MeasuredValues;
 import de.precision.analysis.repetitions.ExecutionData;
 import de.precision.analysis.repetitions.PrecisionComparer;
 import de.precision.analysis.repetitions.PrecisionWriter;

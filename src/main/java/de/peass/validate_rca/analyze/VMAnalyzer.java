@@ -4,9 +4,8 @@ import java.io.File;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
-import de.peass.config.MeasurementConfiguration;
-import de.peass.measurement.rca.data.CauseSearchData;
-import de.peass.measurement.rca.serialization.MeasuredNode;
+import de.dagere.peass.measurement.rca.data.CauseSearchData;
+import de.dagere.peass.measurement.rca.serialization.MeasuredNode;
 
 class VMAnalyzer extends FolderAnalyzer {
    public VMAnalyzer() {
@@ -16,7 +15,7 @@ class VMAnalyzer extends FolderAnalyzer {
    private DescriptiveStatistics statisticsDeviation = new DescriptiveStatistics();
    private DescriptiveStatistics statisticsDeviationRelative = new DescriptiveStatistics();
 
-   public void processNode(File durationFolder, MeasuredNode node, CauseSearchData data) {
+   public void processNode(final File durationFolder, final MeasuredNode node, final CauseSearchData data) {
       System.out.println(durationFolder.getName() + " " + (!node.getChildren().isEmpty()));
       this.config = data.getMeasurementConfig();
 
@@ -27,12 +26,13 @@ class VMAnalyzer extends FolderAnalyzer {
       addNodeData(node);
    }
 
+   @Override
    public void print() {
       System.out.println("Absolute: " + statisticsDeviation.getMean() + " " + statisticsDeviation.getMax());
       System.out.println("Relative: " + statisticsDeviationRelative.getMean() + " " + statisticsDeviationRelative.getMax());
    }
 
-   public void addNodeData(MeasuredNode node) {
+   public void addNodeData(final MeasuredNode node) {
       // System.out.println(node.getKiekerPattern());
       addData(node);
 
@@ -41,7 +41,7 @@ class VMAnalyzer extends FolderAnalyzer {
       }
    }
 
-   private void addData(MeasuredNode node) {
+   private void addData(final MeasuredNode node) {
       if (node.getStatistic().getMeanCurrent() != 0) {
          statisticsDeviation.addValue(node.getStatistic().getDeviationCurrent());
          statisticsDeviationRelative.addValue(node.getStatistic().getDeviationCurrent() / node.getStatistic().getMeanCurrent());

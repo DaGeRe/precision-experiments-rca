@@ -7,11 +7,9 @@ import java.util.List;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.descriptive.StatisticalSummary;
 
-import de.peass.config.MeasurementConfiguration;
-import de.peass.measurement.rca.data.CauseSearchData;
-import de.peass.measurement.rca.serialization.MeasuredNode;
-import de.peass.steadyStateNodewise.GetGraphs;
-import de.peass.steadyStateNodewise.PerVMDeviationDeriver;
+import de.dagere.peass.measurement.rca.data.CauseSearchData;
+import de.dagere.peass.measurement.rca.serialization.MeasuredNode;
+import de.dagere.peass.steadyStateNodewise.PerVMDeviationDeriver;
 
 /**
  * Prints the iteration count where the standard deviation inside the VM falls below the inter-VM-deviation
@@ -27,7 +25,7 @@ class WarmupAnalyzer extends FolderAnalyzer {
    }
    
    @Override
-   public void processNode(File durationFolder, MeasuredNode node, CauseSearchData data) {
+   public void processNode(final File durationFolder, final MeasuredNode node, final CauseSearchData data) {
       System.out.println(durationFolder.getName() + " " + (!node.getChildren().isEmpty()));
       this.config = data.getMeasurementConfig();
       System.out.print("Slow ");
@@ -40,7 +38,7 @@ class WarmupAnalyzer extends FolderAnalyzer {
 
    }
    
-   public void printIterationWarmupPoint(Collection<List<StatisticalSummary>> values) {
+   public void printIterationWarmupPoint(final Collection<List<StatisticalSummary>> values) {
       DescriptiveStatistics allVMMeans = getVMMeans(values);
       System.out.println(allVMMeans.getMean() + " " + allVMMeans.getStandardDeviation());
       
@@ -62,7 +60,7 @@ class WarmupAnalyzer extends FolderAnalyzer {
 //      System.out.println();
    }
 
-   private DescriptiveStatistics getVMMeans(Collection<List<StatisticalSummary>> values) {
+   private DescriptiveStatistics getVMMeans(final Collection<List<StatisticalSummary>> values) {
       DescriptiveStatistics allVMMeans = new DescriptiveStatistics();
       for (List<StatisticalSummary> vmStart : values) {
          DescriptiveStatistics vmStartStatistics = new DescriptiveStatistics();

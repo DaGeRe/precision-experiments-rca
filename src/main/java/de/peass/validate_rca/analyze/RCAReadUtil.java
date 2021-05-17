@@ -13,14 +13,14 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
-import de.peass.measurement.rca.data.CauseSearchData;
-import de.peass.utils.Constants;
+import de.dagere.peass.measurement.rca.data.CauseSearchData;
+import de.dagere.peass.utils.Constants;
 
 public class RCAReadUtil {
 
    static String[] types = new String[] { "ADDITION", "RESERVE_RAM", "THROW", "BUSY_WAITING" };
 
-   public static RCAReadUtil getDataMap(File folder, boolean readDetailData) throws IOException, JsonParseException, JsonMappingException {
+   public static RCAReadUtil getDataMap(final File folder, final boolean readDetailData) throws IOException, JsonParseException, JsonMappingException {
       RCAReadUtil rcaReadUtil = new RCAReadUtil(readDetailData);
       rcaReadUtil.analyzeJobs(folder);
       for (String type : types) {
@@ -35,7 +35,7 @@ public class RCAReadUtil {
    Map<Integer, Map<Integer, Map<Integer, Map<Integer, List<CauseSearchData>>>>> dataMap = new TreeMap<>();
    boolean readDetailData;
 
-   public RCAReadUtil(boolean readDetailData) {
+   public RCAReadUtil(final boolean readDetailData) {
       this.readDetailData = readDetailData;
    }
 
@@ -43,7 +43,7 @@ public class RCAReadUtil {
       return dataMap;
    }
 
-   public void analyzeJobs(File folder) throws IOException, JsonParseException, JsonMappingException {
+   public void analyzeJobs(final File folder) throws IOException, JsonParseException, JsonMappingException {
       for (File jobFolder : folder.listFiles()) {
          // System.out.println("Reading: " + jobFolder);
          if (jobFolder.isDirectory()) {
@@ -55,7 +55,7 @@ public class RCAReadUtil {
       }
    }
 
-   private void analyzeDurations(File jobFolder) throws IOException, JsonParseException, JsonMappingException {
+   private void analyzeDurations(final File jobFolder) throws IOException, JsonParseException, JsonMappingException {
       for (File durationFolder : jobFolder.listFiles((FileFilter) new WildcardFileFilter("duration_*"))) {
          File rcaFolder = new File(durationFolder, "rca/tree/");
          if (rcaFolder.exists()) {
@@ -69,7 +69,7 @@ public class RCAReadUtil {
       }
    }
 
-   private void handleRCAFolder(File durationFolder, File rcaFolder) throws IOException, JsonParseException, JsonMappingException {
+   private void handleRCAFolder(final File durationFolder, final File rcaFolder) throws IOException, JsonParseException, JsonMappingException {
       File versionFolder = rcaFolder.listFiles()[0];
       File testClassFolder = versionFolder.listFiles()[0];
       if (readDetailData) {
@@ -82,7 +82,7 @@ public class RCAReadUtil {
       }
    }
 
-   private void readData(File durationFolder, File dataFolder) throws IOException, JsonParseException, JsonMappingException {
+   private void readData(final File durationFolder, final File dataFolder) throws IOException, JsonParseException, JsonMappingException {
       for (File measuredData : dataFolder.listFiles((FileFilter) new WildcardFileFilter("*.json"))) {
          CauseSearchData data = Constants.OBJECTMAPPER.readValue(measuredData, CauseSearchData.class);
          List<CauseSearchData> list = getCurrentList(durationFolder, data);
@@ -90,7 +90,7 @@ public class RCAReadUtil {
       }
    }
 
-   private List<CauseSearchData> getCurrentList(File durationFolder, CauseSearchData data) {
+   private List<CauseSearchData> getCurrentList(final File durationFolder, final CauseSearchData data) {
       int duration = Integer.parseInt(durationFolder.getName().replace("duration_", ""));
       Map<Integer, Map<Integer, Map<Integer, List<CauseSearchData>>>> iterationMap = dataMap.get(duration);
       if (iterationMap == null) {

@@ -3,7 +3,6 @@ package de.peass.validate_rca.analyze;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.math3.stat.descriptive.AggregateSummaryStatistics;
@@ -11,9 +10,10 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.descriptive.StatisticalSummary;
 import org.apache.commons.math3.stat.descriptive.StatisticalSummaryValues;
 import org.apache.commons.math3.stat.inference.TTest;
-import de.peass.measurement.rca.data.CauseSearchData;
-import de.peass.measurement.rca.serialization.MeasuredNode;
-import de.peass.measurement.rca.serialization.MeasuredValues;
+
+import de.dagere.peass.measurement.rca.data.CauseSearchData;
+import de.dagere.peass.measurement.rca.serialization.MeasuredNode;
+import de.dagere.peass.measurement.rca.serialization.MeasuredValues;
 
 public class EarlyStopIterationAnalyzer extends FolderAnalyzer {
 
@@ -24,7 +24,7 @@ public class EarlyStopIterationAnalyzer extends FolderAnalyzer {
    }
 
    @Override
-   public void processNode(File durationFolder, MeasuredNode node, CauseSearchData data) {
+   public void processNode(final File durationFolder, final MeasuredNode node, final CauseSearchData data) {
       for (int iteration = 10; iteration <= data.getMeasurementConfig().getIterations()
             * data.getMeasurementConfig().getRepetitions(); iteration += data.getMeasurementConfig().getRepetitions() * 5) {
          DescriptiveStatistics vmValues = getValues(node.getValues(), iteration);
@@ -39,7 +39,7 @@ public class EarlyStopIterationAnalyzer extends FolderAnalyzer {
       // node.getValuesPredecessor()
    }
 
-   private DescriptiveStatistics getValues(MeasuredValues node, int iteration) {
+   private DescriptiveStatistics getValues(final MeasuredValues node, final int iteration) {
       DescriptiveStatistics vmPredecessorValues = new DescriptiveStatistics();
       for (Entry<Integer, List<StatisticalSummary>> measurements : node.getValues().entrySet()) {
          StatisticalSummaryValues predecessorStatistic = createPartialTimeseries(iteration, measurements.getValue());
@@ -48,7 +48,7 @@ public class EarlyStopIterationAnalyzer extends FolderAnalyzer {
       return vmPredecessorValues;
    }
 
-   private StatisticalSummaryValues createPartialTimeseries(int iteration, List<StatisticalSummary> measurements) {
+   private StatisticalSummaryValues createPartialTimeseries(final int iteration, final List<StatisticalSummary> measurements) {
       int taken = 0;
       StatisticalSummaryValues currentStatistic = new StatisticalSummaryValues(0, 0, 0, 0, 0, 0);
       for (StatisticalSummary values : measurements) {

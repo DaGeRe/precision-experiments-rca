@@ -1,30 +1,22 @@
 package de.peass.validate_rca.analyze;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.commons.io.filefilter.WildcardFileFilter;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
-import de.peass.measurement.analysis.Relation;
-import de.peass.measurement.rca.data.CauseSearchData;
-import de.peass.measurement.rca.serialization.MeasuredNode;
-import de.peass.statistics.StatisticUtil;
-import de.peass.utils.Constants;
+import de.dagere.peass.measurement.rca.data.CauseSearchData;
+import de.dagere.peass.measurement.rca.serialization.MeasuredNode;
 
 public class GenerateTable {
 
    private static Map<Integer, Map<Integer, Map<Integer, Map<Integer, List<CauseSearchData>>>>> dataMap = new TreeMap<>();
 
-   public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException {
+   public static void main(final String[] args) throws JsonParseException, JsonMappingException, IOException {
       File folder = new File(args[0]);
 
       RCAReadUtil rcaReadUtil = RCAReadUtil.getDataMap(folder, false);
@@ -47,7 +39,7 @@ public class GenerateTable {
       });
    }
 
-   private static void printIsWorking(Integer duration, Integer iterations, Integer repetitions, Integer vms, CauseSearchData data) {
+   private static void printIsWorking(final Integer duration, final Integer iterations, final Integer repetitions, final Integer vms, final CauseSearchData data) {
       System.out.print(duration + " " + iterations + " " + repetitions + " " + vms
             + " " + !data.getNodes().getChildren().isEmpty());
       if (!data.getNodes().getChildren().isEmpty()) {
