@@ -16,21 +16,25 @@ function createExecutionfile {
 #export JAVA_HOME=/usr/jdk64/jdk1.8.0_112/
 export PATH=/nfs/user/do820mize/maven/apache-maven-3.5.4/bin:/usr/jdk64/jdk1.8.0_112/bin/:/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/nfs/user/do820mize/pxz:/nfs/user/do820mize/tar-1.29/bin/bin:/nfs/user/do820mize/git/git-2.9.5/bin-wrappers
 
-echo "Nodes: $nodes Slower: $slower Workload: $workload Repetitions: $repetitions VMs: $vms RCA_STRATEGY: $RCA_STRATEGY"
+if [ -z "$percentualDiff" ]
+then
+	percentualDiff=0.3
+fi
 
-percentualDiff=0.3
+echo "Nodes: $nodes Slower: $slower Workload: $workload Repetitions: $repetitions VMs: $vms RCA_STRATEGY: $RCA_STRATEGY Diff: $percentualDiff"
+
 workloadsize=300
 fastParameter=$workloadsize
-slowParameter=301
+slowParameter=$(echo "300*(1+$percentualDiff/100)" | bc -l)
 
 echo "Slower Version: $slowParameter Faster Version: $fastParameter Type: $workload"
 
 id=1
-resultfolder=/tmp/peass-temp/R5_"$workloadsize"_"$nodes"_"$slower"_"$RCA_STRATEGY"_"$percentualDiff"_"$iterations"_"$repetitions"_"$vms"_"$workload"_$id/
+resultfolder=/tmp/peass-temp/R6_"$workloadsize"_"$nodes"_"$slower"_"$RCA_STRATEGY"_"$percentualDiff"_"$iterations"_"$repetitions"_"$vms"_"$workload"_$id/
 while [[ -d $resultfolder ]]
 do
 	id=$((id+1))
-	resultfolder=/tmp/peass-temp/R5_"$workloadsize"_"$nodes"_"$slower"_"$RCA_STRATEGY"_"$percentualDiff"_"$iterations"_"$repetitions"_"$vms"_"$workload"_$id/
+	resultfolder=/tmp/peass-temp/R6_"$workloadsize"_"$nodes"_"$slower"_"$RCA_STRATEGY"_"$percentualDiff"_"$iterations"_"$repetitions"_"$vms"_"$workload"_$id/
 done
 
 mkdir -p $resultfolder
@@ -69,7 +73,6 @@ $PEASS_PROJECT/peass searchcause \
 	--repetitions=$repetitions \
 	--rcaStrategy=$RCA_STRATEGY \
 	--record=REDUCED_OPERATIONEXECUTION \
-	--useSourceInstrumentation \
 	--useCircularQueue \
 	--useSampling \
 	--statisticTest ANY_NO_AGNOSTIC \
@@ -79,7 +82,7 @@ $PEASS_PROJECT/peass searchcause \
 
 echo "Measurement finished, moving result"
 
-rcaResultBase=/home/sc.uni-leipzig.de/do820mize/rca-results-r5/
+rcaResultBase=/home/sc.uni-leipzig.de/do820mize/rca-results-r6/
 rcaResultFolder=$rcaResultBase/$RCA_STRATEGY/$nodes/
 
 relativePath=$(realpath --relative-to=/tmp/peass-temp $resultfolder)
