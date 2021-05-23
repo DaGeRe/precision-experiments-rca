@@ -54,6 +54,11 @@ then
         createPlotableFile $output $folder "noOutlierRemoval_bimodal" 17
         createPlotableFile $output $folder "noOutlierRemoval_mannWhitney" 25
         cd $start
+        plot "$output"_noOutlierRemoval
+        plot "$output"_noOutlierRemoval_bimodal
+        plot "$output"_noOutlierRemoval_mannWhitney
+else
+        echo "$folder/results_noOutlierRemoval not found"
 fi
 
 cd $folder/results_"outlierRemoval"
