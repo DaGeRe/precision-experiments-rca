@@ -63,11 +63,11 @@ do
     export folder=project_$nodes
     
     id=1
-    resultfolder=strategy/"$workloadsize"_"$nodes"_"$slower"_"$RCA_STRATEGY"_"$percentualDiff"_"$iterations"_"$repetitions"_"$vms"_$id/
+    resultfolder=strategy/"$workloadsize"_"$nodes"_"$slower"_"$RCA_STRATEGY"_"$percentualDiff"_"$iterations"_"$repetitions"_"$vms"_"$workload"_$id/
     while [[ -d $resultfolder ]]
     do
         id=$((id+1))
-		resultfolder=strategy/"$workloadsize"_"$nodes"_"$slower"_"$RCA_STRATEGY"_"$percentualDiff"_"$iterations"_"$repetitions"_"$vms"_$id/
+		resultfolder=strategy/"$workloadsize"_"$nodes"_"$slower"_"$RCA_STRATEGY"_"$percentualDiff"_"$iterations"_"$repetitions"_"$vms"_"$workload"_$id/
     done
     
     mkdir -p $resultfolder
@@ -104,6 +104,7 @@ do
 		--useCircularQueue \
 		--useSampling \
 		--statisticTest T_TEST \
+		--measurementStrategy=PARALLEL \
 		--propertyFolder=$resultfolder/results/properties_$folder \
 		-test de.peass.MainTest#testMe &> $resultfolder/rca.txt
     mv ../target/"$folder"_peass/ $resultfolder/
