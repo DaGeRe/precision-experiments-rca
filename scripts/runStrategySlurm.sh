@@ -25,16 +25,18 @@ echo "Nodes: $nodes Slower: $slower Workload: $workload Repetitions: $repetition
 
 workloadsize=300
 fastParameter=$workloadsize
-slowParameter=$(echo "300*(1+$percentualDiff/100)" | bc -l)
+slowDouble=$(echo "300*(1+$percentualDiff/100)+0.5" | bc -l)
+slowParameter=${slowDouble%.*}
 
 echo "Slower Version: $slowParameter Faster Version: $fastParameter Type: $workload"
 
+rm -rf tmp/peass-temp/R_*
 id=1
-resultfolder=/tmp/peass-temp/R6_"$workloadsize"_"$nodes"_"$slower"_"$RCA_STRATEGY"_"$percentualDiff"_"$iterations"_"$repetitions"_"$vms"_"$workload"_$id/
+resultfolder=/tmp/peass-temp/R_"$workloadsize"_"$nodes"_"$slower"_"$RCA_STRATEGY"_"$percentualDiff"_"$iterations"_"$repetitions"_"$vms"_"$workload"_$id/
 while [[ -d $resultfolder ]]
 do
 	id=$((id+1))
-	resultfolder=/tmp/peass-temp/R6_"$workloadsize"_"$nodes"_"$slower"_"$RCA_STRATEGY"_"$percentualDiff"_"$iterations"_"$repetitions"_"$vms"_"$workload"_$id/
+	resultfolder=/tmp/peass-temp/R_"$workloadsize"_"$nodes"_"$slower"_"$RCA_STRATEGY"_"$percentualDiff"_"$iterations"_"$repetitions"_"$vms"_"$workload"_$id/
 done
 
 mkdir -p $resultfolder
@@ -51,6 +53,7 @@ java -cp /home/sc.uni-leipzig.de/do820mize/precision-experiments-rca/target/prec
         -out $projectFolder &> $resultfolder/generate.txt
 
 export PEASS_PROJECT=/home/sc.uni-leipzig.de/do820mize/peass
+version=$(cd $projectFolder && git rev-parse HEAD)
 if [ "$RCA_STRATEGY" == "UNTIL_SOURCE_CHANGE" ]
 then
     echo "Starting PRONTO"
@@ -58,7 +61,6 @@ then
     mv results $resultfolder/
 else
     echo "Creating PRONTO-results"
-    version=$(cd $projectFolder && git rev-parse HEAD)
     mkdir $resultfolder/results/
     createExecutionfile $version $resultfolder/results/execute_project.json
 fi
@@ -66,6 +68,7 @@ fi
 echo "Starting Measurement"
 $PEASS_PROJECT/peass searchcause \
 	--folder=$projectFolder -executionfile $resultfolder/results/execute_project.json \
+	--version=$version \
 	--timeout=20 \
 	--vms=$vms \
 	--iterations=$iterations \
@@ -82,17 +85,19 @@ $PEASS_PROJECT/peass searchcause \
 
 echo "Measurement finished, moving result"
 
-rcaResultBase=/home/sc.uni-leipzig.de/do820mize/rca-results-r6/
+rcaResultBase=/home/sc.uni-leipzig.de/do820mize/rca-results/
 rcaResultFolder=$rcaResultBase/$RCA_STRATEGY/$nodes/
 
 relativePath=$(realpath --relative-to=/tmp/peass-temp $resultfolder)
 echo "Running tar -czf /tmp/peass-temp/"$nodes".tar -C /tmp/peass-temp/ $relativePath"
 ls $relativePath
-tar -czf /tmp/peass-temp/"$nodes".tar -C /tmp/peass-temp/ $relativePath
-"Created tar: /tmp/peass-temp/"$nodes".tar"
-ll -lah /tmp/peass-temp/"$nodes".tar
+tarfile=/tmp/peass-temp/"$nodes"_"$RCA_STRATEGY"_"$percentualDiff"_"$workload".tar
+tar -czf $tarfile -C /tmp/peass-temp/ $relativePath
+echo "Created tar: $tarfile"
+ls -lah $tarfile
 
-mkdir -p $rcaResultFolder/project_peass/tree/
-rsync -avz $resultfolder/project_peass/rca/tree/ $rcaResultFolder/project_peass/tree
-mv /tmp/peass-temp/"$nodes".tar $rcaResultFolder
+previewFolder=$rcaResultFolder/"$nodes"_"$RCA_STRATEGY"_"$percentualDiff"_"$workload"/tree/
+mkdir -p $previewFolder
+rsync -avz $resultfolder/project_peass/rca/tree/ $previewFolder
+mv $tarfile $rcaResultFolder
 rm -rf $resultfolder

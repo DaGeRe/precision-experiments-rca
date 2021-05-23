@@ -78,6 +78,7 @@ do
 		-type $workload \
 		-out ../target/$folder &> $resultfolder/generate.txt
     
+    version=$(cd ../target/$folder && git rev-parse HEAD)
     if [ "$RCA_STRATEGY" == "UNTIL_SOURCE_CHANGE" ]
     then
 	    echo "Starting PRONTO"
@@ -85,7 +86,6 @@ do
 	    mv results $resultfolder/
     else
 	    echo "Creating PRONTO-results"
-	    version=$(cd ../target/$folder && git rev-parse HEAD)
 	    mkdir $resultfolder/results/
 	    createExecutionfile $version $resultfolder/results/execute_$folder.json
 	fi
@@ -93,6 +93,7 @@ do
     echo "Starting Measurement"
     $PEASS_PROJECT/peass searchcause \
 		--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
+		--version $version \
 		--timeout=20 \
 		--vms=$vms \
 		--iterations=$iterations \
@@ -100,10 +101,9 @@ do
 		--repetitions=$repetitions \
 		--rcaStrategy=$RCA_STRATEGY \
 		--record=REDUCED_OPERATIONEXECUTION \
-		--useSourceInstrumentation \
 		--useCircularQueue \
 		--useSampling \
-		--statisticTest ANY_NO_AGNOSTIC \
+		--statisticTest T_TEST \
 		--propertyFolder=$resultfolder/results/properties_$folder \
 		-test de.peass.MainTest#testMe &> $resultfolder/rca.txt
     mv ../target/"$folder"_peass/ $resultfolder/

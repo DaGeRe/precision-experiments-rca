@@ -20,7 +20,7 @@ do
                 		--output=$logfolder/"%j"_"%n".out \
 				--export=repetitions=$repetitions,vms=$vms,RCA_STRATEGY=$strategy,iterations=$iterations,nodes=$nodes,slower=$slower,workload=$workload,percentualDiff=$diff \
 				runStrategySlurm.sh
-				echo "Log of $nodes $strategy goes to $logfolder"
+				echo "Log of $nodes $strategy $diff goes to $logfolder"
 			done
 		done
 	done 
