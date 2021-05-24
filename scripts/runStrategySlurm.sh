@@ -28,15 +28,18 @@ fastParameter=$workloadsize
 slowDouble=$(echo "300*(1+$percentualDiff/100)+0.5" | bc -l)
 slowParameter=${slowDouble%.*}
 
+diff=$(echo "(1+$percentualDiff*0.01)" | bc -l)
+echo "Diff: $diff"
+
 echo "Slower Version: $slowParameter Faster Version: $fastParameter Type: $workload"
 
 rm -rf tmp/peass-temp/R_*
 id=1
-resultfolder=/tmp/peass-temp/R_"$workloadsize"_"$nodes"_"$slower"_"$RCA_STRATEGY"_"$percentualDiff"_"$iterations"_"$repetitions"_"$vms"_"$workload"_$id/
+resultfolder=/tmp/peass-temp/R_"$workloadsize"_"$nodes"_"$slower"_"$RCA_STRATEGY"_"$diff"_"$iterations"_"$repetitions"_"$vms"_"$workload"_$id/
 while [[ -d $resultfolder ]]
 do
 	id=$((id+1))
-	resultfolder=/tmp/peass-temp/R_"$workloadsize"_"$nodes"_"$slower"_"$RCA_STRATEGY"_"$percentualDiff"_"$iterations"_"$repetitions"_"$vms"_"$workload"_$id/
+	resultfolder=/tmp/peass-temp/R_"$workloadsize"_"$nodes"_"$slower"_"$RCA_STRATEGY"_"$diff"_"$iterations"_"$repetitions"_"$vms"_"$workload"_$id/
 done
 
 mkdir -p $resultfolder
@@ -91,12 +94,12 @@ rcaResultFolder=$rcaResultBase/$RCA_STRATEGY/$nodes/
 relativePath=$(realpath --relative-to=/tmp/peass-temp $resultfolder)
 echo "Running tar -czf /tmp/peass-temp/"$nodes".tar -C /tmp/peass-temp/ $relativePath"
 ls /tmp/peass-temp/$relativePath
-tarfile=/tmp/peass-temp/"$nodes"_"$RCA_STRATEGY"_"$percentualDiff"_"$workload".tar
+tarfile=/tmp/peass-temp/"$nodes"_"$RCA_STRATEGY"_"$diff"_"$workload".tar
 tar -czf $tarfile -C /tmp/peass-temp/ $relativePath
 echo "Created tar: $tarfile"
 ls -lah $tarfile
 
-previewFolder=$rcaResultFolder/"$nodes"_"$RCA_STRATEGY"_"$percentualDiff"_"$workload"/project_peass/rca/tree/
+previewFolder=$rcaResultFolder/"$nodes"_"$RCA_STRATEGY"_"$diff"_"$workload"/project_peass/rca/tree/
 mkdir -p $previewFolder
 rsync -avz $resultfolder/project_peass/rca/tree/ $previewFolder
 mv $tarfile $rcaResultFolder
