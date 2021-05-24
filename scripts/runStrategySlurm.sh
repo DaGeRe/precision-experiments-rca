@@ -90,7 +90,7 @@ rcaResultFolder=$rcaResultBase/$RCA_STRATEGY/$nodes/
 
 relativePath=$(realpath --relative-to=/tmp/peass-temp $resultfolder)
 echo "Running tar -czf /tmp/peass-temp/"$nodes".tar -C /tmp/peass-temp/ $relativePath"
-ls $relativePath
+ls /tmp/peass-temp/$relativePath
 tarfile=/tmp/peass-temp/"$nodes"_"$RCA_STRATEGY"_"$percentualDiff"_"$workload".tar
 tar -czf $tarfile -C /tmp/peass-temp/ $relativePath
 echo "Created tar: $tarfile"
