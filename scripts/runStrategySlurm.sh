@@ -96,7 +96,7 @@ tar -czf $tarfile -C /tmp/peass-temp/ $relativePath
 echo "Created tar: $tarfile"
 ls -lah $tarfile
 
-previewFolder=$rcaResultFolder/"$nodes"_"$RCA_STRATEGY"_"$percentualDiff"_"$workload"/tree/
+previewFolder=$rcaResultFolder/"$nodes"_"$RCA_STRATEGY"_"$percentualDiff"_"$workload"/project_peass/rca/tree/
 mkdir -p $previewFolder
 rsync -avz $resultfolder/project_peass/rca/tree/ $previewFolder
 mv $tarfile $rcaResultFolder
