@@ -22,13 +22,13 @@ function createPlotableFile {
 }
 
 function plot {
-	folder=$1
+	plotFolder=$1
 	
 	for file in $(ls $folder | grep ".csv" | grep -v "_current_[0-9]*.csv" | grep -v "_predecessor_[0-9]*.csv")
 	do
 		outputName=$(echo $file | awk -F'.' '{$NF=""; print $0".pdf"}' | tr -d " ")
 		echo "Plotting $file, output goes to $outputName"
-		gnuplot -c plotHeatmap.plt $folder/$file $folder/$outputName
+		gnuplot -c plotHeatmap.plt $plotFolder/$file $plotFolder/$outputName
 	done
 }
 
