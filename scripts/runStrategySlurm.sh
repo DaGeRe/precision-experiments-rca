@@ -21,7 +21,7 @@ then
 	percentualDiff=0.3
 fi
 
-echo "Nodes: $nodes Slower: $slower Workload: $workload Repetitions: $repetitions VMs: $vms RCA_STRATEGY: $RCA_STRATEGY Diff: $percentualDiff"
+echo "Nodes: $nodes Slower: $slower Workload: $workload Repetitions: $repetitions VMs: $vms RCA_STRATEGY: $RCA_STRATEGY Diff: $percentualDiff Levels: $levels"
 
 workloadsize=300
 fastParameter=$workloadsize
@@ -35,11 +35,11 @@ echo "Slower Version: $slowParameter Faster Version: $fastParameter Type: $workl
 
 rm -rf tmp/peass-temp/R_*
 id=1
-resultfolder=/tmp/peass-temp/R_"$workloadsize"_"$nodes"_"$slower"_"$RCA_STRATEGY"_"$diff"_"$iterations"_"$repetitions"_"$vms"_"$workload"_$id/
+resultfolder=/tmp/peass-temp/R_"$workloadsize"_"$nodes"_"$slower"_"$RCA_STRATEGY"_"$diff"_"$iterations"_"$repetitions"_"$vms"_"$workload"_"$levels"_$id/
 while [[ -d $resultfolder ]]
 do
 	id=$((id+1))
-	resultfolder=/tmp/peass-temp/R_"$workloadsize"_"$nodes"_"$slower"_"$RCA_STRATEGY"_"$diff"_"$iterations"_"$repetitions"_"$vms"_"$workload"_$id/
+	resultfolder=/tmp/peass-temp/R_"$workloadsize"_"$nodes"_"$slower"_"$RCA_STRATEGY"_"$diff"_"$iterations"_"$repetitions"_"$vms"_"$workload"_"$levels"_$id/
 done
 
 mkdir -p $resultfolder
@@ -83,6 +83,7 @@ $PEASS_PROJECT/peass searchcause \
 	--useSampling \
 	--statisticTest ANY_NO_AGNOSTIC \
 	--measurementStrategy=PARALLEL \
+	--levels $levels \
 	--propertyFolder=$resultfolder/results/properties_project \
 	-test de.peass.MainTest#testMe &> $resultfolder/rca.txt
 

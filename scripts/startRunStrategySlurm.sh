@@ -11,6 +11,7 @@ do
 			repetitions=1000000
 			iterations=10
 			vms=1000
+			levels=1
 			export RCA_STRATEGY=$strategy
 			logfolder=/nfs/user/do820mize/processlogs/precision-rca/$workload/
 			mkdir -p $logfolder
@@ -18,7 +19,7 @@ do
                 		--nice=1 \
                 		--time=10-0 \
                 		--output=$logfolder/"%j"_"%n".out \
-				--export=repetitions=$repetitions,vms=$vms,RCA_STRATEGY=$strategy,iterations=$iterations,nodes=$nodes,slower=$slower,workload=$workload,percentualDiff=$diff \
+				--export=repetitions=$repetitions,vms=$vms,RCA_STRATEGY=$strategy,iterations=$iterations,nodes=$nodes,slower=$slower,workload=$workload,percentualDiff=$diff,levels=$levels \
 				runStrategySlurm.sh
 				echo "Log of $nodes $strategy $diff goes to $logfolder"
 			done
