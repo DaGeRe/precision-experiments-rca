@@ -9,13 +9,13 @@ function plotStuff {
         rm -rf $dataFolder/../results_* -rf \
                 && \
                 java -cp ../../target/precision-experiments-rca-0.1-SNAPSHOT.jar \
-                de.peass.precision.rca.analyze.GenerateRCAPrecisionPlot \
+                de.dagere.peass.precision.rca.analyze.GenerateRCAPrecisionPlot \
                 -data $dataFolder \
                 -removeOutliers -alsoPlotChilds \
                 &> $resultfolder"_outlierremoval".txt \
                 && \
                 java -cp ../../target/precision-experiments-rca-0.1-SNAPSHOT.jar \
-                de.peass.precision.rca.analyze.GenerateRCAPrecisionPlot \
+                de.dagere.peass.precision.rca.analyze.GenerateRCAPrecisionPlot \
                 -data $dataFolder \
                 -alsoPlotChilds \
                 &> $resultfolder"_nooutlierremoval".txt \
@@ -54,7 +54,6 @@ do
                 inputFolder=$parallelFolder/UNTIL_SOURCE_CHANGE/$depth/$depth"_UNTIL_SOURCE_CHANGE_"$percent"_ADD"/project_peass
                 eventuallyAnalyze $inputFolder results/UNTIL_SOURCE_CHANGE/$depth/$percent
 
-		echo "I am here"
 		for strategy in LEVELWISE_1 LEVELWISE_2 COMPLETE UNTIL_SOURCE_CHANGE
 		do
 			echo "Test $strategy"
