@@ -24,7 +24,7 @@ function createPlotableFile {
 function plot {
 	plotFolder=$1
 	
-	for file in $(ls $folder | grep ".csv" | grep -v "_current_[0-9]*.csv" | grep -v "_predecessor_[0-9]*.csv")
+	for file in $(ls $plotFolder | grep ".csv" | grep -v "_current_[0-9]*.csv" | grep -v "_predecessor_[0-9]*.csv")
 	do
 		outputName=$(echo $file | awk -F'.' '{$NF=""; print $0".pdf"}' | tr -d " ")
 		echo "Plotting $file, output goes to $outputName"

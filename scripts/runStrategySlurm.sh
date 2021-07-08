@@ -95,12 +95,12 @@ rcaResultFolder=$rcaResultBase/$RCA_STRATEGY/$nodes/
 relativePath=$(realpath --relative-to=/tmp/peass-temp $resultfolder)
 echo "Running tar -czf /tmp/peass-temp/"$nodes".tar -C /tmp/peass-temp/ $relativePath"
 ls /tmp/peass-temp/$relativePath
-tarfile=/tmp/peass-temp/"$nodes"_"$RCA_STRATEGY"_"$diff"_"$workload".tar
+tarfile=/tmp/peass-temp/"$nodes"_"$RCA_STRATEGY"_"$diff"_"$workload"_"$levels".tar
 tar -czf $tarfile -C /tmp/peass-temp/ $relativePath
 echo "Created tar: $tarfile"
 ls -lah $tarfile
 
-previewFolder=$rcaResultFolder/"$nodes"_"$RCA_STRATEGY"_"$diff"_"$workload"/project_peass/rca/tree/
+previewFolder=$rcaResultFolder/"$nodes"_"$RCA_STRATEGY"_"$diff"_"$workload"_"$levels"/project_peass/rca/tree/
 mkdir -p $previewFolder
 rsync -avz $resultfolder/project_peass/rca/tree/ $previewFolder
 mv $tarfile $rcaResultFolder
