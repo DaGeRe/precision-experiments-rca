@@ -32,7 +32,7 @@ jobs:
          cd /home/runner/work/ && git clone https://github.com/DaGeRe/peass.git && cd peass && mvn clean install -DskipTests
          cd /home/runner/work && git clone https://github.com/DaGeRe/precision-experiments.git && cd precision-experiments/precision-analysis/ && ../gradlew publishToMavenLocal
     - name: Build with Maven
-      run: cd /home/runner/work/precision-experiments-rca && ls && ./mvnw clean install
+      run: cd /home/runner/work/precision-experiments-rca/precision-experiments-rca/ && ls && ./mvnw clean install
     - name: Publish Test Report
       if: ${{ always() }}      
       uses: scacap/action-surefire-report@v1
