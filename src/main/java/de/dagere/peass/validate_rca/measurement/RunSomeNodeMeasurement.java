@@ -93,7 +93,7 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
 
       // tester.measureVersion(includedNodes);
       tester.setIncludedMethods(new HashSet<>(includedNodes));
-      final File logFolder = folders.getLogFolder(measurementConfiguration.getVersion(), causeSearchConfig.getTestCase());
+      final File logFolder = folders.getMeasureLogFolder(measurementConfiguration.getVersion(), causeSearchConfig.getTestCase());
       tester.setCurrentVersion(version);
       for (int i = 0; i < measurementConfiguration.getVms(); i++) {
          tester.runOnce(causeSearchConfig.getTestCase(), predecessor, i, logFolder);

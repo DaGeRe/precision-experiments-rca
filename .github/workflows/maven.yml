@@ -1,0 +1,40 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    branches: [ main ]
+  schedule:
+    - cron: "0 3 * * *"
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+       matrix:
+          java: [ 1.8, 11, 15 ]
+       fail-fast: false
+    name: Java ${{ matrix.java }} sample
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK ${{ matrix.java }}
+      uses: actions/setup-java@v1
+      with:
+        java-version: ${{ matrix.java }}
+    - name: Install dependencies
+      run: |
+         cd /home/runner/work/ && git clone https://github.com/DaGeRe/peass.git && cd peass && mvn clean install -DskipTests
+         cd /home/runner/work && git clone https://github.com/DaGeRe/precision-experiments.git && cd precision-experiments/precision-analysis/ && ../gradlew publishToMavenLocal
+    - name: Build with Maven
+      run: cd /home/runner/work/precision-experiments-rca && ./mvnw clean install
+    - name: Publish Test Report
+      if: ${{ always() }}      
+      uses: scacap/action-surefire-report@v1
+      with:
+         github_token: ${{ secrets.GITHUB_TOKEN }}

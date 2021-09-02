@@ -50,7 +50,7 @@ public class NodePrecisionPlotGenerator {
             LOG.info(node.getStatistic().getCalls() + " " + fullVmCount + " " + iterationCount);
             int stepsize = (int) (node.getStatistic().getCalls() / fullVmCount / iterationCount);
             LOG.info("Iteration step size: " + stepsize);
-            for (int iterations = stepsize * 7; iterations <= stepsize * iterationCount; iterations += stepsize) {
+            for (int iterations = stepsize * 9; iterations <= stepsize * iterationCount; iterations += stepsize) {
                tryIterationCount(resultFolder, writer, iterations);
             }
          } catch (IOException e) {
@@ -70,7 +70,7 @@ public class NodePrecisionPlotGenerator {
 
       final int vmStepSize = node.getPureVMs() / vmCount;
       LOG.info("VM step size: " + vmStepSize + " Iterations: " + iterations);
-      for (int vms = vmStepSize * 15; vms <= vmStepSize * vmCount; vms += vmStepSize) {
+      for (int vms = vmStepSize * 18; vms <= vmStepSize * vmCount; vms += vmStepSize) {
          final SamplingConfig config = new SamplingConfig(vms, "TestMe", true, false, repetitionsOfAnalysis);
          final PrecisionComparer comparer = new PrecisionComparer(config, statisticsConfig);
 
