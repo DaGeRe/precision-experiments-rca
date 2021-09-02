@@ -31,6 +31,7 @@ jobs:
       run: |
          cd /home/runner/work/ && git clone https://github.com/DaGeRe/peass.git && cd peass && mvn clean install -DskipTests
          cd /home/runner/work && git clone https://github.com/DaGeRe/precision-experiments.git && cd precision-experiments/precision-analysis/ && ../gradlew publishToMavenLocal
+         cd /home/runner/work && git clone https://github.com/DaGeRe/pmd-check.git && cd pmd-check/analysis && ./mvnw clean install
     - name: Build with Maven
       run: cd /home/runner/work/precision-experiments-rca/precision-experiments-rca/ && ls && ./mvnw clean install
     - name: Publish Test Report
