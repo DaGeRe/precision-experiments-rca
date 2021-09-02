@@ -50,11 +50,11 @@ echo "Creating output folder $output"
 if [ -d $folder/results_noOutlierRemoval ]
 then
         cd $folder/results_noOutlierRemoval
-        createPlotableFile $output $folder "noOutlierRemoval" 13
+        createPlotableFile $output $folder "noOutlierRemoval_ttest" 13
         createPlotableFile $output $folder "noOutlierRemoval_bimodal" 17
         createPlotableFile $output $folder "noOutlierRemoval_mannWhitney" 25
         cd $start
-        plot "$output"_noOutlierRemoval
+        plot "$output"_noOutlierRemoval_ttest
         plot "$output"_noOutlierRemoval_bimodal
         plot "$output"_noOutlierRemoval_mannWhitney
 else
@@ -62,13 +62,13 @@ else
 fi
 
 cd $folder/results_"outlierRemoval"
-createPlotableFile $output $folder "outlierRemoval" 13
+createPlotableFile $output $folder "outlierRemoval_ttest" 13
 createPlotableFile $output $folder "outlierRemoval_bimodal" 17
 
 createPlotableFile $output $folder "outlierRemoval_mannWhitney" 25
 
 cd $start
 #plot "$output"_noOutlierRemoval
-plot "$output"_outlierRemoval
+plot "$output"_outlierRemoval_ttest
 plot "$output"_outlierRemoval_bimodal
 plot "$output"_outlierRemoval_mannWhitney
