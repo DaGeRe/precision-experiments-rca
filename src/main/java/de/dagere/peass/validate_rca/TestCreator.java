@@ -21,7 +21,7 @@ public class TestCreator {
    public void createTest(final File clazzFolder) throws IOException {
       final File clazz = new File(clazzFolder, "MainTest.java");
       try (BufferedWriter writer = new BufferedWriter(new FileWriter(clazz))) {
-         writer.write("package de.peass;\n\n");
+         writer.write("package de.dagere.peass;\n\n");
 
          if (createBytecodeweavingEnvironment) {
             writer.write("import de.dagere.kopeme.annotations.PerformanceTest;\n");

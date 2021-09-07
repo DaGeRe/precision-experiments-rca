@@ -1,4 +1,4 @@
-package de.peass;
+package de.dagere.peass;
 
 /**
  * Throws something for benchmarking how much time throwing takes

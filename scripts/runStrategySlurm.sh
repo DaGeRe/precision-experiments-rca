@@ -9,7 +9,7 @@
 function createExecutionfile {
     version=$1
     file=$2
-	echo '{"url" : "",  "versions" : {    "'$version'" : {      "testcases" : {        "de.peass.MainTest" : [ "testMe" ]      },      "predecessor" : "'$version'~1"    }  },  "android" : false}' > $file 
+	echo '{"url" : "",  "versions" : {    "'$version'" : {      "testcases" : {        "de.dagere.peass.MainTest" : [ "testMe" ]      },      "predecessor" : "'$version'~1"    }  },  "android" : false}' > $file 
 }
 
 
@@ -48,7 +48,7 @@ projectFolder=$resultfolder/project
 startfolder=$(pwd)
 cd $resultfolder
 
-java -cp /home/sc.uni-leipzig.de/do820mize/precision-experiments-rca/target/precision-experiments-rca-0.1-SNAPSHOT.jar de.peass.validate_rca.GenerateTreeExampleProject \
+java -cp /home/sc.uni-leipzig.de/do820mize/precision-experiments-rca/target/precision-experiments-rca-0.1-SNAPSHOT.jar de.dagere.peass.validate_rca.GenerateTreeExampleProject \
         -treeDepth $nodes -slowerLevel $slower \
         -slowParameter=$slowParameter \
         -fastParameter=$fastParameter \
@@ -75,7 +75,8 @@ $PEASS_PROJECT/peass searchcause \
 	--timeout=20 \
 	--vms=$vms \
 	--iterations=$iterations \
-	--warmup=$iterations \
+	--warmup=0 \
+	--outlierFactor=0 \
 	--repetitions=$repetitions \
 	--rcaStrategy=$RCA_STRATEGY \
 	--record=REDUCED_OPERATIONEXECUTION \
@@ -85,7 +86,7 @@ $PEASS_PROJECT/peass searchcause \
 	--measurementStrategy=PARALLEL \
 	--levels $levels \
 	--propertyFolder=$resultfolder/results/properties_project \
-	-test de.peass.MainTest#testMe &> $resultfolder/rca.txt
+	-test de.dagere.peass.MainTest#testMe &> $resultfolder/rca.txt
 
 echo "Measurement finished, moving result"
 

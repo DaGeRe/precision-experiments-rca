@@ -1,7 +1,7 @@
 function createExecutionfile {
     version=$1
     file=$2
-	echo '{"url" : "",  "versions" : {    "'$version'" : {      "testcases" : {        "de.peass.MainTest" : [ "testMe" ]      },      "predecessor" : "'$version'~1"    }  },  "android" : false}' > $file 
+	echo '{"url" : "",  "versions" : {    "'$version'" : {      "testcases" : {        "de.dagere.peass.MainTest" : [ "testMe" ]      },      "predecessor" : "'$version'~1"    }  },  "android" : false}' > $file 
 }
 
 if [ $# -eq 1 ]
@@ -71,7 +71,7 @@ do
     done
     
     mkdir -p $resultfolder
-    java -cp ../target/precision-experiments-rca-0.1-SNAPSHOT.jar de.peass.validate_rca.GenerateTreeExampleProject \
+    java -cp ../target/precision-experiments-rca-0.1-SNAPSHOT.jar de.dagere.peass.validate_rca.GenerateTreeExampleProject \
     	-treeDepth $nodes -slowerLevel $slower \
 		-slowParameter=$slowParameter \
 		-fastParameter=$fastParameter \
@@ -97,7 +97,8 @@ do
 		--timeout=20 \
 		--vms=$vms \
 		--iterations=$iterations \
-		--warmup=$iterations \
+		--warmup=0 \
+		--outlierFactor=0 \
 		--repetitions=$repetitions \
 		--rcaStrategy=$RCA_STRATEGY \
 		--record=REDUCED_OPERATIONEXECUTION \
@@ -106,10 +107,10 @@ do
 		--statisticTest T_TEST \
 		--measurementStrategy=PARALLEL \
 		--propertyFolder=$resultfolder/results/properties_$folder \
-		-test de.peass.MainTest#testMe &> $resultfolder/rca.txt
+		-test de.dagere.peass.MainTest#testMe &> $resultfolder/rca.txt
     mv ../target/"$folder"_peass/ $resultfolder/
    
-    java -cp ../target/precision-experiments-rca-0.1-SNAPSHOT.jar de.peass.validate_rca.CheckTree \
+    java -cp ../target/precision-experiments-rca-0.1-SNAPSHOT.jar de.dagere.peass.validate_rca.CheckTree \
 	    -treeDepth $nodes -slowerLevel $slower \
 	    -resultFolder $resultfolder/"$folder"_peass/
 

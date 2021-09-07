@@ -102,7 +102,7 @@ public class GenerateTreeExampleProject implements Callable<Integer> {
    }
 
    private void generateClasses(final File projectFolder, final int slowLevel) throws IOException {
-      final File clazzFolder = new File(projectFolder, "src/main/java/de/peass");
+      final File clazzFolder = new File(projectFolder, "src/main/java/de/dagere/peass");
       clazzFolder.mkdirs();
       writeWorkladClasses(clazzFolder);
 
@@ -120,7 +120,7 @@ public class GenerateTreeExampleProject implements Callable<Integer> {
          }
       }
 
-      final File testFolder = new File(projectFolder, "src/test/java/de/peass");
+      final File testFolder = new File(projectFolder, "src/test/java/de/dagere/peass");
       testFolder.mkdirs();
       new TestCreator(createBytecodeweavingEnvironment, 5, 100000, childCount).createTest(testFolder);
    }
@@ -147,7 +147,7 @@ public class GenerateTreeExampleProject implements Callable<Integer> {
          throws IOException {
       final File clazz = new File(clazzFolder, className + ".java");
       try (BufferedWriter writer = new BufferedWriter(new FileWriter(clazz))) {
-         writer.write("package de.peass;\n\n");
+         writer.write("package de.dagere.peass;\n\n");
 
          writer.write("class " + className + "{ \n");
          for (int method = 0; method < methods; method++) {
