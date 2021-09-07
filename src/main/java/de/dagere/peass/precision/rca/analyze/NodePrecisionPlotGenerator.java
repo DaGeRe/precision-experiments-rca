@@ -50,7 +50,7 @@ public class NodePrecisionPlotGenerator {
             LOG.info(node.getStatistic().getCalls() + " " + fullVmCount + " " + iterationCount);
             int stepsize = (int) (node.getStatistic().getCalls() / fullVmCount / iterationCount);
             LOG.info("Iteration step size: " + stepsize);
-            for (int iterations = stepsize * 0; iterations <= stepsize * iterationCount; iterations += stepsize) {
+            for (int iterations = stepsize * 1; iterations <= stepsize * iterationCount; iterations += stepsize) {
                tryIterationCount(resultFolder, writer, iterations);
             }
          } catch (IOException e) {
