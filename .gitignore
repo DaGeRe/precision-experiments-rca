@@ -24,4 +24,4 @@ scripts/analysis_strategy/parallel/
 scripts/analysis_strategy/COMPLETE/
 scripts/analysis_strategy/LEVELWISE
 scripts/analysis_strategy/UNTIL_SOURCE_CHANGE/
-scripts/analysis_strategy/results/
+scripts/analysis_strategy/
