@@ -4,6 +4,50 @@ function createExecutionfile {
 	echo '{"url" : "",  "versions" : {    "'$version'" : {      "testcases" : {        "de.dagere.peass.MainTest" : [ "testMe" ]      },      "predecessor" : "'$version'~1"    }  },  "android" : false}' > $file 
 }
 
+function getFolder {
+	MEASURE=$1
+	case "$MEASURE" in
+	"0")
+		parent=pure
+		;;
+	"1")
+		parent=operationExecutionRecord
+		;;
+	"2")
+		parent=operationExecutionRecord_sourceInstrumentation
+		;;
+	"3")
+		parent=operationExecutionRecord_sourceInstrumentation_circular
+		;;
+	"4")
+		parent=operationExecutionRecord_sourceInstrumentation_circular_selective
+		;;
+	"5")
+		parent=reducedOperationExecutionRecord
+		;;
+	"6")
+		parent=reducedOperationExecutionRecord_sourceInstrumentation
+		;;
+	"7")
+		parent=reducedOperationExecutionRecord_sourceInstrumentation_circular
+		;;
+	"8")
+		parent=reducedOperationExecutionRecord_sourceInstrumentation_circular_aggregated
+		;;
+	"9")
+        	parent=reducedOperationExecutionRecord_sourceInstrumentation_circular_aggregated_selective
+        	;;
+	"10")
+        	parent=kieker_postCompileWeaving
+        	;;
+	*)
+		echo "MEASURE value not supported: $MEASURE"
+		exit 1
+		;;
+	esac
+	echo $parent
+}
+
 function measure {
     echo "Starting Measurement"
     
@@ -24,7 +68,7 @@ function measure {
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		   ;;
 	"1")
-		echo "1 - Measuring with OperationExecutionRecord, LinkedBlockingQueue and AspectJ (default Kieker)"
+		echo "1 - Measuring with OperationExecutionRecord, AspectJ and LinkedBlockingQueue (default Kieker)"
     		$PEASS_PROJECT/peass searchcause \
 			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
 			--timeout=10 \
@@ -39,7 +83,7 @@ function measure {
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 			;;
 	"2")
-		echo "2 - Measuring with OperationExecutionRecord, LinkedBlockingQueue and Source Instrumentation"
+		echo "2 - Measuring with OperationExecutionRecord, Source Instrumentation and LinkedBlockingQueue"
     		$PEASS_PROJECT/peass searchcause \
 			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
 			--timeout=10 \
@@ -53,7 +97,7 @@ function measure {
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"3")
-		echo "3 - Measuring with OperationExecutionRecord, CircularFifoQueue and Source Instrumentation"
+		echo "3 - Measuring with OperationExecutionRecord, Source Instrumentation and CircularFifoQueue"
 		$PEASS_PROJECT/peass searchcause \
     			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
 			--timeout=10 \
@@ -67,8 +111,22 @@ function measure {
 			--notUseSelectiveInstrumentation \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
- 	"4")
-		echo "4 - Measuring with ReducedOperationExecutionRecord, LinkedBlockingQueue and AspectJ"
+	"4")
+		echo "4 - Measuring with OperationExecutionRecord, Source Instrumentation, CircularFifoQueue and selective Instrumentation"
+		$PEASS_PROJECT/peass searchcause \
+    			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
+			--timeout=10 \
+			--vms=$vms \
+			--iterations=$iterations \
+			--warmup=$iterations \
+			--repetitions=$repetitions \
+			--rcaStrategy=$RCA_STRATEGY \
+			--record=OPERATIONEXECUTION \
+			--useCircularQueue \
+			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
+		;;
+ 	"5")
+		echo "5 - Measuring with ReducedOperationExecutionRecord, AspectJ and LinkedBlockingQueue"
 		$PEASS_PROJECT/peass searchcause \
     			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
 			--timeout=10 \
@@ -82,22 +140,8 @@ function measure {
 			--notUseSelectiveInstrumentation \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
-	"5")
-		echo "5 - Measuring with ReducedOperationExecutionRecord, LinkedBlockingQueue and Source Instrumentation"
-		$PEASS_PROJECT/peass searchcause \
-    			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
-			--timeout=10 \
-			--vms=$vms \
-			--iterations=$iterations \
-			--warmup=$iterations \
-			--repetitions=$repetitions \
-			--rcaStrategy=$RCA_STRATEGY \
-			--record=REDUCED_OPERATIONEXECUTION \
-			--notUseSelectiveInstrumentation \
-			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
-		;;
 	"6")
-		echo "6 - Measuring with ReducedOperationExecutionRecord, CircularFifoQueue and Source Instrumentation"
+		echo "6 - Measuring with ReducedOperationExecutionRecord, Source Instrumentation and LinkedBlockingQueue"
 		$PEASS_PROJECT/peass searchcause \
     			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
 			--timeout=10 \
@@ -107,12 +151,11 @@ function measure {
 			--repetitions=$repetitions \
 			--rcaStrategy=$RCA_STRATEGY \
 			--record=REDUCED_OPERATIONEXECUTION \
-			--useCircularQueue \
 			--notUseSelectiveInstrumentation \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"7")
-		echo "7 - Measuring with Kieker and ReducedOperationExecutionRecord, Source Instrumentation, Circular Queue and Selective Instrumentation"
+		echo "7 - Measuring with ReducedOperationExecutionRecord, Source Instrumentation and CircularFifoQueue"
 		$PEASS_PROJECT/peass searchcause \
     			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
 			--timeout=10 \
@@ -123,23 +166,46 @@ function measure {
 			--rcaStrategy=$RCA_STRATEGY \
 			--record=REDUCED_OPERATIONEXECUTION \
 			--useCircularQueue \
+			--notUseSelectiveInstrumentation \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"8")
-		echo "8 - Measuring with Kieker and ReducedOperationExecutionRecord, Source Instrumentation, and Selective Instrumentation"
+		echo "8 - Measuring with Kieker and ReducedOperationExecutionRecord, Source Instrumentation, Circular Queue and aggregated Writer"
 		$PEASS_PROJECT/peass searchcause \
     			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
 			--timeout=10 \
 			--vms=$vms \
 			--iterations=$iterations \
-			--warmup=$iterations \
+			--warmup=0 \
 			--repetitions=$repetitions \
 			--rcaStrategy=$RCA_STRATEGY \
 			--record=REDUCED_OPERATIONEXECUTION \
+			--useCircularQueue \
+			--notUseSelectiveInstrumentation \
+			--useSampling \
+			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
+		;;
+	"9")
+		echo "9 - Measuring with Kieker and ReducedOperationExecutionRecord, Source Instrumentation, aggregated Writer and Selective Instrumentation "
+		echo "First step: Source reading"
+		$PEASS_PROJECT/peass select -folder ../target/$folder &> $resultfolder/rts.txt
+		echo "Second step: Measurement"
+		$PEASS_PROJECT/peass searchcause \
+    			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
+    			--propertyFolder results/properties_$folder \
+			--timeout=10 \
+			--vms=$vms \
+			--iterations=$iterations \
+			--warmup=0 \
+			--repetitions=$repetitions \
+			--rcaStrategy=UNTIL_SOURCE_CHANGE \
+			--record=REDUCED_OPERATIONEXECUTION \
+			--notUseSelectiveInstrumentation \
+			--useSampling \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"10")
-		echo "10 - Measuring with Kieker and ReducedOperationExecutionRecord, Source Instrumentation, and Sampling"
+		echo "10 - Measuring with Kieker and Post Compile Weaving (Currently not supported!)"
 		$PEASS_PROJECT/peass searchcause \
     			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
 			--timeout=10 \
@@ -151,20 +217,6 @@ function measure {
 			--record=REDUCED_OPERATIONEXECUTION \
 			--useSampling \
 			--notUseSelectiveInstrumentation \
-			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
-		;;
-	"11")
-		echo "11 - Measuring with Kieker and ReducedOperationExecutionRecord, Source Instrumentation, and Selective Instrumentation, and Sampling"
-		$PEASS_PROJECT/peass searchcause \
-    			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
-			--timeout=10 \
-			--vms=$vms \
-			--iterations=$iterations \
-			--warmup=$iterations \
-			--repetitions=$repetitions \
-			--rcaStrategy=$RCA_STRATEGY \
-			--record=REDUCED_OPERATIONEXECUTION \
-			--useSampling \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
     esac
@@ -182,45 +234,8 @@ RCA_STRATEGY="COMPLETE"
 
 echo "Slower Version: $slowParameter Faster Version: $fastParameter Type: $workload"
 
-case "$MEASURE" in
-"0")
-	parent=probeOverhead/pure
-	;;
-"1")
-	parent=probeOverhead/operationExecutionRecord
-	;;
-"2")
-	parent=probeOverhead/operationExecutionRecord_sourceInstrumentation
-	;;
-"3")
-	parent=probeOverhead/operationExecutionRecord_circular_sourceInstrumentation
-	;;
-"4")
-	parent=probeOverhead/reducedOperationExecutionRecord
-	;;
-"5")
-	parent=probeOverhead/reducedOperationExecutionRecord_sourceInstrumentation
-	;;
-"6")
-	parent=probeOverhead/reducedOperationExecutionRecord_circular_sourceInstrumentation
-	;;
-"7")
-	parent=probeOverhead/reducedOperationExecutionRecord_circular_sourceInstrumentation_selective
-	;;
-"8")
-	parent=probeOverhead/reducedOperationExecutionRecord_sourceInstrumentation_selective
-	;;
-"9")
-	parent=probeOverhead/kieker_postCompileWeaving
-	;;
-"10")
-	parent=probeOverhead/kieker_sampling
-	;;
-*)
-	echo "MEASURE value not supported: $MEASURE"
-	exit 1
-	;;
-esac
+folderName=$(getFolder $folderIndex $MEASURE)
+parent="probeOverhead/$folderName"
 
 #for treedepth in 2 4 8 16 32 48 64 80 96 128 
 for treedepth in 2 4 8 16 32 64 128
@@ -234,7 +249,7 @@ do
     
     rm -rf ../target/$folder*
     
-    if [ ! $MEASURE -eq 9 ]
+    if [ ! $MEASURE -eq 10 ]
     then
         java -cp ../target/precision-experiments-rca-0.1-SNAPSHOT.jar de.dagere.peass.validate_rca.GenerateTreeExampleProject \
     		-treeDepth $treedepth -slowerLevel $slower \
@@ -251,7 +266,7 @@ do
 		    
 		measure $vms $iterations $repetitions
     else
-    	java -cp ../target/precision-experiments-rca-0.1-SNAPSHOT.jar de.dagere.peass.validate_rca.GenerateTreeExampleProject \
+	java -cp ../target/precision-experiments-rca-0.1-SNAPSHOT.jar de.dagere.peass.validate_rca.GenerateTreeExampleProject \
     		-treeDepth $treedepth -slowerLevel $slower \
     		-childCount 1 \
 		-slowParameter=$slowParameter \
