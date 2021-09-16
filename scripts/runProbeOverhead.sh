@@ -60,7 +60,7 @@ function measure {
 		echo "0 - Measuring Pure (without kieker)"
 		$PEASS_PROJECT/peass measure \
     			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
-			--timeout=10 \
+			--timeout=20 \
 			--vms=$vms \
 			--iterations=$iterations \
 			--warmup=$iterations \
@@ -71,7 +71,7 @@ function measure {
 		echo "1 - Measuring with OperationExecutionRecord, AspectJ and LinkedBlockingQueue (default Kieker)"
     		$PEASS_PROJECT/peass searchcause \
 			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
-			--timeout=10 \
+			--timeout=20 \
 			--vms=$vms \
 			--iterations=$iterations \
 			--warmup=$iterations \
@@ -86,7 +86,7 @@ function measure {
 		echo "2 - Measuring with OperationExecutionRecord, Source Instrumentation and LinkedBlockingQueue"
     		$PEASS_PROJECT/peass searchcause \
 			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
-			--timeout=10 \
+			--timeout=20 \
 			--vms=$vms \
 			--iterations=$iterations \
 			--warmup=$iterations \
@@ -100,7 +100,7 @@ function measure {
 		echo "3 - Measuring with OperationExecutionRecord, Source Instrumentation and CircularFifoQueue"
 		$PEASS_PROJECT/peass searchcause \
     			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
-			--timeout=10 \
+			--timeout=20 \
 			--vms=$vms \
 			--iterations=$iterations \
 			--warmup=$iterations \
@@ -115,7 +115,7 @@ function measure {
 		echo "4 - Measuring with OperationExecutionRecord, Source Instrumentation, CircularFifoQueue and selective Instrumentation"
 		$PEASS_PROJECT/peass searchcause \
     			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
-			--timeout=10 \
+			--timeout=20 \
 			--vms=$vms \
 			--iterations=$iterations \
 			--warmup=$iterations \
@@ -129,7 +129,7 @@ function measure {
 		echo "5 - Measuring with ReducedOperationExecutionRecord, AspectJ and LinkedBlockingQueue"
 		$PEASS_PROJECT/peass searchcause \
     			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
-			--timeout=10 \
+			--timeout=20 \
 			--vms=$vms \
 			--iterations=$iterations \
 			--warmup=$iterations \
@@ -144,7 +144,7 @@ function measure {
 		echo "6 - Measuring with ReducedOperationExecutionRecord, Source Instrumentation and LinkedBlockingQueue"
 		$PEASS_PROJECT/peass searchcause \
     			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
-			--timeout=10 \
+			--timeout=20 \
 			--vms=$vms \
 			--iterations=$iterations \
 			--warmup=$iterations \
@@ -158,7 +158,7 @@ function measure {
 		echo "7 - Measuring with ReducedOperationExecutionRecord, Source Instrumentation and CircularFifoQueue"
 		$PEASS_PROJECT/peass searchcause \
     			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
-			--timeout=10 \
+			--timeout=20 \
 			--vms=$vms \
 			--iterations=$iterations \
 			--warmup=$iterations \
@@ -173,7 +173,7 @@ function measure {
 		echo "8 - Measuring with Kieker and ReducedOperationExecutionRecord, Source Instrumentation, Circular Queue and aggregated Writer"
 		$PEASS_PROJECT/peass searchcause \
     			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
-			--timeout=10 \
+			--timeout=20 \
 			--vms=$vms \
 			--iterations=$iterations \
 			--warmup=0 \
@@ -193,7 +193,7 @@ function measure {
 		$PEASS_PROJECT/peass searchcause \
     			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
     			--propertyFolder results/properties_$folder \
-			--timeout=10 \
+			--timeout=20 \
 			--vms=$vms \
 			--iterations=$iterations \
 			--warmup=0 \
@@ -208,7 +208,7 @@ function measure {
 		echo "10 - Measuring with Kieker and Post Compile Weaving (Currently not supported!)"
 		$PEASS_PROJECT/peass searchcause \
     			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
-			--timeout=10 \
+			--timeout=20 \
 			--vms=$vms \
 			--iterations=$iterations \
 			--warmup=$iterations \
@@ -228,7 +228,7 @@ slowParameter=301
 workload="ADD"
 
 iterations=100
-repetitions=100000
+repetitions=10000
 
 RCA_STRATEGY="COMPLETE"
 
