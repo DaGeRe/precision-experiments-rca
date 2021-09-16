@@ -72,7 +72,7 @@ echo "Starting Measurement"
 $PEASS_PROJECT/peass searchcause \
 	--folder=$projectFolder -executionfile $resultfolder/results/execute_project.json \
 	--version=$version \
-	--timeout=20 \
+	--timeout=50 \
 	--vms=$vms \
 	--iterations=$iterations \
 	--warmup=0 \
