@@ -80,6 +80,7 @@ function measure {
 			--record=OPERATIONEXECUTION \
 			--notUseSourceInstrumentation \
 			--notUseSelectiveInstrumentation \
+			--useNonAggregatedWriter \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 			;;
 	"2")
@@ -94,6 +95,7 @@ function measure {
 			--rcaStrategy=$RCA_STRATEGY \
 			--record=OPERATIONEXECUTION \
 			--notUseSelectiveInstrumentation \
+			--useNonAggregatedWriter \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"3")
@@ -109,6 +111,7 @@ function measure {
 			--record=OPERATIONEXECUTION \
 			--useCircularQueue \
 			--notUseSelectiveInstrumentation \
+			--useNonAggregatedWriter \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"4")
@@ -123,6 +126,7 @@ function measure {
 			--rcaStrategy=$RCA_STRATEGY \
 			--record=OPERATIONEXECUTION \
 			--useCircularQueue \
+			--useNonAggregatedWriter \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
  	"5")
@@ -138,6 +142,7 @@ function measure {
 			--record=REDUCED_OPERATIONEXECUTION \
 			--notUseSourceInstrumentation \
 			--notUseSelectiveInstrumentation \
+			--useNonAggregatedWriter \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"6")
@@ -152,6 +157,7 @@ function measure {
 			--rcaStrategy=$RCA_STRATEGY \
 			--record=REDUCED_OPERATIONEXECUTION \
 			--notUseSelectiveInstrumentation \
+			--useNonAggregatedWriter \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"7")
@@ -167,6 +173,7 @@ function measure {
 			--record=REDUCED_OPERATIONEXECUTION \
 			--useCircularQueue \
 			--notUseSelectiveInstrumentation \
+			--useNonAggregatedWriter \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"8")
@@ -182,7 +189,6 @@ function measure {
 			--record=REDUCED_OPERATIONEXECUTION \
 			--useCircularQueue \
 			--notUseSelectiveInstrumentation \
-			--useSampling \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"9")
@@ -200,8 +206,6 @@ function measure {
 			--repetitions=$repetitions \
 			--rcaStrategy=UNTIL_SOURCE_CHANGE \
 			--record=REDUCED_OPERATIONEXECUTION \
-			--notUseSelectiveInstrumentation \
-			--useSampling \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"10")
@@ -215,7 +219,6 @@ function measure {
 			--repetitions=$repetitions \
 			--rcaStrategy=$RCA_STRATEGY \
 			--record=REDUCED_OPERATIONEXECUTION \
-			--useSampling \
 			--notUseSelectiveInstrumentation \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
