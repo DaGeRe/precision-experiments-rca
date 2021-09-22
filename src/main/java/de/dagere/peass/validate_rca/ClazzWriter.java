@@ -27,13 +27,7 @@ public class ClazzWriter {
          for (int method = 0; method < methods; method++) {
             writer.write(" public int method" + method + "(){\n");
             if (treeLevel < nodeInfos.getTreeDepth() - 1) {
-               String name = "  C" + (treeLevel + 1) + "_" + (2 * classIndex + method);
-               writer.write(name + " object = new " + name + "();\n");
-               writer.write("  int value = 0;\n");
-               for (int i = 0; i < childCount; i++) {
-                  writer.write("  value += object.method" + i + "();\n");
-               }
-               writer.write("  return value;");
+               writeSubclassCall(classIndex, treeLevel, writer, method);
             } else {
                writeWorkload(writer, durations[method]);
             }
@@ -44,6 +38,16 @@ public class ClazzWriter {
 
          writer.flush();
       }
+   }
+
+   private void writeSubclassCall(final int classIndex, final int treeLevel, BufferedWriter writer, int method) throws IOException {
+      String name = "  C" + (treeLevel + 1) + "_" + (2 * classIndex + method);
+      writer.write(name + " object = new " + name + "();\n");
+      writer.write("  int value = 0;\n");
+      for (int i = 0; i < childCount; i++) {
+         writer.write("  value += object.method" + i + "();\n");
+      }
+      writer.write("  return value;");
    }
    
    private void writeWorkload(final BufferedWriter writer, final int parameter) throws IOException {
