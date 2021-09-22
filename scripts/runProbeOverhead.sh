@@ -225,6 +225,7 @@ function measure {
     esac
 }
 
+# Since Peass executes the old and the current version, and these are equal for this experiments, twice the count of vms will be executed
 vms=15
 fastParameter=300
 slowParameter=300
