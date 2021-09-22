@@ -27,3 +27,4 @@ scripts/analysis_strategy/UNTIL_SOURCE_CHANGE/
 scripts/analysis_strategy/
 scripts/results/
 scripts/strategy
+/bin/

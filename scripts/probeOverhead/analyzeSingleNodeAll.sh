@@ -49,10 +49,19 @@ function getFolder {
 for folderIndex in {0..7}
 do
 	folder=$(getFolder $folderIndex )
-	echo -n "" > $folder.csv
+	if [ -d $folder ]
+	then
+		echo -n "" > $folder.csv
+	fi
 done
 
 baseFolder="pure"
+
+if [ ! -f $baseFolder ]
+then
+	echo "Base Folder $baseFolder does not exist; please make sure the baseline experiments have been finished correctly."
+	exit 1
+fi
 
 echo -n "" > durations.csv
 sizes=$(ls $baseFolder | awk -F'_' '{print $2}' | sort -n)
@@ -64,8 +73,8 @@ do
 		folder=$(getFolder $folderIndex )
 		if [ -d $folder ]
 		then
-			cat $folder/probeOverhead_"$size"_*/project*peass/measurementsFull/*xml | grep "~1" -B 8 | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000000" "$1/$2}' | tr "\n" " " >> durations.csv
-			cat $folder/probeOverhead_"$size"_*/project*peass/measurementsFull/*xml | grep "~1" -B 8 | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000000" "$1/$2}' | tr "\n" " " >> $folder.csv
+			cat $folder/probeOverhead_"$size"_*/project*peass/measurementsFull/*xml | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000000" "$1/$2}' | tr "\n" " " >> durations.csv
+			cat $folder/probeOverhead_"$size"_*/project*peass/measurementsFull/*xml | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000000" "$1/$2}' | tr "\n" " " >> $folder.csv
 		fi
 	done
 	echo >> durations.csv
@@ -86,8 +95,8 @@ do
 		if [ -d $folder ]
 		then
 			# Since jq does not allow depth 128, the following lines get the values by grep; this assumes default formatting of the JSON
-			meanOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | grep "nodes" -A 8 | grep meanOld | awk '{print $3}' | tr -d ",")
-			deviationOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | grep "nodes" -A 8 | grep deviationOld | awk '{print $3}' | tr -d ",")
+			meanOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | grep "nodes" -A 9 | grep "meanOld\|meanCurrent" | awk '{print $3}' | tr -d "," | getSum | awk '{print $2}')
+			deviationOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | grep "nodes" -A 9 | grep "deviationOld\|deviationCurrent" | awk '{print $3}' | tr -d "," | getSum | awk '{print $2}')
 			#meanOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | jq ".nodes.statistic.meanOld")
 			#deviationOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | jq ".nodes.statistic.deviationOld")
 			echo -n $meanOld" "$deviationOld" " >> pure_durations.csv

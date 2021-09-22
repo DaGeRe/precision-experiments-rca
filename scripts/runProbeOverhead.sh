@@ -225,9 +225,9 @@ function measure {
     esac
 }
 
-vms=30
+vms=15
 fastParameter=300
-slowParameter=301
+slowParameter=300
 workload="ADD"
 
 iterations=100
