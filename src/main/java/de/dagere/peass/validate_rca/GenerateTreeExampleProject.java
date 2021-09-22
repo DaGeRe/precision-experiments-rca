@@ -114,7 +114,7 @@ public class GenerateTreeExampleProject implements Callable<Integer> {
 
             final int[] durations = creator.getDuration(treeLevel, classIndex, slowLevel);
 
-            new ClazzWriter(nodeInfos, classIndex, className).createClass(childCount, clazzFolder, className, classIndex, treeLevel, durations);
+            new ClazzWriter(nodeInfos, classIndex, type).createClass(childCount, clazzFolder, className, classIndex, treeLevel, durations);
          }
       }
 
