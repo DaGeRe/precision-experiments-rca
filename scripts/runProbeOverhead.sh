@@ -96,6 +96,7 @@ function measure {
 			--record=OPERATIONEXECUTION \
 			--notUseSelectiveInstrumentation \
 			--useNonAggregatedWriter \
+			--useExtraction \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"3")
@@ -112,6 +113,7 @@ function measure {
 			--useCircularQueue \
 			--notUseSelectiveInstrumentation \
 			--useNonAggregatedWriter \
+			--useExtraction \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"4")
@@ -127,6 +129,7 @@ function measure {
 			--record=OPERATIONEXECUTION \
 			--useCircularQueue \
 			--useNonAggregatedWriter \
+			--useExtraction \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
  	"5")
@@ -143,6 +146,7 @@ function measure {
 			--notUseSourceInstrumentation \
 			--notUseSelectiveInstrumentation \
 			--useNonAggregatedWriter \
+			--useExtraction \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"6")
@@ -158,6 +162,7 @@ function measure {
 			--record=REDUCED_OPERATIONEXECUTION \
 			--notUseSelectiveInstrumentation \
 			--useNonAggregatedWriter \
+			--useExtraction \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"7")
@@ -174,6 +179,7 @@ function measure {
 			--useCircularQueue \
 			--notUseSelectiveInstrumentation \
 			--useNonAggregatedWriter \
+			--useExtraction \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"8")
@@ -189,6 +195,7 @@ function measure {
 			--record=REDUCED_OPERATIONEXECUTION \
 			--useCircularQueue \
 			--notUseSelectiveInstrumentation \
+			--useExtraction \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"9")
@@ -206,6 +213,7 @@ function measure {
 			--repetitions=$repetitions \
 			--rcaStrategy=UNTIL_SOURCE_CHANGE \
 			--record=REDUCED_OPERATIONEXECUTION \
+			--useExtraction \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"10")
