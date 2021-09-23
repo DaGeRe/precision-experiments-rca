@@ -57,7 +57,7 @@ done
 
 baseFolder="pure"
 
-if [ ! -f $baseFolder ]
+if [ ! -d $baseFolder ]
 then
 	echo "Base Folder $baseFolder does not exist; please make sure the baseline experiments have been finished correctly."
 	exit 1
