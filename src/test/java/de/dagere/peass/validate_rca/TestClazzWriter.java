@@ -30,7 +30,7 @@ public class TestClazzWriter {
    @Test
    public void testBasicClazzWriter() throws IOException {
       ClazzWriter writer = new ClazzWriter(new SlowerNodeInfos(2, 1, 0), 1, "ADD", false);
-      writer.createClass(2, clazzFolder, EXAMPLE_CLASS_NAME, 0, 0, new int[] {5, 6});
+      writer.createClass(clazzFolder, EXAMPLE_CLASS_NAME, 0, 0, new int[] {5, 6});
       
       CompilationUnit unit = JavaParserProvider.parse(new File(clazzFolder, "MyExampleClass.java"));
       Assert.assertNotNull(unit);
@@ -43,7 +43,7 @@ public class TestClazzWriter {
    @Test
    public void testWorkloadCallClazzWriter() throws IOException {
       ClazzWriter writer = new ClazzWriter(new SlowerNodeInfos(2, 1, 0), 1, "ADD", false);
-      writer.createClass(2, clazzFolder, EXAMPLE_CLASS_NAME, 0, 1, new int[] {5, 6});
+      writer.createClass(clazzFolder, EXAMPLE_CLASS_NAME, 0, 1, new int[] {5, 6});
       
       CompilationUnit unit = JavaParserProvider.parse(new File(clazzFolder, "MyExampleClass.java"));
       Assert.assertNotNull(unit);
@@ -52,6 +52,6 @@ public class TestClazzWriter {
       ClassOrInterfaceDeclaration exampleClazz = clazzes.get(0);
       Assert.assertEquals(EXAMPLE_CLASS_NAME, exampleClazz.getNameAsString());
       
-      MatcherAssert.assertThat(unit.toString(), Matchers.containsString("rm.addSomething(5)"));
+      MatcherAssert.assertThat(unit.toString(), Matchers.containsString("rm.doSomething(5)"));
    }
 }

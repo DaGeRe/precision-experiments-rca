@@ -86,6 +86,9 @@ public class GenerateTreeExampleProject implements Callable<Integer> {
       if (nodeInfos.getSlowerLevel() >= nodeInfos.getTreeDepth()) {
          throw new RuntimeException("Tree depth " + nodeInfos.getTreeDepth() + " needs to be smaller than slower level " + nodeInfos.getSlowerLevel());
       }
+      if (childCount < 1) {
+         throw new RuntimeException("Child count needs to be at least 1");
+      }
    }
 
    public void createFastVersion(final File projectFolder) throws IOException, InterruptedException {
@@ -119,8 +122,8 @@ public class GenerateTreeExampleProject implements Callable<Integer> {
 
             final int[] durations = creator.getDuration(treeLevel, classIndex, slowLevel);
 
-            ClazzWriter clazzWriter = new ClazzWriter(nodeInfos, classIndex, type, addSpace);
-            clazzWriter.createClass(childCount, clazzFolder, className, classIndex, treeLevel, durations);
+            ClazzWriter clazzWriter = new ClazzWriter(nodeInfos, childCount, type, addSpace);
+            clazzWriter.createClass(clazzFolder, className, classIndex, treeLevel, durations);
          }
       }
 

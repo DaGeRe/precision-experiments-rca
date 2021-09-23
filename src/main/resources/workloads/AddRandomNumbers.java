@@ -14,7 +14,7 @@ public class AddRandomNumbers {
 
    int x = 0;
 
-   public int addSomething(int count) {
+   public int doSomething(int count) {
       for (int i = 0; i < count; i++)
          x += RANDOM.nextInt(100);
       return x;

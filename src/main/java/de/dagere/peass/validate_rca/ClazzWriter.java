@@ -17,14 +17,14 @@ public class ClazzWriter {
       workloadWriter = new WorkloadWriter(type, addSpace);
    }
 
-   public void createClass(final int methods, final File clazzFolder, final String className, final int classIndex, final int treeLevel, final int[] durations)
+   public void createClass(final File clazzFolder, final String className, final int classIndex, final int treeLevel, final int[] durations)
          throws IOException {
       final File clazz = new File(clazzFolder, className + ".java");
       try (BufferedWriter writer = new BufferedWriter(new FileWriter(clazz))) {
          writer.write("package de.dagere.peass;\n\n");
 
          writer.write("class " + className + "{ \n");
-         for (int method = 0; method < methods; method++) {
+         for (int method = 0; method < childCount; method++) {
             writer.write(" public int method" + method + "(){\n");
             if (treeLevel < nodeInfos.getTreeDepth() - 1) {
                writeSubclassCall(classIndex, treeLevel, writer, method);
