@@ -97,6 +97,7 @@ function measure {
 			--notUseSelectiveInstrumentation \
 			--useNonAggregatedWriter \
 			--useExtraction \
+			--enableAdaptiveInstrumentation \ # This makes the instrumentation slower, but is required for fair comparison to AspectJ
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"3")
