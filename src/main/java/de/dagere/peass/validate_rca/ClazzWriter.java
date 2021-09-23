@@ -9,12 +9,12 @@ public class ClazzWriter {
    
    private final SlowerNodeInfos nodeInfos;
    private final int childCount;
-   private final String type;
+   private WorkloadWriter workloadWriter;
    
-   public ClazzWriter(final SlowerNodeInfos nodeInfos, final int childCount, final String type) {
+   public ClazzWriter(final SlowerNodeInfos nodeInfos, final int childCount, final String type, final boolean addSpace) {
       this.nodeInfos = nodeInfos;
       this.childCount = childCount;
-      this.type = type;
+      workloadWriter = new WorkloadWriter(type, addSpace);
    }
 
    public void createClass(final int methods, final File clazzFolder, final String className, final int classIndex, final int treeLevel, final int[] durations)
@@ -29,7 +29,7 @@ public class ClazzWriter {
             if (treeLevel < nodeInfos.getTreeDepth() - 1) {
                writeSubclassCall(classIndex, treeLevel, writer, method);
             } else {
-               writeWorkload(writer, durations[method]);
+               workloadWriter.writeWorkload(writer, durations[method]);
             }
 
             writer.write(" }\n");
@@ -40,7 +40,7 @@ public class ClazzWriter {
       }
    }
 
-   private void writeSubclassCall(final int classIndex, final int treeLevel, BufferedWriter writer, int method) throws IOException {
+   private void writeSubclassCall(final int classIndex, final int treeLevel, final BufferedWriter writer, final int method) throws IOException {
       String name = "  C" + (treeLevel + 1) + "_" + (2 * classIndex + method);
       writer.write(name + " object = new " + name + "();\n");
       writer.write("  int value = 0;\n");
@@ -50,39 +50,4 @@ public class ClazzWriter {
       writer.write("  return value;");
    }
    
-   private void writeWorkload(final BufferedWriter writer, final int parameter) throws IOException {
-      if (parameter > 0) {
-         if (type.equals("BUSY_WAITING")) {
-            writer.write("         final long exitTime = System.nanoTime() + " + parameter + ";\n" +
-                  "         long currentTime;\n" +
-                  "         do {\n" +
-                  "            currentTime = System.nanoTime();\n" +
-                  "         } while (currentTime < exitTime);" +
-                  "         return (int)exitTime;\n");
-         } else if (type.equals("ADD") || type.equals("ADDITION")) {
-            writer.write("         final AddRandomNumbers rm = new AddRandomNumbers();\n" +
-                  "            return rm.addSomething(" + parameter + ");\n");
-
-         } else if (type.equals("RAM") || type.equals("RESERVE_RAM")) {
-            writer.write("         final ReserveRAM rm = new ReserveRAM();\n" +
-                  "            return rm.doSomething(" + parameter + ");\n");
-         } else if (type.equals("SYSOUT") || type.equals("WRITE_TO_SYSOUT")) {
-            writer.write("         final WriteToSystemOut rm = new WriteToSystemOut();\n" +
-                  "            return rm.doSomething(" + parameter + ");\n");
-         } else if (type.equals("THROW")) {
-            writer.write("         final AddRandomNumbers rm = new AddRandomNumbers();\n" +
-                  "         for (int i = 0; i < " + parameter + "; i++) {\n" +
-                  "            try {\n" +
-                  "         ThrowSomething doSomething = new ThrowSomething();\n" +
-                  "         doSomething.returnMe(1);\n" +
-                  "      } catch (RuntimeException e) {\n" +
-                  "      }\n" +
-                  "         }");
-         } else {
-            throw new RuntimeException("Unexpected type: " + type);
-         }
-      } else {
-         writer.write("return 0;");
-      }
-   }
 }

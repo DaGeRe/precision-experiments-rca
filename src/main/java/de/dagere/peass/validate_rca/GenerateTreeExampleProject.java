@@ -41,6 +41,8 @@ public class GenerateTreeExampleProject implements Callable<Integer> {
    @Option(names = { "-out", "--out" }, description = "Result folder for the project; defaults to target/project_$X where $X is the tree depth", required = false)
    private File out = null;
 
+   private boolean addSpace = false;
+   
    public static void main(final String[] args) {
       final GenerateTreeExampleProject command = new GenerateTreeExampleProject();
       final CommandLine commandLine = new CommandLine(command);
@@ -69,6 +71,9 @@ public class GenerateTreeExampleProject implements Callable<Integer> {
 
       createFastVersion(out);
 
+      if (slowParameter == fastParameter) {
+         addSpace = true;
+      }
       createSlowVersion(out);
       return null;
 
@@ -114,7 +119,8 @@ public class GenerateTreeExampleProject implements Callable<Integer> {
 
             final int[] durations = creator.getDuration(treeLevel, classIndex, slowLevel);
 
-            new ClazzWriter(nodeInfos, classIndex, type).createClass(childCount, clazzFolder, className, classIndex, treeLevel, durations);
+            ClazzWriter clazzWriter = new ClazzWriter(nodeInfos, classIndex, type, addSpace);
+            clazzWriter.createClass(childCount, clazzFolder, className, classIndex, treeLevel, durations);
          }
       }
 
