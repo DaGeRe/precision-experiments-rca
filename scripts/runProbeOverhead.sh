@@ -234,6 +234,23 @@ function measure {
     esac
 }
 
+function checkResultExistence {
+	resultFolder=$1
+	
+	expectedFiles="$resultfolder/project_*_peass/rca/tree/*/MainTest/testMe.json"
+	expectedFile=( $expectedFiles )
+	if [ ! -f "${expectedFile[0]}" ]
+	then
+		echo "Warning: $expectedFile did not exist"
+	else
+		potentialNaN=$(cat $resultfolder/project_*_peass/rca/tree/*/MainTest/testMe.json | grep NaN)
+		if [ ! -z "$potentialNaN" ]
+		then
+			echo "Warning: $expectedFile did contain NaN: $potentialNaN"
+		fi
+	fi
+}
+
 # Since Peass executes the old and the current version, and these are equal for this experiments, twice the count of vms will be executed
 vms=15
 fastParameter=300
@@ -301,4 +318,6 @@ do
     
     
     mv ../target/"$folder"_peass/ $resultfolder/
+    
+    checkResultExistence $resultfolder
 done
