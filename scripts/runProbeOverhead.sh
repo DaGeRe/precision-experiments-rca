@@ -246,7 +246,8 @@ function checkResultExistence {
 		potentialNaN=$(cat $resultfolder/project_*_peass/rca/tree/*/MainTest/testMe.json | grep NaN)
 		if [ ! -z "$potentialNaN" ]
 		then
-			echo "Warning: $expectedFile did contain NaN: $potentialNaN"
+			echo "Warning: $expectedFile did contain NaN: "
+			echo $potentialNaN | head
 		fi
 	fi
 }
