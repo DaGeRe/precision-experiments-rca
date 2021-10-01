@@ -97,8 +97,9 @@ function measure {
 			--notUseSelectiveInstrumentation \
 			--useNonAggregatedWriter \
 			--useExtraction \
-			--enableAdaptiveInstrumentation \ # This makes the instrumentation slower, but is required for fair comparison to AspectJ
+			--enableAdaptiveInstrumentation \ 
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
+			# --enableAdaptiveInstrumentation makes the instrumentation slower, but is required for fair comparison to AspectJ
 		;;
 	"3")
 		echo "3 - Measuring with OperationExecutionRecord, Source Instrumentation and CircularFifoQueue"
