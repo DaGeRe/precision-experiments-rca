@@ -191,7 +191,7 @@ function measure {
 			--timeout=20 \
 			--vms=$vms \
 			--iterations=$iterations \
-			--warmup=0 \
+			--warmup=$iterations \
 			--repetitions=$repetitions \
 			--rcaStrategy=$RCA_STRATEGY \
 			--record=REDUCED_OPERATIONEXECUTION \
@@ -211,7 +211,7 @@ function measure {
 			--timeout=20 \
 			--vms=$vms \
 			--iterations=$iterations \
-			--warmup=0 \
+			--warmup=$iterations \
 			--repetitions=$repetitions \
 			--rcaStrategy=UNTIL_SOURCE_CHANGE \
 			--record=REDUCED_OPERATIONEXECUTION \
