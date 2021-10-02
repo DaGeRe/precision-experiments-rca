@@ -318,5 +318,8 @@ do
     
     mv ../target/"$folder"_peass/ $resultfolder/
     
+    sync
+    sleep 1
+
     checkResultExistence $resultfolder
 done
