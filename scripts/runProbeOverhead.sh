@@ -148,7 +148,6 @@ function measure {
 			--notUseSourceInstrumentation \
 			--notUseSelectiveInstrumentation \
 			--useNonAggregatedWriter \
-			--useExtraction \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"6")
@@ -316,8 +315,6 @@ do
 	done
 	mv ~/.KoPeMe/de.dagere.peass.validate_rca/ $resultfolder
     fi
-    
-    
     
     mv ../target/"$folder"_peass/ $resultfolder/
     
