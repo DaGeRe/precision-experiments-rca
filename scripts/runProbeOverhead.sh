@@ -247,7 +247,7 @@ function checkResultExistence {
 		if [ ! -z "$potentialNaN" ]
 		then
 			echo "Warning: $expectedFile did contain NaN: "
-			nanString=$($potentialNaN | head)
+			nanString=$(echo $potentialNaN | head)
 			echo ${nanString:0:100}
 		fi
 	fi
