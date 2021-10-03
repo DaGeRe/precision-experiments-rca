@@ -267,6 +267,8 @@ echo "Slower Version: $slowParameter Faster Version: $fastParameter Type: $workl
 
 folderName=$(getFolder $folderIndex $MEASURE)
 parent="probeOverhead/$folderName"
+rm -rf $parent
+sync
 
 #for treedepth in 2 4 8 16 32 48 64 80 96 128 
 for treedepth in 2 4 8 16 32 64 128
