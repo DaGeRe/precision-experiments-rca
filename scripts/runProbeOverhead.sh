@@ -265,7 +265,7 @@ slowParameter=300
 workload="ADD"
 
 iterations=100
-repetitions=10000
+repetitions=1000
 
 RCA_STRATEGY="COMPLETE"
 
