@@ -14,11 +14,11 @@ import de.dagere.peass.config.StatisticsConfiguration;
 import de.dagere.peass.measurement.analysis.Relation;
 import de.dagere.peass.measurement.rca.serialization.MeasuredNode;
 import de.dagere.peass.measurement.rca.serialization.MeasuredValues;
+import de.dagere.peass.precision.analysis.repetitions.bimodal.CompareData;
 import de.precision.analysis.repetitions.ExecutionData;
 import de.precision.analysis.repetitions.GeneratePrecisionPlot;
 import de.precision.analysis.repetitions.PrecisionComparer;
 import de.precision.analysis.repetitions.PrecisionWriter;
-import de.precision.analysis.repetitions.bimodal.CompareData;
 import de.precision.processing.repetitions.sampling.SamplingConfig;
 import de.precision.processing.repetitions.sampling.SamplingExecutor;
 
