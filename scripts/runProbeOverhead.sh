@@ -120,14 +120,18 @@ function measure {
 		;;
 	"4")
 		echo "4 - Measuring with OperationExecutionRecord, Source Instrumentation, CircularFifoQueue and selective Instrumentation"
+		echo "First step: Source reading"
+		$PEASS_PROJECT/peass select -folder ../target/$folder &> $resultfolder/rts.txt
+		echo "Second step: Measurement"
 		$PEASS_PROJECT/peass searchcause \
     			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
+    			--propertyFolder results/properties_$folder \
 			--timeout=20 \
 			--vms=$vms \
 			--iterations=$iterations \
 			--warmup=$iterations \
 			--repetitions=$repetitions \
-			--rcaStrategy=$RCA_STRATEGY \
+			--rcaStrategy=UNTIL_SOURCE_CHANGE \
 			--record=OPERATIONEXECUTION \
 			--useCircularQueue \
 			--useNonAggregatedWriter \
@@ -214,6 +218,7 @@ function measure {
 			--repetitions=$repetitions \
 			--rcaStrategy=UNTIL_SOURCE_CHANGE \
 			--record=DURATION \
+			--useCircularQueue \
 			--useExtraction \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
