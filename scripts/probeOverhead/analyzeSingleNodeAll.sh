@@ -21,19 +21,19 @@ function getFolder {
 		parent=operationExecutionRecord_sourceInstrumentation_circular_selective
 		;;
 	"5")
-		parent=reducedOperationExecutionRecord
+		parent=durationRecord
 		;;
 	"6")
-		parent=reducedOperationExecutionRecord_sourceInstrumentation
+		parent=durationRecord_sourceInstrumentation
 		;;
 	"7")
-		parent=reducedOperationExecutionRecord_sourceInstrumentation_circular
+		parent=durationRecord_sourceInstrumentation_circular
 		;;
 	"8")
-		parent=reducedOperationExecutionRecord_sourceInstrumentation_circular_aggregated
+		parent=durationRecord_sourceInstrumentation_circular_aggregated
 		;;
 	"9")
-        	parent=reducedOperationExecutionRecord_sourceInstrumentation_circular_aggregated_selective
+        	parent=durationRecord_sourceInstrumentation_circular_aggregated_selective
         	;;
 	"10")
         	parent=kieker_postCompileWeaving
