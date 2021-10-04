@@ -23,19 +23,19 @@ function getFolder {
 		parent=operationExecutionRecord_sourceInstrumentation_circular_selective
 		;;
 	"5")
-		parent=reducedOperationExecutionRecord
+		parent=durationRecord
 		;;
 	"6")
-		parent=reducedOperationExecutionRecord_sourceInstrumentation
+		parent=durationRecord_sourceInstrumentation
 		;;
 	"7")
-		parent=reducedOperationExecutionRecord_sourceInstrumentation_circular
+		parent=durationRecord_sourceInstrumentation_circular
 		;;
 	"8")
-		parent=reducedOperationExecutionRecord_sourceInstrumentation_circular_aggregated
+		parent=durationRecord_sourceInstrumentation_circular_aggregated
 		;;
 	"9")
-        	parent=reducedOperationExecutionRecord_sourceInstrumentation_circular_aggregated_selective
+        	parent=durationRecord_sourceInstrumentation_circular_aggregated_selective
         	;;
 	"10")
         	parent=kieker_postCompileWeaving
@@ -135,7 +135,7 @@ function measure {
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
  	"5")
-		echo "5 - Measuring with ReducedOperationExecutionRecord, AspectJ and LinkedBlockingQueue"
+		echo "5 - Measuring with DurationRecord, AspectJ and LinkedBlockingQueue"
 		$PEASS_PROJECT/peass searchcause \
     			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
 			--timeout=20 \
@@ -144,14 +144,14 @@ function measure {
 			--warmup=$iterations \
 			--repetitions=$repetitions \
 			--rcaStrategy=$RCA_STRATEGY \
-			--record=REDUCED_OPERATIONEXECUTION \
+			--record=DURATION \
 			--notUseSourceInstrumentation \
 			--notUseSelectiveInstrumentation \
 			--useNonAggregatedWriter \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"6")
-		echo "6 - Measuring with ReducedOperationExecutionRecord, Source Instrumentation and LinkedBlockingQueue"
+		echo "6 - Measuring with DurationRecord, Source Instrumentation and LinkedBlockingQueue"
 		$PEASS_PROJECT/peass searchcause \
     			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
 			--timeout=20 \
@@ -160,14 +160,14 @@ function measure {
 			--warmup=$iterations \
 			--repetitions=$repetitions \
 			--rcaStrategy=$RCA_STRATEGY \
-			--record=REDUCED_OPERATIONEXECUTION \
+			--record=DURATION \
 			--notUseSelectiveInstrumentation \
 			--useNonAggregatedWriter \
 			--useExtraction \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"7")
-		echo "7 - Measuring with ReducedOperationExecutionRecord, Source Instrumentation and CircularFifoQueue"
+		echo "7 - Measuring with DurationRecord, Source Instrumentation and CircularFifoQueue"
 		$PEASS_PROJECT/peass searchcause \
     			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
 			--timeout=20 \
@@ -176,7 +176,7 @@ function measure {
 			--warmup=$iterations \
 			--repetitions=$repetitions \
 			--rcaStrategy=$RCA_STRATEGY \
-			--record=REDUCED_OPERATIONEXECUTION \
+			--record=DURATION \
 			--useCircularQueue \
 			--notUseSelectiveInstrumentation \
 			--useNonAggregatedWriter \
@@ -184,7 +184,7 @@ function measure {
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"8")
-		echo "8 - Measuring with Kieker and ReducedOperationExecutionRecord, Source Instrumentation, Circular Queue and aggregated Writer"
+		echo "8 - Measuring with Kieker and DurationRecord, Source Instrumentation, Circular Queue and aggregated Writer"
 		$PEASS_PROJECT/peass searchcause \
     			--folder=../target/$folder -executionfile $resultfolder/results/execute_$folder.json \
 			--timeout=20 \
@@ -193,14 +193,14 @@ function measure {
 			--warmup=$iterations \
 			--repetitions=$repetitions \
 			--rcaStrategy=$RCA_STRATEGY \
-			--record=REDUCED_OPERATIONEXECUTION \
+			--record=DURATION \
 			--useCircularQueue \
 			--notUseSelectiveInstrumentation \
 			--useExtraction \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"9")
-		echo "9 - Measuring with Kieker and ReducedOperationExecutionRecord, Source Instrumentation, aggregated Writer and Selective Instrumentation "
+		echo "9 - Measuring with Kieker and DurationRecord, Source Instrumentation, aggregated Writer and Selective Instrumentation "
 		echo "First step: Source reading"
 		$PEASS_PROJECT/peass select -folder ../target/$folder &> $resultfolder/rts.txt
 		echo "Second step: Measurement"
@@ -213,7 +213,7 @@ function measure {
 			--warmup=$iterations \
 			--repetitions=$repetitions \
 			--rcaStrategy=UNTIL_SOURCE_CHANGE \
-			--record=REDUCED_OPERATIONEXECUTION \
+			--record=DURATION \
 			--useExtraction \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
@@ -227,7 +227,7 @@ function measure {
 			--warmup=$iterations \
 			--repetitions=$repetitions \
 			--rcaStrategy=$RCA_STRATEGY \
-			--record=REDUCED_OPERATIONEXECUTION \
+			--record=DURATION \
 			--notUseSelectiveInstrumentation \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
@@ -268,7 +268,7 @@ echo "Slower Version: $slowParameter Faster Version: $fastParameter Type: $workl
 
 folderName=$(getFolder $folderIndex $MEASURE)
 parent="probeOverhead/$folderName"
-rm -rf $parent
+rm -rf $parent/*
 sync
 
 #for treedepth in 2 4 8 16 32 48 64 80 96 128 
