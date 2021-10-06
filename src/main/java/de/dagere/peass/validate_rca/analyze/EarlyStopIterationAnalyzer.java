@@ -32,7 +32,7 @@ public class EarlyStopIterationAnalyzer extends FolderAnalyzer {
          System.out.println(vmPredecessorValues.getMean() + " " + vmPredecessorValues.getStandardDeviation() +
                " " + vmValues.getMean() + " " + vmValues.getStandardDeviation() + " " +
                new TTest().tTest(vmValues, vmPredecessorValues) + " " + new TTest().t(vmValues, vmPredecessorValues));
-         System.out.println(iteration + " " + new TTest().tTest(vmValues, vmPredecessorValues, data.getMeasurementConfig().getType2error()));
+         System.out.println(iteration + " " + new TTest().tTest(vmValues, vmPredecessorValues, data.getMeasurementConfig().getStatisticsConfig().getType2error()));
       }
 
       // node.getValues()
