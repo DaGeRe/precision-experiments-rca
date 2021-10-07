@@ -245,7 +245,7 @@ function checkResultExistence {
 	then
 		echo "Warning: $expectedFile did not exist"
 	else
-		potentialNaN=$(cat $resultfolder/project_*_peass/rca/tree/*/MainTest/testMe.json | grep NaN)
+		potentialNaN=$(cat $resultfolder/project_*_peass/rca/tree/*/MainTest/testMe.json | grep -v tvalue | grep NaN)
 		if [ ! -z "$potentialNaN" ]
 		then
 			echo "Warning: $expectedFile did contain NaN: "
