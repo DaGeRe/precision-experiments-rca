@@ -217,6 +217,7 @@ function measure {
 			--rcaStrategy=UNTIL_SOURCE_CHANGE \
 			--record=DURATION \
 			--useExtraction \
+			--useAggregation \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"10")
