@@ -63,32 +63,32 @@ then
 	exit 1
 fi
 
-echo -n "" > durations.csv
+echo -n "" > measurementDurations.csv
 sizes=$(ls $baseFolder | awk -F'_' '{print $2}' | sort -n)
 for size in $sizes
 do
-	echo -n "$size " >> durations.csv
+	echo -n "$size " >> measurementDurations.csv
 	for folderIndex in {0..10}
 	do	
 		folder=$(getFolder $folderIndex )
 		if [ -d $folder ]
 		then
-			cat $folder/probeOverhead_"$size"_*/project*peass/measurementsFull/*xml | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000000" "$1/$2}' | tr "\n" " " >> durations.csv
+			cat $folder/probeOverhead_"$size"_*/project*peass/measurementsFull/*xml | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000000" "$1/$2}' | tr "\n" " " >> measurementDurations.csv
 			cat $folder/probeOverhead_"$size"_*/project*peass/measurementsFull/*xml | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000000" "$1/$2}' | tr "\n" " " >> $folder.csv
 		fi
 	done
-	echo >> durations.csv
+	echo >> measurementDurations.csv
 done
 
-gnuplot -c plotSingleNodeTree.plt
+gnuplot -c plotMeasurementDuration.plt
 gnuplot -c plotASE.plt
 
 
-echo -n "" > pure_durations.csv
+echo -n "" > measuredDurations.csv
 sizes=$(ls $baseFolder | awk -F'_' '{print $2}' | sort -n)
 for size in $sizes
 do
-	echo -n "$size " >> pure_durations.csv
+	echo -n "$size " >> measuredDurations.csv
 	for folderIndex in {1..10}
 	do	
 		folder=$(getFolder $folderIndex )
@@ -99,13 +99,13 @@ do
 			deviationOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | grep "nodes" -A 9 | grep "deviationOld\|deviationCurrent" | awk '{print $3}' | tr -d "," | getSum | awk '{print $2}')
 			#meanOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | jq ".nodes.statistic.meanOld")
 			#deviationOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | jq ".nodes.statistic.deviationOld")
-			echo -n $meanOld" "$deviationOld" " >> pure_durations.csv
+			echo -n $meanOld" "$deviationOld" " >> measuredDurations.csv
 		fi
 	done
-	echo >> pure_durations.csv
+	echo >> measuredDurations.csv
 done
 
-gnuplot -c plotPureDurations.plt
+gnuplot -c plotMeasuredDuration.plt
 
 
 for folderIndex in 0 1 2 4 5 6 8 9
