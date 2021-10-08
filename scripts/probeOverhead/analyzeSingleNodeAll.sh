@@ -18,7 +18,7 @@ function getFolder {
 		parent=operationExecutionRecord_sourceInstrumentation_circular
 		;;
 	"4")
-		parent=operationExecutionRecord_sourceInstrumentation_circular_selective
+		parent=operationExecutionRecord_sourceInstrumentation_selective
 		;;
 	"5")
 		parent=durationRecord
@@ -30,10 +30,10 @@ function getFolder {
 		parent=durationRecord_sourceInstrumentation_circular
 		;;
 	"8")
-		parent=durationRecord_sourceInstrumentation_circular_aggregated
+		parent=durationRecord_sourceInstrumentation_aggregated
 		;;
 	"9")
-        	parent=durationRecord_sourceInstrumentation_circular_aggregated_selective
+        	parent=durationRecord_sourceInstrumentation_aggregated_selective
         	;;
 	"10")
         	parent=kieker_postCompileWeaving
@@ -46,7 +46,7 @@ function getFolder {
 	echo $parent
 }
 
-for folderIndex in {0..7}
+for folderIndex in 0 1 2 4 5 6 8 9
 do
 	folder=$(getFolder $folderIndex )
 	if [ -d $folder ]
@@ -108,7 +108,7 @@ done
 gnuplot -c plotPureDurations.plt
 
 
-for folderIndex in {0..10}
+for folderIndex in 0 1 2 4 5 6 8 9
 do	
 	folder=$(getFolder $folderIndex )
 	echo $folder
