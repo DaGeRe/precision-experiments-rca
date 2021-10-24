@@ -14,16 +14,16 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import de.dagere.peass.PeassGlobalInfos;
-import de.dagere.peass.config.MeasurementConfiguration;
-import de.dagere.peass.config.StatisticsConfigurationMixin;
-import de.dagere.peass.dependency.CauseSearchFolders;
+import de.dagere.peass.config.MeasurementConfig;
+import de.dagere.peass.config.parameters.ExecutionConfigMixin;
+import de.dagere.peass.config.parameters.MeasurementConfigurationMixin;
+import de.dagere.peass.config.parameters.StatisticsConfigMixin;
 import de.dagere.peass.dependency.analysis.data.TestCase;
 import de.dagere.peass.dependency.execution.EnvironmentVariables;
-import de.dagere.peass.dependency.execution.ExecutionConfigMixin;
-import de.dagere.peass.dependency.execution.MeasurementConfigurationMixin;
 import de.dagere.peass.dependency.persistence.Dependencies;
 import de.dagere.peass.dependency.persistence.Version;
 import de.dagere.peass.dependencyprocessors.ViewNotFoundException;
+import de.dagere.peass.folders.CauseSearchFolders;
 import de.dagere.peass.measurement.rca.CauseSearcherConfig;
 import de.dagere.peass.measurement.rca.CauseSearcherConfigMixin;
 import de.dagere.peass.measurement.rca.CauseTester;
@@ -50,7 +50,7 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
    MeasurementConfigurationMixin measurementConfigMixin;
    
    @Mixin
-   private StatisticsConfigurationMixin statisticConfigMixin;
+   private StatisticsConfigMixin statisticConfigMixin;
 
    @Option(names = { "-nodeCount", "--nodeCount" }, description = "Number of nodes that should be measures", required = true)
    int nodeCount;
@@ -80,7 +80,7 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
 
       CauseSearchFolders folders = new CauseSearchFolders(projectFolder);
 
-      MeasurementConfiguration measurementConfiguration = new MeasurementConfiguration(measurementConfigMixin, executionMixin, statisticConfigMixin);
+      MeasurementConfig measurementConfiguration = new MeasurementConfig(measurementConfigMixin, executionMixin, statisticConfigMixin);
       measurementConfiguration.getExecutionConfig().setVersion(version);
       measurementConfiguration.getExecutionConfig().setVersionOld(predecessor);
       measurementConfiguration.setUseKieker(true);
@@ -102,7 +102,7 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
       return null;
    }
 
-   private List<CallTreeNode> getIncludedNodes(final CauseSearcherConfig causeSearchConfig, final CauseSearchFolders folders, final MeasurementConfiguration measurementConfiguration)
+   private List<CallTreeNode> getIncludedNodes(final CauseSearcherConfig causeSearchConfig, final CauseSearchFolders folders, final MeasurementConfig measurementConfiguration)
          throws InterruptedException, IOException, FileNotFoundException, XmlPullParserException, ViewNotFoundException, AnalysisConfigurationException, JsonGenerationException,
          JsonMappingException {
       final TreeReader resultsManager = TreeReaderFactory.createTreeReader(folders, measurementConfiguration.getExecutionConfig().getVersionOld(),

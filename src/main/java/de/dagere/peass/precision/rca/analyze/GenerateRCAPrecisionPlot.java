@@ -6,8 +6,8 @@ import java.util.concurrent.Callable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.dagere.peass.config.StatisticsConfiguration;
-import de.dagere.peass.dependency.CauseSearchFolders;
+import de.dagere.peass.config.StatisticsConfig;
+import de.dagere.peass.folders.CauseSearchFolders;
 import de.dagere.peass.measurement.analysis.Relation;
 import de.dagere.peass.measurement.rca.data.CauseSearchData;
 import de.dagere.peass.measurement.rca.serialization.MeasuredNode;
@@ -31,7 +31,7 @@ public class GenerateRCAPrecisionPlot implements Callable<Void> {
    @Option(names = { "-alsoPlotChilds", "--alsoPlotChilds" }, description = "Plot childs", required = false)
    private boolean alsoPlotChilds = false;
 
-   private StatisticsConfiguration config;
+   private StatisticsConfig config;
 
    public static void main(final String[] args) {
 
@@ -43,9 +43,9 @@ public class GenerateRCAPrecisionPlot implements Callable<Void> {
    @Override
    public Void call() throws Exception {
 
-      config = new StatisticsConfiguration();
+      config = new StatisticsConfig();
       if (removeOutliers) {
-         config.setOutlierFactor(StatisticsConfiguration.DEFAULT_OUTLIER_FACTOR);
+         config.setOutlierFactor(StatisticsConfig.DEFAULT_OUTLIER_FACTOR);
       } else {
          config.setOutlierFactor(0.0);
       }

@@ -9,7 +9,7 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
-import de.dagere.peass.config.MeasurementConfiguration;
+import de.dagere.peass.config.MeasurementConfig;
 import de.dagere.peass.measurement.rca.data.CauseSearchData;
 import de.dagere.peass.measurement.rca.serialization.MeasuredNode;
 import de.dagere.peass.utils.Constants;
@@ -17,7 +17,7 @@ import de.dagere.peass.utils.Constants;
 abstract class FolderAnalyzer {
 
    protected final boolean useFullData;
-   protected MeasurementConfiguration config;
+   protected MeasurementConfig config;
 
    public FolderAnalyzer(final boolean useFullData) {
       this.useFullData = useFullData;

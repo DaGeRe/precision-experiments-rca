@@ -10,7 +10,7 @@ import org.apache.commons.math3.stat.descriptive.StatisticalSummary;
 import org.apache.commons.math3.stat.descriptive.StatisticalSummaryValues;
 import org.junit.jupiter.api.Test;
 
-import de.dagere.peass.config.StatisticsConfiguration;
+import de.dagere.peass.config.StatisticsConfig;
 import de.dagere.peass.measurement.analysis.Relation;
 import de.dagere.peass.measurement.analysis.statistics.TestcaseStatistic;
 import de.dagere.peass.measurement.rca.serialization.MeasuredNode;
@@ -42,6 +42,6 @@ public class TestPrecisionPlotGeneration {
       node.setValuesPredecessor(values);
       File resultFolder = new File("target/results-temp");
       resultFolder.mkdirs();
-      new NodePrecisionPlotGenerator(node, Relation.LESS_THAN, new StatisticsConfiguration(), 10).generate(resultFolder);
+      new NodePrecisionPlotGenerator(node, Relation.LESS_THAN, new StatisticsConfig(), 10).generate(resultFolder);
    }
 }

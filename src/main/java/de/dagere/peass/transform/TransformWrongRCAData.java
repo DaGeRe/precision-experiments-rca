@@ -12,7 +12,7 @@ import org.apache.commons.math3.stat.descriptive.StatisticalSummaryValues;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
-import de.dagere.peass.dependency.CauseSearchFolders;
+import de.dagere.peass.folders.CauseSearchFolders;
 import de.dagere.peass.measurement.rca.data.CauseSearchData;
 import de.dagere.peass.measurement.rca.serialization.MeasuredNode;
 import de.dagere.peass.utils.Constants;

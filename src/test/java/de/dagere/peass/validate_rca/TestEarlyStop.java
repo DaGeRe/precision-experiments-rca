@@ -10,7 +10,7 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.descriptive.StatisticalSummary;
 import org.junit.Test;
 
-import de.dagere.peass.config.MeasurementConfiguration;
+import de.dagere.peass.config.MeasurementConfig;
 import de.dagere.peass.measurement.rca.data.CauseSearchData;
 import de.dagere.peass.measurement.rca.serialization.MeasuredNode;
 import de.dagere.peass.measurement.rca.serialization.MeasuredValues;
@@ -34,7 +34,7 @@ public class TestEarlyStop {
       node.setValuesPredecessor(new MeasuredValues());
       node.getValuesPredecessor().setValues(valuesPredecessor);
       final CauseSearchData data = new CauseSearchData();
-      data.setConfig(new MeasurementConfiguration(VMS));
+      data.setConfig(new MeasurementConfig(VMS));
       data.getMeasurementConfig().setIterations(ITERATIONS * 3);
       analyzer.processNode(new File("/dev/null"), node, data);
 

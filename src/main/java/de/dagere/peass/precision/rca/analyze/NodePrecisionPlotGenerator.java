@@ -10,7 +10,7 @@ import org.apache.commons.math3.stat.descriptive.StatisticalSummary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.dagere.peass.config.StatisticsConfiguration;
+import de.dagere.peass.config.StatisticsConfig;
 import de.dagere.peass.measurement.analysis.Relation;
 import de.dagere.peass.measurement.rca.serialization.MeasuredNode;
 import de.dagere.peass.measurement.rca.serialization.MeasuredValues;
@@ -29,12 +29,12 @@ public class NodePrecisionPlotGenerator {
    private final int vmCount = 20;
    private final int iterationCount = 10;
    private final int repetitionsOfAnalysis;
-   private final StatisticsConfiguration statisticsConfig;
+   private final StatisticsConfig statisticsConfig;
 
    private final MeasuredNode node;
    private final Relation expectedRelation;
 
-   public NodePrecisionPlotGenerator(final MeasuredNode node, final Relation expectedRelation, final StatisticsConfiguration statisticsConfig, final int repetitionsOfAnalysis) {
+   public NodePrecisionPlotGenerator(final MeasuredNode node, final Relation expectedRelation, final StatisticsConfig statisticsConfig, final int repetitionsOfAnalysis) {
       this.statisticsConfig = statisticsConfig;
       this.node = node;
       this.expectedRelation = expectedRelation;
