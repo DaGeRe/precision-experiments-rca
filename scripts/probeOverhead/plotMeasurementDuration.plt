@@ -1,7 +1,7 @@
 set encoding iso_8859_1
 set terminal pdf size 7,4
 
-set out 'singleNodeTree_operationExecution.pdf'
+set out 'measurement_operationExecution.pdf'
 
 set title 'Entwicklung der Iterationsmessdauer (OperationExecutionRecord)'
 
@@ -24,7 +24,7 @@ unset output
 
 set terminal pdf size 7,4
 
-set out 'singleNodeTree_duration.pdf'
+set out 'measurement_duration.pdf'
 
 set title 'Entwicklung der Iterationsmessdauer (DurationRecord)'
 
@@ -36,7 +36,7 @@ plot 'durations.csv' u 1:10 w linespoint lc "red" title 'AspectJ Instrumentierun
      'durations.csv' u 1:12 w linespoint lc "yellow" title 'Quelltextinstrumentierung', \
 	'durations.csv' u 1:($12*(1-$13)):($12*(1+$13)) w filledcurves lc "yellow" notitle fs transparent solid 0.5, \
      'durations.csv' u 1:14 w linespoint lc "green" title 'Quelltextinstrumentierung und selektiver Instrumentierung', \
-	'durations.csv' u 1:($14*(1-$15)):($14*(1+$15)) w filledcurves lc "purple" notitle fs transparent solid 0.5, \
+	'durations.csv' u 1:($14*(1-$15)):($14*(1+$15)) w filledcurves lc "green" notitle fs transparent solid 0.5, \
      'durations.csv' u 1:16 w linespoint lc "purple" title 'Quelltextinstrumentierung und Aggregation', \
 	'durations.csv' u 1:($16*(1-$17)):($16*(1+$17)) w filledcurves lc "green" notitle fs transparent solid 0.5, \
      'durations.csv' u 1:2 w linespoint lc "blue" title 'Ohne Instrumentierung', \
