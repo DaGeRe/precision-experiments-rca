@@ -46,14 +46,87 @@ function getFolder {
 	echo $parent
 }
 
-for folderIndex in 0 1 2 4 5 6 8 9
-do
-	folder=$(getFolder $folderIndex )
-	if [ -d $folder ]
-	then
-		echo -n "" > $folder.csv
-	fi
-done
+function generateEmptyCSVs {
+	for folderIndex in 0 1 2 4 5 6 8 9
+	do
+		folder=$(getFolder $folderIndex )
+		if [ -d $folder ]
+		then
+			echo -n "" > $folder.csv
+		fi
+	done
+}
+
+function generateMeasurementDurations {
+	baseFolder=$1
+	echo -n "" > measurementDurations.csv
+	sizes=$(ls $baseFolder | awk -F'_' '{print $2}' | sort -n)
+	for size in $sizes
+	do
+		echo -n "$size " >> measurementDurations.csv
+		for folderIndex in {0..10}
+		do	
+			folder=$(getFolder $folderIndex )
+			if [ -d $folder ]
+			then
+				cat $folder/probeOverhead_"$size"_*/project*peass/measurementsFull/*xml | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000000" "$1/$2}' | tr "\n" " " >> measurementDurations.csv
+				cat $folder/probeOverhead_"$size"_*/project*peass/measurementsFull/*xml | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000000" "$1/$2}' | tr "\n" " " >> $folder.csv
+			fi
+		done
+		echo >> measurementDurations.csv
+	done
+}
+
+function generateMeasuredDurations {
+	baseFolder=$1
+	echo -n "" > measuredDurations.csv
+	sizes=$(ls $baseFolder | awk -F'_' '{print $2}' | sort -n)
+	for size in $sizes
+	do
+		echo -n "$size " >> measuredDurations.csv
+		for folderIndex in {1..10}
+		do	
+			folder=$(getFolder $folderIndex )
+			if [ -d $folder ]
+			then
+				# Since jq does not allow depth 128, the following lines get the values by grep; this assumes default formatting of the JSON
+				meanOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | grep "nodes" -A 9 | grep "meanOld\|meanCurrent" | awk '{print $3}' | tr -d "," | getSum | awk '{print $2}')
+				deviationOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | grep "nodes" -A 9 | grep "deviationOld\|deviationCurrent" | awk '{print $3}' | tr -d "," | getSum | awk '{print $2}')
+				#meanOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | jq ".nodes.statistic.meanOld")
+				#deviationOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | jq ".nodes.statistic.deviationOld")
+				echo -n $meanOld" "$deviationOld" " >> measuredDurations.csv
+			fi
+		done
+		echo >> measuredDurations.csv
+	done
+}
+
+function printMeasurementMeasuredComparison {
+	for folderIndex in 0 1 2 4 5 6 8 9
+	do	
+		folder=$(getFolder $folderIndex )
+		echo $folder
+		if [ -d $folder ]
+		then
+			for file in $folder/probeOverhead_*
+			do
+				size=$(echo $file | awk -F'_' '{print $(NF-1)}')
+				echo -n "$size "	
+				cat $file/project*peass/measurementsFull/*xml | grep "~1" -B 8 | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000" "$1/$2}' | tr "\n" " "
+				if [ -f $file/project*peass/rca/tree/*/MainTest/testMe.json ] 
+				then
+					meanOld=$(cat $file/project*peass/rca/tree/*/MainTest/testMe.json | grep "nodes" -A 9 | grep "meanOld\|meanCurrent" | awk '{print $3}' | tr -d "," | getSum | awk '{print $2}')
+					deviationOld=$(cat $file/project*peass/rca/tree/*/MainTest/testMe.json | grep "nodes" -A 9 | grep "deviationOld\|deviationCurrent" | awk '{print $3}' | tr -d "," | getSum | awk '{print $2}')
+					echo $meanOld" "$deviationOld
+				else
+					echo
+				fi
+			done
+		fi
+	done
+}
+
+generateEmptyCSVs
 
 baseFolder="pure"
 
@@ -63,73 +136,13 @@ then
 	exit 1
 fi
 
-echo -n "" > measurementDurations.csv
-sizes=$(ls $baseFolder | awk -F'_' '{print $2}' | sort -n)
-for size in $sizes
-do
-	echo -n "$size " >> measurementDurations.csv
-	for folderIndex in {0..10}
-	do	
-		folder=$(getFolder $folderIndex )
-		if [ -d $folder ]
-		then
-			cat $folder/probeOverhead_"$size"_*/project*peass/measurementsFull/*xml | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000000" "$1/$2}' | tr "\n" " " >> measurementDurations.csv
-			cat $folder/probeOverhead_"$size"_*/project*peass/measurementsFull/*xml | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000000" "$1/$2}' | tr "\n" " " >> $folder.csv
-		fi
-	done
-	echo >> measurementDurations.csv
-done
+generateMeasurementDurations $baseFolder
 
 gnuplot -c plotMeasurementDuration.plt
 gnuplot -c plotASE.plt
 
-
-echo -n "" > measuredDurations.csv
-sizes=$(ls $baseFolder | awk -F'_' '{print $2}' | sort -n)
-for size in $sizes
-do
-	echo -n "$size " >> measuredDurations.csv
-	for folderIndex in {1..10}
-	do	
-		folder=$(getFolder $folderIndex )
-		if [ -d $folder ]
-		then
-			# Since jq does not allow depth 128, the following lines get the values by grep; this assumes default formatting of the JSON
-			meanOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | grep "nodes" -A 9 | grep "meanOld\|meanCurrent" | awk '{print $3}' | tr -d "," | getSum | awk '{print $2}')
-			deviationOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | grep "nodes" -A 9 | grep "deviationOld\|deviationCurrent" | awk '{print $3}' | tr -d "," | getSum | awk '{print $2}')
-			#meanOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | jq ".nodes.statistic.meanOld")
-			#deviationOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | jq ".nodes.statistic.deviationOld")
-			echo -n $meanOld" "$deviationOld" " >> measuredDurations.csv
-		fi
-	done
-	echo >> measuredDurations.csv
-done
+generateMeasuredDurations $baseFolder
 
 gnuplot -c plotMeasuredDuration.plt
 
-
-for folderIndex in 0 1 2 4 5 6 8 9
-do	
-	folder=$(getFolder $folderIndex )
-	echo $folder
-	if [ -d $folder ]
-	then
-		for file in $folder/probeOverhead_*
-		do
-			size=$(echo $file | awk -F'_' '{print $(NF-1)}')
-			echo -n "$size "	
-			cat $file/project*peass/measurementsFull/*xml | grep "~1" -B 8 | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000" "$1/$2}' | tr "\n" " "
-			if [ -f $file/project*peass/rca/tree/*/MainTest/testMe.json ] 
-			then
-				meanOld=$(cat $file/project*peass/rca/tree/*/MainTest/testMe.json | jq ".nodes.statistic.meanOld")
-				deviationOld=$(cat $file/project*peass/rca/tree/*/MainTest/testMe.json | jq ".nodes.statistic.deviationOld")
-				echo $meanOld" "$deviationOld
-			else
-				echo
-			fi
-		done
-	fi
-done
-
-
-
+printMeasurementMeasuredComparison $baseFolder
