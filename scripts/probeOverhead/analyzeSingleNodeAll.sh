@@ -52,38 +52,38 @@ function generateEmptyCSVs {
 		folder=$(getFolder $folderIndex )
 		if [ -d $folder ]
 		then
-			echo -n "" > $folder.csv
+			echo -n "" > outputCSVs/$folder.csv
 		fi
 	done
 }
 
 function generateMeasurementDurations {
 	baseFolder=$1
-	echo -n "" > measurementDurations.csv
+	echo -n "" > outputCSVs/measurementDurations.csv
 	sizes=$(ls $baseFolder | awk -F'_' '{print $2}' | sort -n)
 	for size in $sizes
 	do
-		echo -n "$size " >> measurementDurations.csv
+		echo -n "$size " >> outputCSVs/measurementDurations.csv
 		for folderIndex in {0..10}
 		do	
 			folder=$(getFolder $folderIndex )
 			if [ -d $folder ]
 			then
-				cat $folder/probeOverhead_"$size"_*/project*peass/measurementsFull/*xml | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000000" "$1/$2}' | tr "\n" " " >> measurementDurations.csv
-				cat $folder/probeOverhead_"$size"_*/project*peass/measurementsFull/*xml | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000000" "$1/$2}' | tr "\n" " " >> $folder.csv
+				cat $folder/probeOverhead_"$size"_*/project*peass/measurementsFull/*xml | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000000" "$1/$2}' | tr "\n" " " >> outputCSVs/measurementDurations.csv
+				cat $folder/probeOverhead_"$size"_*/project*peass/measurementsFull/*xml | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000000" "$1/$2}' | tr "\n" " " >> outputCSVs/$folder.csv
 			fi
 		done
-		echo >> measurementDurations.csv
+		echo >> outputCSVs/measurementDurations.csv
 	done
 }
 
 function generateMeasuredDurations {
 	baseFolder=$1
-	echo -n "" > measuredDurations.csv
+	echo -n "" > outputCSVs/measuredDurations.csv
 	sizes=$(ls $baseFolder | awk -F'_' '{print $2}' | sort -n)
 	for size in $sizes
 	do
-		echo -n "$size " >> measuredDurations.csv
+		echo -n "$size " >> outputCSVs/measuredDurations.csv
 		for folderIndex in {1..10}
 		do	
 			folder=$(getFolder $folderIndex )
@@ -94,10 +94,10 @@ function generateMeasuredDurations {
 				deviationOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | grep "nodes" -A 9 | grep "deviationOld\|deviationCurrent" | awk '{print $3}' | tr -d "," | getSum | awk '{print $2}')
 				#meanOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | jq ".nodes.statistic.meanOld")
 				#deviationOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | jq ".nodes.statistic.deviationOld")
-				echo -n $meanOld" "$deviationOld" " >> measuredDurations.csv
+				echo -n $meanOld" "$deviationOld" " >> outputCSVs/measuredDurations.csv
 			fi
 		done
-		echo >> measuredDurations.csv
+		echo >> outputCSVs/measuredDurations.csv
 	done
 }
 
@@ -126,6 +126,9 @@ function printMeasurementMeasuredComparison {
 	done
 }
 
+mkdir -p outputCSVs
+mkdir -p outputPDFs
+
 generateEmptyCSVs
 
 baseFolder="pure"
@@ -135,6 +138,8 @@ then
 	echo "Base Folder $baseFolder does not exist; please make sure the baseline experiments have been finished correctly."
 	exit 1
 fi
+
+
 
 generateMeasurementDurations $baseFolder
 
