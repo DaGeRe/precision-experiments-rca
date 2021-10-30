@@ -1,7 +1,7 @@
 set encoding iso_8859_1
 set terminal pdf size 7,4
 
-set out 'measured_operationExecutionRecord.pdf'
+set out 'outputPDFs/measured_operationExecutionRecord.pdf'
 
 set title 'Methodenausführungszeiten (OperationExecutionRecord)'
 
@@ -22,7 +22,7 @@ unset output
 
 set terminal pdf size 7,4
 
-set out 'measured_durationRecord.pdf'
+set out 'outputPDFs/measured_durationRecord.pdf'
 
 set title 'Methodenausführungszeiten (DurationRecord)'
 

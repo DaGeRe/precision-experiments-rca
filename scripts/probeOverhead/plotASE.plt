@@ -1,7 +1,7 @@
 set encoding iso_8859_1
 set terminal pdf size 8,5
 
-set out 'probes_ASE.pdf'
+set out 'outputPDFs/probes_ASE.pdf'
 
 set title 'Iteration Measurement Duration'
 

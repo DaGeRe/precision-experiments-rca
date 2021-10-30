@@ -1,7 +1,7 @@
 set encoding iso_8859_1
 set terminal pdf size 7,4
 
-set out 'measurement_operationExecution.pdf'
+set out 'outputPDFs/measurement_operationExecution.pdf'
 
 set title 'Entwicklung der Iterationsmessdauer (OperationExecutionRecord)'
 
@@ -24,7 +24,7 @@ unset output
 
 set terminal pdf size 7,4
 
-set out 'measurement_duration.pdf'
+set out 'outputPDFs/measurement_duration.pdf'
 
 set title 'Entwicklung der Iterationsmessdauer (DurationRecord)'
 
