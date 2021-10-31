@@ -57,6 +57,17 @@ function generateEmptyCSVs {
 	done
 }
 
+function getWarmedupValues {
+	folder=$1
+	size=$2
+	for file in $folder/probeOverhead_"$size"_*/project*peass/rca/archived/*/de.dagere.peass.MainTest/testMe/*/0/testMe_*xml
+	do
+		count=$(cat $file | grep "value start=" | wc -l)
+		warmedUp=$(($count/2))
+		cat $file | grep "value start=" | tail -n $warmedUp | awk -F'[<>]' '{print $3}' | getSum
+	done | getSum | awk '{print $2/1000000" "$1/$2}'
+}
+
 function generateMeasurementDurations {
 	baseFolder=$1
 	echo -n "" > outputCSVs/measurementDurations.csv
@@ -69,8 +80,7 @@ function generateMeasurementDurations {
 			folder=$(getFolder $folderIndex )
 			if [ -d $folder ]
 			then
-				cat $folder/probeOverhead_"$size"_*/project*peass/measurementsFull/*xml | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000000" "$1/$2}' | tr "\n" " " >> outputCSVs/measurementDurations.csv
-				cat $folder/probeOverhead_"$size"_*/project*peass/measurementsFull/*xml | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000000" "$1/$2}' | tr "\n" " " >> outputCSVs/$folder.csv
+				getWarmedupValues $folder $size | tr "\n" " " >> outputCSVs/measurementDurations.csv
 			fi
 		done
 		echo >> outputCSVs/measurementDurations.csv
@@ -112,7 +122,7 @@ function printMeasurementMeasuredComparison {
 			do
 				size=$(echo $file | awk -F'_' '{print $(NF-1)}')
 				echo -n "$size "	
-				cat $file/project*peass/measurementsFull/*xml | grep "~1" -B 8 | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000" "$1/$2}' | tr "\n" " "
+				getWarmedupValues $folder $size | tr "\n" " "
 				if [ -f $file/project*peass/rca/tree/*/MainTest/testMe.json ] 
 				then
 					meanOld=$(cat $file/project*peass/rca/tree/*/MainTest/testMe.json | grep "nodes" -A 9 | grep "meanOld\|meanCurrent" | awk '{print $3}' | tr -d "," | getSum | awk '{print $2}')
