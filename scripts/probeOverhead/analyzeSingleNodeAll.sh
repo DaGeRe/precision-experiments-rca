@@ -60,12 +60,18 @@ function generateEmptyCSVs {
 function getWarmedupValues {
 	folder=$1
 	size=$2
-	for file in $folder/probeOverhead_"$size"_*/project*peass/rca/archived/*/de.dagere.peass.MainTest/testMe/*/0/testMe_*xml
-	do
-		count=$(cat $file | grep "value start=" | wc -l)
-		warmedUp=$(($count/2))
-		cat $file | grep "value start=" | tail -n $warmedUp | awk -F'[<>]' '{print $3}' | getSum
-	done | getSum | awk '{print $2/1000000" "$1/$2}'
+	if [[ $folder == pure* ]]
+	then
+		cat $folder/probeOverhead_"$size"_*/project*peass/measurementsFull/*xml | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000000" "$1/$2}' 
+		cat $folder/probeOverhead_"$size"_*/project*peass/measurementsFull/*xml | grep value | tr -d "<value/>" | getSum | awk '{print $2/1000000" "$1/$2}' 
+	else
+		for file in $folder/probeOverhead_"$size"_*/project*peass/rca/archived/*/de.dagere.peass.MainTest/testMe/*/0/testMe_*xml
+		do
+			count=$(cat $file | grep "value start=" | wc -l)
+			warmedUp=$(($count/2))
+			cat $file | grep "value start=" | tail -n $warmedUp | awk -F'[<>]' '{print $3}' | getSum
+		done | getSum | awk '{print $2/1000000" "$1/$2}'
+	fi
 }
 
 function generateMeasurementDurations {
