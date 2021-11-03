@@ -67,14 +67,14 @@ function getWarmedupValues {
 			count=$(cat $file | grep "value start=" | wc -l)
 			warmedUp=$(($count/2))
 			cat $file | grep "value start=" | tail -n $warmedUp | awk -F'[<>]' '{print $3}' | getSum
-		done | getSum | awk '{print $2/1000000" "$1/$2}'
+		done | awk '{print $2}' | getSum | awk '{print $2/1000000" "$1/$2}'
 	else
 		for file in $folder/probeOverhead_"$size"_*/project*peass/rca/archived/*/de.dagere.peass.MainTest/testMe/*/0/testMe_*xml
 		do
 			count=$(cat $file | grep "value start=" | wc -l)
 			warmedUp=$(($count/2))
 			cat $file | grep "value start=" | tail -n $warmedUp | awk -F'[<>]' '{print $3}' | getSum
-		done | getSum | awk '{print $2/1000000" "$1/$2}'
+		done | awk '{print $2}' | getSum | awk '{print $2/1000000" "$1/$2}'
 	fi
 }
 
