@@ -152,7 +152,16 @@ mkdir -p outputPDFs
 
 generateEmptyCSVs
 
-baseFolder="pure"
+for folderIndex in 0 1 2 4 5 6 8 9
+do
+        folder=$(getFolder $folderIndex )
+        if [ -d $folder ]
+        then
+                baseFolder=$folder
+                break
+        fi
+done
+
 
 if [ ! -d $baseFolder ]
 then
