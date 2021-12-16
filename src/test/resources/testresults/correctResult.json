@@ -7,9 +7,7 @@
     "repetitions" : 10000,
     "logFullData" : true,
     "useKieker" : true,
-    "redirectToNull" : true,
     "useGC" : false,
-    "kiekerAggregationInterval" : 5000,
     "javaVersion" : "1.8.0_252",
     "executionConfig": {
     	"timeout" : 7200000,
