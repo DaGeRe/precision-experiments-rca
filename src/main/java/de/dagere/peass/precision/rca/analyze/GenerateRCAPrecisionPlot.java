@@ -8,9 +8,9 @@ import org.apache.logging.log4j.Logger;
 
 import de.dagere.peass.config.StatisticsConfig;
 import de.dagere.peass.folders.CauseSearchFolders;
-import de.dagere.peass.measurement.analysis.Relation;
 import de.dagere.peass.measurement.rca.data.CauseSearchData;
 import de.dagere.peass.measurement.rca.serialization.MeasuredNode;
+import de.dagere.peass.measurement.statistics.Relation;
 import de.dagere.peass.utils.Constants;
 import picocli.CommandLine;
 import picocli.CommandLine.Option;

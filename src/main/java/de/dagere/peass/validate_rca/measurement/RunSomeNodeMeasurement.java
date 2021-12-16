@@ -13,16 +13,16 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
-import de.dagere.peass.PeassGlobalInfos;
 import de.dagere.peass.config.MeasurementConfig;
 import de.dagere.peass.config.parameters.ExecutionConfigMixin;
+import de.dagere.peass.config.parameters.KiekerConfigMixin;
 import de.dagere.peass.config.parameters.MeasurementConfigurationMixin;
 import de.dagere.peass.config.parameters.StatisticsConfigMixin;
 import de.dagere.peass.dependency.analysis.data.TestCase;
-import de.dagere.peass.dependency.execution.EnvironmentVariables;
 import de.dagere.peass.dependency.persistence.Dependencies;
 import de.dagere.peass.dependency.persistence.Version;
 import de.dagere.peass.dependencyprocessors.ViewNotFoundException;
+import de.dagere.peass.execution.utils.EnvironmentVariables;
 import de.dagere.peass.folders.CauseSearchFolders;
 import de.dagere.peass.measurement.rca.CauseSearcherConfig;
 import de.dagere.peass.measurement.rca.CauseSearcherConfigMixin;
@@ -80,7 +80,7 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
 
       CauseSearchFolders folders = new CauseSearchFolders(projectFolder);
 
-      MeasurementConfig measurementConfiguration = new MeasurementConfig(measurementConfigMixin, executionMixin, statisticConfigMixin);
+      MeasurementConfig measurementConfiguration = new MeasurementConfig(measurementConfigMixin, executionMixin, statisticConfigMixin, new KiekerConfigMixin());
       measurementConfiguration.getExecutionConfig().setVersion(version);
       measurementConfiguration.getExecutionConfig().setVersionOld(predecessor);
       measurementConfiguration.setUseKieker(true);
@@ -88,8 +88,6 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
       List<CallTreeNode> includedNodes = getIncludedNodes(causeSearchConfig, folders, measurementConfiguration);
 
       CauseTester tester = new CauseTester(folders, measurementConfiguration, causeSearchConfig, new EnvironmentVariables());
-
-      PeassGlobalInfos.isTwoVersionRun = false;
 
       // tester.measureVersion(includedNodes);
       tester.setIncludedMethods(new HashSet<>(includedNodes));

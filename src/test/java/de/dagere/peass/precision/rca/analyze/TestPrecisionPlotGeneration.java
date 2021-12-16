@@ -11,10 +11,10 @@ import org.apache.commons.math3.stat.descriptive.StatisticalSummaryValues;
 import org.junit.jupiter.api.Test;
 
 import de.dagere.peass.config.StatisticsConfig;
-import de.dagere.peass.measurement.analysis.Relation;
-import de.dagere.peass.measurement.analysis.statistics.TestcaseStatistic;
 import de.dagere.peass.measurement.rca.serialization.MeasuredNode;
 import de.dagere.peass.measurement.rca.serialization.MeasuredValues;
+import de.dagere.peass.measurement.statistics.Relation;
+import de.dagere.peass.measurement.statistics.data.TestcaseStatistic;
 
 public class TestPrecisionPlotGeneration {
 

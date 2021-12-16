@@ -46,7 +46,7 @@
 		<dependency>
 			<groupId>de.dagere.peass</groupId>
 			<artifactId>analysis</artifactId>
-			<version>0.1.0</version>
+			<version>0.1.8</version>
 		</dependency>
 		<dependency>
 			<groupId>de.dagere.peass</groupId>
@@ -56,7 +56,7 @@
 		<dependency>
 			<groupId>info.picocli</groupId>
 			<artifactId>picocli</artifactId>
-			<version>4.6.1</version>
+			<version>4.6.2</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -66,7 +66,7 @@
 		<dependency>
 			<groupId>de.pmdcheck.analysis</groupId>
 			<artifactId>pmdcheck-analysis</artifactId>
-			<version>1.0</version>
+			<version>1.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>

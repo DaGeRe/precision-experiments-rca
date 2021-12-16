@@ -11,10 +11,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.dagere.peass.config.StatisticsConfig;
-import de.dagere.peass.measurement.analysis.Relation;
 import de.dagere.peass.measurement.rca.serialization.MeasuredNode;
 import de.dagere.peass.measurement.rca.serialization.MeasuredValues;
-import de.dagere.peass.precision.analysis.repetitions.bimodal.CompareData;
+import de.dagere.peass.measurement.statistics.Relation;
+import de.dagere.peass.measurement.statistics.bimodal.CompareData;
 import de.precision.analysis.repetitions.ExecutionData;
 import de.precision.analysis.repetitions.GeneratePrecisionPlot;
 import de.precision.analysis.repetitions.PrecisionComparer;
