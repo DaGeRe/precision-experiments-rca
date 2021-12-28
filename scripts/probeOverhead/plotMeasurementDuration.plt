@@ -38,7 +38,7 @@ plot 'outputCSVs/measurementDurations.csv' u 1:10 w linespoint lc "red" title 'A
      'outputCSVs/measurementDurations.csv' u 1:14 w linespoint lc "green" title 'Quelltextinstrumentierung und selektiver Instrumentierung', \
 	'outputCSVs/measurementDurations.csv' u 1:($14*(1-$15)):($14*(1+$15)) w filledcurves lc "green" notitle fs transparent solid 0.5, \
      'outputCSVs/measurementDurations.csv' u 1:16 w linespoint lc "purple" title 'Quelltextinstrumentierung und Aggregation', \
-	'outputCSVs/measurementDurations.csv' u 1:($16*(1-$17)):($16*(1+$17)) w filledcurves lc "green" notitle fs transparent solid 0.5, \
+	'outputCSVs/measurementDurations.csv' u 1:($16*(1-$17)):($16*(1+$17)) w filledcurves lc "purple" notitle fs transparent solid 0.5, \
      'outputCSVs/measurementDurations.csv' u 1:2 w linespoint lc "blue" title 'Ohne Instrumentierung', \
 	'outputCSVs/measurementDurations.csv' u 1:($2*(1-$3)):($2*(1+$3)) w filledcurves lc "skyblue" notitle fs transparent solid 0.5
 	
