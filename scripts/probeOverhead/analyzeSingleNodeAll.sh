@@ -113,7 +113,7 @@ function generateMeasuredDurations {
 				# Since jq does not allow depth 128, the following lines get the values by grep; this assumes default formatting of the JSON
 				meanOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | grep "nodes" -A 9 | grep "meanOld\|meanCurrent" | awk '{print $3}' | tr -d "," | getSum | awk '{print $2}')
 				deviationOld=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | grep "nodes" -A 9 | grep "deviationOld\|deviationCurrent" | awk '{print $3}' | tr -d "," | getSum | awk '{print $2}')
-				if (( $folderIndex == 9 ))
+				if (( $folderIndex == 9 )) || (( $folderIndex == 8 ))
 				then
 					repetitions=$(cat $folder/probeOverhead_"$size"_*/project*peass/rca/tree/*/MainTest/testMe.json | grep "repetitions" | tr -d "," | awk '{print $3}')
 					meanOld=$(echo "$meanOld $repetitions" | awk '{print $1/$2}')

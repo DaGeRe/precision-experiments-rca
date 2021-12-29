@@ -80,7 +80,6 @@ function measure {
 			--record=OPERATIONEXECUTION \
 			--notUseSourceInstrumentation \
 			--notUseSelectiveInstrumentation \
-			--useNonAggregatedWriter \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 			;;
 	"2")
@@ -95,7 +94,6 @@ function measure {
 			--rcaStrategy=$RCA_STRATEGY \
 			--record=OPERATIONEXECUTION \
 			--notUseSelectiveInstrumentation \
-			--useNonAggregatedWriter \
 			--useExtraction \
 			--enableAdaptiveInstrumentation \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
@@ -114,7 +112,6 @@ function measure {
 			--record=OPERATIONEXECUTION \
 			--useCircularQueue \
 			--notUseSelectiveInstrumentation \
-			--useNonAggregatedWriter \
 			--useExtraction \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
@@ -133,7 +130,6 @@ function measure {
 			--repetitions=$repetitions \
 			--rcaStrategy=UNTIL_SOURCE_CHANGE \
 			--record=OPERATIONEXECUTION \
-			--useNonAggregatedWriter \
 			--useExtraction \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
@@ -150,7 +146,6 @@ function measure {
 			--record=DURATION \
 			--notUseSourceInstrumentation \
 			--notUseSelectiveInstrumentation \
-			--useNonAggregatedWriter \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"6")
@@ -165,7 +160,6 @@ function measure {
 			--rcaStrategy=$RCA_STRATEGY \
 			--record=DURATION \
 			--notUseSelectiveInstrumentation \
-			--useNonAggregatedWriter \
 			--useExtraction \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
@@ -182,7 +176,6 @@ function measure {
 			--record=DURATION \
 			--useCircularQueue \
 			--notUseSelectiveInstrumentation \
-			--useNonAggregatedWriter \
 			--useExtraction \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
@@ -199,6 +192,7 @@ function measure {
 			--record=DURATION \
 			--notUseSelectiveInstrumentation \
 			--useExtraction \
+			--useAggregation \
 			-test de.dagere.peass.MainTest#testMe &> $resultfolder/measurement.txt
 		;;
 	"9")
