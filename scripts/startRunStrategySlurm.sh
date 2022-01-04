@@ -5,7 +5,7 @@ do
 	do
 		for nodes in 2 4 6 8
 		do
-			for diff in 0.3 1.0 2.0
+			for diff in 0.3 1.0 2.0 3.0 5.0
 			do
 			slower=$((nodes-1))
 			repetitions=1000000
