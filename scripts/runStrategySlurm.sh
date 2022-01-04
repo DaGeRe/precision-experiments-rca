@@ -13,8 +13,12 @@ function createExecutionfile {
 }
 
 
+# Java path needs to be adapted manually
 #export JAVA_HOME=/usr/jdk64/jdk1.8.0_112/
-export PATH=/nfs/user/do820mize/maven/apache-maven-3.5.4/bin:/usr/jdk64/jdk1.8.0_112/bin/:/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/nfs/user/do820mize/pxz:/nfs/user/do820mize/tar-1.29/bin/bin:/nfs/user/do820mize/git/git-2.9.5/bin-wrappers
+#export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.12.0.7-0.el7_9.x86_64/
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.302.b08-0.el7_9.x86_64
+
+export PATH=/home/sc.uni-leipzig.de/do820mize/maven/apache-maven-3.8.3/bin:$JAVA_HOME/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/nfs/user/do820mize/pxz:/nfs/user/do820mize/tar-1.29/bin/bin:/nfs/user/do820mize/git/git-2.9.5/bin-wrappers
 
 if [ -z "$percentualDiff" ]
 then
@@ -33,7 +37,7 @@ echo "Diff: $diff"
 
 echo "Slower Version: $slowParameter Faster Version: $fastParameter Type: $workload"
 
-rm -rf tmp/peass-temp/R_*
+rm -rf /tmp/peass-temp/*
 id=1
 resultfolder=/tmp/peass-temp/R_"$workloadsize"_"$nodes"_"$slower"_"$RCA_STRATEGY"_"$diff"_"$iterations"_"$repetitions"_"$vms"_"$workload"_"$levels"_$id/
 while [[ -d $resultfolder ]]
@@ -79,9 +83,8 @@ $PEASS_PROJECT/peass searchcause \
 	--outlierFactor=0 \
 	--repetitions=$repetitions \
 	--rcaStrategy=$RCA_STRATEGY \
-	--record=REDUCED_OPERATIONEXECUTION \
+	--record=DURATION \
 	--useCircularQueue \
-	--useSampling \
 	--statisticTest ANY_NO_AGNOSTIC \
 	--measurementStrategy=PARALLEL \
 	--levels $levels \
