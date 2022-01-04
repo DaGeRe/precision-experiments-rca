@@ -17,6 +17,7 @@ public class CheckCompleteness {
       String[] percentages = new String[] { "1.003", "1.010", "1.020", "1.030", "1.050" }; // Saved as Strings, since the string representation is essential here
       int[] levels = new int[] { 2, 4, 6, 8 };
 
+      int missingCount = 0;
       for (String workload : workloads) {
          for (String percentage : percentages) {
             for (String strategy : strategies) {
@@ -24,11 +25,12 @@ public class CheckCompleteness {
                   File expectedFile = new File(folder, strategy + File.separator + level + File.separator + level + "_" + strategy + "_" + percentage + "_" + workload + "_1");
                   if (!expectedFile.exists()) {
                      System.out.println("Missing: " + strategy + " " + level + " " + percentage + " " + workload);
-                     System.out.println("Folder: " + expectedFile.getAbsolutePath());
+                     missingCount++;
                   }
                }
             }
          }
       }
+      System.out.println("Missing: " + missingCount);
    }
 }
