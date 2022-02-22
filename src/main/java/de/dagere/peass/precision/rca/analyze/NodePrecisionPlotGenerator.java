@@ -18,12 +18,18 @@ import de.dagere.peass.measurement.statistics.bimodal.CompareData;
 import de.precision.analysis.repetitions.ExecutionData;
 import de.precision.analysis.repetitions.GeneratePrecisionPlot;
 import de.precision.analysis.repetitions.PrecisionComparer;
+import de.precision.analysis.repetitions.PrecisionConfig;
 import de.precision.analysis.repetitions.PrecisionWriter;
 import de.precision.processing.repetitions.sampling.SamplingConfig;
 import de.precision.processing.repetitions.sampling.SamplingExecutor;
 
 public class NodePrecisionPlotGenerator {
 
+   private final static String[] myTypes = new String[] { GeneratePrecisionPlot.MEAN, 
+         GeneratePrecisionPlot.TTEST, 
+         GeneratePrecisionPlot.CONFIDENCE, 
+         GeneratePrecisionPlot.MANNWHITNEY };
+   
    private static final Logger LOG = LogManager.getLogger(NodePrecisionPlotGenerator.class);
 
    private final int vmCount = 20;
@@ -33,6 +39,8 @@ public class NodePrecisionPlotGenerator {
 
    private final MeasuredNode node;
    private final Relation expectedRelation;
+   
+   private final PrecisionConfig precisionConfig = new PrecisionConfig(false, false, true, false, myTypes);
 
    public NodePrecisionPlotGenerator(final MeasuredNode node, final Relation expectedRelation, final StatisticsConfig statisticsConfig, final int repetitionsOfAnalysis) {
       this.statisticsConfig = statisticsConfig;
@@ -45,7 +53,7 @@ public class NodePrecisionPlotGenerator {
       final File resultFile = new File(resultFolder, node.getCall().replace('#', '_') + ".csv");
       if (node.getStatistic().getCalls() > 0) {
          try (BufferedWriter writer = new BufferedWriter(new FileWriter(resultFile))) {
-            PrecisionWriter.writeHeader(writer, GeneratePrecisionPlot.myTypes);
+            PrecisionWriter.writeHeader(writer, precisionConfig.getTypes());
             int fullVmCount = node.getPureVMs();
             LOG.info(node.getStatistic().getCalls() + " " + fullVmCount + " " + iterationCount);
             int stepsize = (int) (node.getStatistic().getCalls() / fullVmCount / iterationCount);
@@ -71,8 +79,8 @@ public class NodePrecisionPlotGenerator {
       final int vmStepSize = node.getPureVMs() / vmCount;
       LOG.info("VM step size: " + vmStepSize + " Iterations: " + iterations);
       for (int vms = vmStepSize * 1; vms <= vmStepSize * vmCount; vms += vmStepSize) {
-         final SamplingConfig config = new SamplingConfig(vms, "TestMe", true, false, repetitionsOfAnalysis);
-         final PrecisionComparer comparer = new PrecisionComparer(config, statisticsConfig);
+         final SamplingConfig config = new SamplingConfig(vms, "TestMe", false, repetitionsOfAnalysis);
+         final PrecisionComparer comparer = new PrecisionComparer(config, statisticsConfig, precisionConfig);
 
          for (int i = 0; i < config.getSamplingExecutions(); i++) {
             executeComparison(data_changed, config, comparer, expectedRelation);
