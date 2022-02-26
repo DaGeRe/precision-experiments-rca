@@ -16,20 +16,15 @@ import de.dagere.peass.measurement.rca.serialization.MeasuredValues;
 import de.dagere.peass.measurement.statistics.Relation;
 import de.dagere.peass.measurement.statistics.bimodal.CompareData;
 import de.precision.analysis.repetitions.ExecutionData;
-import de.precision.analysis.repetitions.GeneratePrecisionPlot;
 import de.precision.analysis.repetitions.PrecisionComparer;
 import de.precision.analysis.repetitions.PrecisionConfig;
 import de.precision.analysis.repetitions.PrecisionWriter;
+import de.precision.analysis.repetitions.StatisticalTestList;
 import de.precision.processing.repetitions.sampling.SamplingConfig;
 import de.precision.processing.repetitions.sampling.SamplingExecutor;
 
 public class NodePrecisionPlotGenerator {
 
-   private final static String[] myTypes = new String[] { GeneratePrecisionPlot.MEAN, 
-         GeneratePrecisionPlot.TTEST, 
-         GeneratePrecisionPlot.CONFIDENCE, 
-         GeneratePrecisionPlot.MANNWHITNEY };
-   
    private static final Logger LOG = LogManager.getLogger(NodePrecisionPlotGenerator.class);
 
    private final int vmCount = 20;
@@ -40,7 +35,7 @@ public class NodePrecisionPlotGenerator {
    private final MeasuredNode node;
    private final Relation expectedRelation;
    
-   private final PrecisionConfig precisionConfig = new PrecisionConfig(false, false, true, false, myTypes);
+   private final PrecisionConfig precisionConfig = new PrecisionConfig(false, true, false, 2, StatisticalTestList.ALL_NO_BIMODAL_NO_CONFIDENCE.getTests());
 
    public NodePrecisionPlotGenerator(final MeasuredNode node, final Relation expectedRelation, final StatisticsConfig statisticsConfig, final int repetitionsOfAnalysis) {
       this.statisticsConfig = statisticsConfig;
@@ -79,8 +74,8 @@ public class NodePrecisionPlotGenerator {
       final int vmStepSize = node.getPureVMs() / vmCount;
       LOG.info("VM step size: " + vmStepSize + " Iterations: " + iterations);
       for (int vms = vmStepSize * 1; vms <= vmStepSize * vmCount; vms += vmStepSize) {
-         final SamplingConfig config = new SamplingConfig(vms, "TestMe", false, repetitionsOfAnalysis);
-         final PrecisionComparer comparer = new PrecisionComparer(config, statisticsConfig, precisionConfig);
+         final SamplingConfig config = new SamplingConfig(vms, "TestMe", repetitionsOfAnalysis);
+         final PrecisionComparer comparer = new PrecisionComparer(statisticsConfig, precisionConfig);
 
          for (int i = 0; i < config.getSamplingExecutions(); i++) {
             executeComparison(data_changed, config, comparer, expectedRelation);
@@ -98,7 +93,7 @@ public class NodePrecisionPlotGenerator {
       final ExecutionData metadata = new ExecutionData(vms, iterations, iterations, 1);
       final PrecisionWriter precisionWriter = new PrecisionWriter(comparer, metadata);
       final Map<String, Map<String, Integer>> results = comparer.getOverallResults().getResults();
-      precisionWriter.writeTestcase(writer, results.entrySet());
+      precisionWriter.writeTestcase(writer, results);
    }
 
    private void executeComparison(final CompareData data, final SamplingConfig config, final PrecisionComparer comparer, final Relation expected) {
