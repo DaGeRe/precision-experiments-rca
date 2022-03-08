@@ -19,7 +19,6 @@ import de.precision.analysis.repetitions.ExecutionData;
 import de.precision.analysis.repetitions.PrecisionComparer;
 import de.precision.analysis.repetitions.PrecisionConfig;
 import de.precision.analysis.repetitions.PrecisionWriter;
-import de.precision.analysis.repetitions.StatisticalTestList;
 import de.precision.processing.repetitions.sampling.SamplingConfig;
 import de.precision.processing.repetitions.sampling.SamplingExecutor;
 
@@ -34,14 +33,16 @@ public class NodePrecisionPlotGenerator {
 
    private final MeasuredNode node;
    private final Relation expectedRelation;
-   
-   private final PrecisionConfig precisionConfig = new PrecisionConfig(false, true, false, 2, StatisticalTestList.ALL_NO_BIMODAL_NO_CONFIDENCE.getTests());
 
-   public NodePrecisionPlotGenerator(final MeasuredNode node, final Relation expectedRelation, final StatisticsConfig statisticsConfig, final int repetitionsOfAnalysis) {
+   private final PrecisionConfig precisionConfig;
+
+   public NodePrecisionPlotGenerator(final MeasuredNode node, final Relation expectedRelation, final StatisticsConfig statisticsConfig, final int repetitionsOfAnalysis,
+         PrecisionConfig precisionConfig) {
       this.statisticsConfig = statisticsConfig;
       this.node = node;
       this.expectedRelation = expectedRelation;
       this.repetitionsOfAnalysis = repetitionsOfAnalysis;
+      this.precisionConfig = precisionConfig;
    }
 
    public void generate(final File resultFolder) {

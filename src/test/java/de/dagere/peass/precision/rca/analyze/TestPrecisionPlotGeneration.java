@@ -15,6 +15,8 @@ import de.dagere.peass.measurement.rca.serialization.MeasuredNode;
 import de.dagere.peass.measurement.rca.serialization.MeasuredValues;
 import de.dagere.peass.measurement.statistics.Relation;
 import de.dagere.peass.measurement.statistics.data.TestcaseStatistic;
+import de.precision.analysis.repetitions.PrecisionConfig;
+import de.precision.analysis.repetitions.StatisticalTestList;
 
 public class TestPrecisionPlotGeneration {
 
@@ -42,6 +44,7 @@ public class TestPrecisionPlotGeneration {
       node.setValuesPredecessor(values);
       File resultFolder = new File("target/results-temp");
       resultFolder.mkdirs();
-      new NodePrecisionPlotGenerator(node, Relation.LESS_THAN, new StatisticsConfig(), 10).generate(resultFolder);
+      PrecisionConfig precisionConfig = new PrecisionConfig(false, false, false, 1000, StatisticalTestList.ALL_NO_BIMODAL_NO_CONFIDENCE.getTests(), 50, 20);
+      new NodePrecisionPlotGenerator(node, Relation.LESS_THAN, new StatisticsConfig(), 10, precisionConfig).generate(resultFolder);
    }
 }
