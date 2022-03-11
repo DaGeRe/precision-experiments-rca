@@ -19,8 +19,8 @@ import de.dagere.peass.config.parameters.KiekerConfigMixin;
 import de.dagere.peass.config.parameters.MeasurementConfigurationMixin;
 import de.dagere.peass.config.parameters.StatisticsConfigMixin;
 import de.dagere.peass.dependency.analysis.data.TestCase;
-import de.dagere.peass.dependency.persistence.Dependencies;
-import de.dagere.peass.dependency.persistence.Version;
+import de.dagere.peass.dependency.persistence.StaticTestSelection;
+import de.dagere.peass.dependency.persistence.VersionStaticSelection;
 import de.dagere.peass.dependencyprocessors.ViewNotFoundException;
 import de.dagere.peass.execution.utils.EnvironmentVariables;
 import de.dagere.peass.folders.CauseSearchFolders;
@@ -58,8 +58,8 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
    @Option(names = { "-folder", "--folder" }, description = "Folder of the project that should be analyzed", required = true)
    File projectFolder;
 
-   @Option(names = { "-dependencyfile", "--dependencyfile" }, description = "Path to the dependencyfile")
-   protected File dependencyFile;
+   @Option(names = { "-staticSelectionFile", "--staticSelectionFile" }, description = "Path to the staticSelectionFile")
+   protected File staticSelectionFile;
 
    @Option(names = { "-version", "--version" }, description = "Only version to analyze - do not use together with startversion and endversion!")
    protected String version;
@@ -72,8 +72,8 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
 
    @Override
    public Void call() throws Exception {
-      Dependencies dependencies = Constants.OBJECTMAPPER.readValue(dependencyFile, Dependencies.class);
-      final Version versionInfo = dependencies.getVersions().get(version);
+      StaticTestSelection dependencies = Constants.OBJECTMAPPER.readValue(staticSelectionFile, StaticTestSelection.class);
+      final VersionStaticSelection versionInfo = dependencies.getVersions().get(version);
       final String predecessor = versionInfo.getPredecessor();
 
       CauseSearcherConfig causeSearchConfig = new CauseSearcherConfig(new TestCase("de.peass.MainTest#testMe"), causeSearchConfigMixin);
