@@ -46,17 +46,12 @@
 		<dependency>
 			<groupId>de.dagere.peass</groupId>
 			<artifactId>analysis</artifactId>
-			<version>0.1.9</version>
+			<version>0.1.11-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>de.dagere.peass</groupId>
 			<artifactId>precision-analysis</artifactId>
 			<version>0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>info.picocli</groupId>
-			<artifactId>picocli</artifactId>
-			<version>4.6.2</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>

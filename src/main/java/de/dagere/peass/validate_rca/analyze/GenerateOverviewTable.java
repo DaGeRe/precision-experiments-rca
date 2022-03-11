@@ -65,7 +65,7 @@ public class GenerateOverviewTable {
       for (MeasuredNode child : next2.getChildren()) {
          if (StatisticUtil.agnosticTTest(child.getStatistic().getStatisticsCurrent(), 
                child.getStatistic().getStatisticsOld(), 
-               data.getMeasurementConfig()) == Relation.UNEQUAL) {
+               data.getMeasurementConfig().getStatisticsConfig()) == Relation.UNEQUAL) {
             noWrongDifference = false;
             System.out.println("Wrong difference: " + child);
          }
