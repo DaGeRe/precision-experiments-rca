@@ -9,7 +9,13 @@
 function createExecutionfile {
     version=$1
     file=$2
-	echo '{"url" : "",  "versions" : {    "'$version'" : {      "testcases" : {        "de.dagere.peass.MainTest" : [ "testMe" ]      },      "predecessor" : "'$version'~1"    }  },  "android" : false}' > $file 
+       echo '{"url" : "", 
+              "versions" : {
+                 "'$version~1'" : {},
+                 "'$version'" : {"testcases" : {"de.dagere.peass.MainTest" : [ "testMe" ] }, "predecessor" : "'$version'~1"}
+              },
+              "android" : false}' > $file 
+
 }
 
 
@@ -69,12 +75,12 @@ then
 else
     echo "Creating PRONTO-results"
     mkdir $resultfolder/results/
-    createExecutionfile $version $resultfolder/results/execute_project.json
+    createExecutionfile $version $resultfolder/results/traceTestSelection_project.json
 fi
 
 echo "Starting Measurement"
 $PEASS_PROJECT/peass searchcause \
-	--folder=$projectFolder -executionfile $resultfolder/results/execute_project.json \
+	--folder=$projectFolder -executionfile $resultfolder/results/traceTestSelection_project.json \
 	--version=$version \
 	--timeout=50 \
 	--vms=$vms \
