@@ -114,12 +114,14 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
 
       List<CallTreeNode> includedNodes = new LinkedList<>();
 
-      root.setVersions(version, measurementConfiguration.getExecutionConfig().getVersionOld());
+      root.setConfig(measurementConfiguration);
+      
+      root.initVersions();
       includedNodes.add(root);
       for (int i = 0; i < nodeCount; i++) {
          final CallTreeNode measurementNode = root.getChildren().get(i);
          includedNodes.add(measurementNode);
-         measurementNode.setVersions(version, measurementConfiguration.getExecutionConfig().getVersionOld());
+         measurementNode.initVersions();
       }
       return includedNodes;
    }
