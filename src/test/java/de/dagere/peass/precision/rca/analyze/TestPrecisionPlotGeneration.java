@@ -44,7 +44,7 @@ public class TestPrecisionPlotGeneration {
       node.setValuesPredecessor(values);
       File resultFolder = new File("target/results-temp");
       resultFolder.mkdirs();
-      PrecisionConfig precisionConfig = new PrecisionConfig(false, false, false, 1000, StatisticalTestList.ALL_NO_BIMODAL_NO_CONFIDENCE.getTests(), 50, 20);
+      PrecisionConfig precisionConfig = new PrecisionConfig(false, false, 1000, StatisticalTestList.ALL_NO_BIMODAL_NO_CONFIDENCE.getTests(), 50, 20, 0, -1);
       new NodePrecisionPlotGenerator(node, Relation.LESS_THAN, new StatisticsConfig(), 10, precisionConfig).generate(resultFolder);
    }
 }
