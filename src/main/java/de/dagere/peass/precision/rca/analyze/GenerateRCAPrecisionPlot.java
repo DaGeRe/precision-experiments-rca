@@ -13,16 +13,14 @@ import de.dagere.peass.measurement.rca.serialization.MeasuredNode;
 import de.dagere.peass.measurement.statistics.Relation;
 import de.dagere.peass.utils.Constants;
 import de.precision.analysis.repetitions.PrecisionConfig;
-import de.precision.analysis.repetitions.StatisticalTestList;
+import de.precision.analysis.repetitions.PrecisionConfigMixin;
 import picocli.CommandLine;
+import picocli.CommandLine.Mixin;
 import picocli.CommandLine.Option;
 
 public class GenerateRCAPrecisionPlot implements Callable<Void> {
 
    private static final Logger LOG = LogManager.getLogger(GenerateRCAPrecisionPlot.class);
-
-   @Option(names = { "-removeOutliers", "--removeOutliers" }, description = "Whether to remove outliers")
-   private boolean removeOutliers;
 
    @Option(names = { "-type1error", "--type1error" }, description = "Type 1 error of executed statistic tests")
    private double type1error = 0.01;
@@ -33,11 +31,8 @@ public class GenerateRCAPrecisionPlot implements Callable<Void> {
    @Option(names = { "-alsoPlotChilds", "--alsoPlotChilds" }, description = "Plot childs", required = false)
    private boolean alsoPlotChilds = false;
    
-   @Option(names = { "-iterationResolution", "--iterationResolution" }, description = "Resolution for iteration count analysis (by default: 50 steps for iteration count)")
-   private int iterationResolution = 50;
-
-   @Option(names = { "-vmResolution", "--vmResolution" }, description = "Resolution for VM count analysis (by default: 50 steps for VM count)")
-   private int vmResolution = 20;
+   @Mixin
+   private PrecisionConfigMixin precisionConfigMixin;
 
    private StatisticsConfig config;
 
@@ -51,15 +46,15 @@ public class GenerateRCAPrecisionPlot implements Callable<Void> {
    @Override
    public Void call() throws Exception {
 
+      PrecisionConfig precisionConfig = precisionConfigMixin.getConfig();
+      
       config = new StatisticsConfig();
-      if (removeOutliers) {
+      if (precisionConfig.isRemoveOutliers()) {
          config.setOutlierFactor(StatisticsConfig.DEFAULT_OUTLIER_FACTOR);
       } else {
          config.setOutlierFactor(0.0);
       }
       config.setType1error(type1error);
-
-      PrecisionConfig precisionConfig = new PrecisionConfig(false, true, false, 2, StatisticalTestList.ALL_NO_BIMODAL_NO_CONFIDENCE.getTests(), iterationResolution, vmResolution);
       
       for (String folder : data) {
          final File basicFolder = new File(folder);
@@ -71,7 +66,7 @@ public class GenerateRCAPrecisionPlot implements Callable<Void> {
          File detailsFile = new File(detailsFolder, "testMe.json");
          CauseSearchData data = Constants.OBJECTMAPPER.readValue(detailsFile, CauseSearchData.class);
 
-         File resultFolder = new File(basicFolder.getParentFile(), removeOutliers ? "results_outlierRemoval" : "results_noOutlierRemoval");
+         File resultFolder = new File(basicFolder.getParentFile(), precisionConfig.isRemoveOutliers() ? "results_outlierRemoval" : "results_noOutlierRemoval");
          resultFolder.mkdirs();
          
          final MeasuredNode rootNode = data.getNodes();
@@ -81,7 +76,7 @@ public class GenerateRCAPrecisionPlot implements Callable<Void> {
       return null;
    }
 
-   private void plotNode(final MeasuredNode rootNode, final File resultFolder, PrecisionConfig precisionConfig) {
+   private void plotNode(final MeasuredNode rootNode, final File resultFolder, final PrecisionConfig precisionConfig) {
       LOG.info("Checking LESS_THAN: {}", rootNode.getCall());
       new NodePrecisionPlotGenerator(rootNode, Relation.LESS_THAN, config, 1000, precisionConfig).generate(resultFolder);
 
