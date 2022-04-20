@@ -103,7 +103,6 @@ do
 		--rcaStrategy=$RCA_STRATEGY \
 		--record=DURATION \
 		--useCircularQueue \
-		--useSampling \
 		--statisticTest T_TEST \
 		--measurementStrategy=PARALLEL \
 		--propertyFolder=$resultfolder/results/properties_$folder \
