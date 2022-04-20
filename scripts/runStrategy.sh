@@ -101,7 +101,7 @@ do
 		--outlierFactor=0 \
 		--repetitions=$repetitions \
 		--rcaStrategy=$RCA_STRATEGY \
-		--record=REDUCED_OPERATIONEXECUTION \
+		--record=DURATION \
 		--useCircularQueue \
 		--useSampling \
 		--statisticTest T_TEST \
