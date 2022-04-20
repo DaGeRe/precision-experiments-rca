@@ -81,8 +81,8 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
       CauseSearchFolders folders = new CauseSearchFolders(projectFolder);
 
       MeasurementConfig measurementConfiguration = new MeasurementConfig(measurementConfigMixin, executionMixin, statisticConfigMixin, new KiekerConfigMixin());
-      measurementConfiguration.getExecutionConfig().setVersion(version);
-      measurementConfiguration.getExecutionConfig().setVersionOld(predecessor);
+      measurementConfiguration.getExecutionConfig().setCommit(version);
+      measurementConfiguration.getExecutionConfig().setCommitOld(predecessor);
       measurementConfiguration.setUseKieker(true);
 
       List<CallTreeNode> includedNodes = getIncludedNodes(causeSearchConfig, folders, measurementConfiguration);
@@ -91,7 +91,7 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
 
       // tester.measureVersion(includedNodes);
       tester.setIncludedMethods(new HashSet<>(includedNodes));
-      final File logFolder = folders.getMeasureLogFolder(measurementConfiguration.getExecutionConfig().getVersion(), causeSearchConfig.getTestCase());
+      final File logFolder = folders.getMeasureLogFolder(measurementConfiguration.getExecutionConfig().getCommit(), causeSearchConfig.getTestCase());
       tester.setCurrentVersion(version);
       for (int i = 0; i < measurementConfiguration.getVms(); i++) {
          tester.runOnce(causeSearchConfig.getTestCase(), predecessor, i, logFolder);
@@ -103,13 +103,13 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
    private List<CallTreeNode> getIncludedNodes(final CauseSearcherConfig causeSearchConfig, final CauseSearchFolders folders, final MeasurementConfig measurementConfiguration)
          throws InterruptedException, IOException, FileNotFoundException, XmlPullParserException, ViewNotFoundException, AnalysisConfigurationException, JsonGenerationException,
          JsonMappingException {
-      final TreeReader resultsManager = TreeReaderFactory.createTreeReader(folders, measurementConfiguration.getExecutionConfig().getVersionOld(),
+      final TreeReader resultsManager = TreeReaderFactory.createTreeReader(folders, measurementConfiguration.getExecutionConfig().getCommitOld(),
             measurementConfiguration,
             causeSearchConfig.isIgnoreEOIs(), new EnvironmentVariables());
-      CallTreeNode root = resultsManager.getTree(new TestCase("de.peass.MainTest#testMe"), measurementConfiguration.getExecutionConfig().getVersionOld());
+      CallTreeNode root = resultsManager.getTree(new TestCase("de.peass.MainTest#testMe"), measurementConfiguration.getExecutionConfig().getCommitOld());
 
-      File potentialCacheFileOld = new File(folders.getTreeCacheFolder(measurementConfiguration.getExecutionConfig().getVersion(), causeSearchConfig.getTestCase()),
-            measurementConfiguration.getExecutionConfig().getVersionOld());
+      File potentialCacheFileOld = new File(folders.getTreeCacheFolder(measurementConfiguration.getExecutionConfig().getCommit(), causeSearchConfig.getTestCase()),
+            measurementConfiguration.getExecutionConfig().getCommitOld());
       Constants.OBJECTMAPPER.writeValue(potentialCacheFileOld, root);
 
       List<CallTreeNode> includedNodes = new LinkedList<>();
