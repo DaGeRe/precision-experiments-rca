@@ -11,8 +11,8 @@
     "javaVersion" : "1.8.0_252",
     "executionConfig": {
     	"timeout" : 7200000,
-    	"version" : "40ee8227e2f9f74ca9eefce576ab5c58009a1a73",
-    	"versionOld" : "40ee8227e2f9f74ca9eefce576ab5c58009a1a73~1"
+    	"commit" : "40ee8227e2f9f74ca9eefce576ab5c58009a1a73",
+    	"commitOld" : "40ee8227e2f9f74ca9eefce576ab5c58009a1a73~1"
     },
     "statisticsConfig": {
     	"type1error" : 0.05,
