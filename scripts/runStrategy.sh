@@ -90,6 +90,7 @@ do
 	    echo "Starting PRONTO"
 	    $PEASS_PROJECT/peass select -folder ../target/$folder &> $resultfolder/pronto.txt
 	    mv results $resultfolder/
+	    cp $resultfolder/results/traceTestSelection_project_2.json $resultfolder/results/execute_$folder.json
     else
 	    echo "Creating PRONTO-results"
 	    mkdir $resultfolder/results/
