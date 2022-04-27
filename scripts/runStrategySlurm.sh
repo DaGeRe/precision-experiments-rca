@@ -79,7 +79,7 @@ fi
 echo "Starting Measurement"
 $PEASS_PROJECT/peass searchcause \
 	--folder=$projectFolder -executionfile $resultfolder/results/traceTestSelection_project.json \
-	--version=$version \
+	--commit=$version \
 	--timeout=50 \
 	--vms=$vms \
 	--iterations=$iterations \
