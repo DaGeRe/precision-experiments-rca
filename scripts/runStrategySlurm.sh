@@ -20,11 +20,9 @@ function createExecutionfile {
 
 
 # Java path needs to be adapted manually
-#export JAVA_HOME=/usr/jdk64/jdk1.8.0_112/
-#export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.12.0.7-0.el7_9.x86_64/
-export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.302.b08-0.el7_9.x86_64
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk/
 
-export PATH=/home/sc.uni-leipzig.de/do820mize/maven/apache-maven-3.8.3/bin:$JAVA_HOME/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/nfs/user/do820mize/pxz:/nfs/user/do820mize/tar-1.29/bin/bin:/nfs/user/do820mize/git/git-2.9.5/bin-wrappers
+export PATH=/home/sc.uni-leipzig.de/do820mize/maven/apache-maven-3.8.3/bin:$JAVA_HOME/bin:/usr/lib64/qt-3.3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/sc.uni-leipzig.de/do820mize/pxz:/home/sc.uni-leipzig.de/do820mize/tar-1.29/bin/bin:/home/sc.uni-leipzig.de/do820mize/git/git-2.9.5/bin-wrappers
 
 if [ -z "$percentualDiff" ]
 then

@@ -13,7 +13,7 @@ do
 			vms=1000
 			levels=1
 			export RCA_STRATEGY=$strategy
-			logfolder=/nfs/user/do820mize/processlogs/precision-rca/$workload/
+			logfolder=/home/sc.uni-leipzig.de/do820mize/processlogs/precision-rca/$workload/
 			mkdir -p $logfolder
 			sbatch \
                 		--nice=1 \
