@@ -20,6 +20,7 @@ scripts/treeDepth/
 
 # Analysis data should not be versioned
 scripts/analysis_sampling/*txt
+scripts/*txt
 scripts/analysis_strategy/parallel/
 scripts/analysis_strategy/COMPLETE/
 scripts/analysis_strategy/LEVELWISE
