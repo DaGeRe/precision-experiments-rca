@@ -51,6 +51,11 @@ fi
 if [ $# -gt 6 ]
 then
         percentualDiff=$7
+	if (( $(echo "$percentualDiff <= 1.0" |bc -l) ))
+	then
+		echo "PercentualDiff needs to be above 1.0, exiting"
+		exit 1
+	fi
 else
         percentualDiff="1.003"
 fi
