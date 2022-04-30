@@ -48,6 +48,13 @@ else
 	vms=400
 fi
 
+if [ $# -gt 6 ]
+then
+        percentualDiff=$7
+else
+        percentualDiff="1.003"
+fi
+
 if [ "$RCA_STRATEGY" == "" ]
 then
 	RCA_STRATEGY="COMPLETE"
@@ -57,7 +64,6 @@ mvn -f .. clean install &> install.txt
 echo "Iterations: $iterations Repetitions: $repetitions VMs: $vms Strategy: $RCA_STRATEGY"
 for workloadsize in 300
 do
-	percentualDiff="1.003"
     fastParameter=$workloadsize
     slowParameter=$(echo "$workloadsize*$percentualDiff+0.5" | bc | awk '{print int ($1)}')
     if [ "$workload" == "BUSY_WAITING" ]
