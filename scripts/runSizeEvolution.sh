@@ -79,14 +79,12 @@ function generateMethodDiffFile {
 vms=50
 fastParameter=300
 slowParameter=300
-workload="ADD"
+
 
 iterations=100
 repetitions=100000
 
 RCA_STRATEGY="UNTIL_SOURCE_CHANGE"
-
-echo "Slower Version: $slowParameter Faster Version: $fastParameter Type: $workload"
 
 if [ "$#" -lt 1 ]
 then
@@ -94,6 +92,15 @@ then
 else
 	treedepth=$1
 fi
+
+if [ "$#" -lt 2 ]
+then
+	workload="ADD"
+else
+	workload=$2
+fi
+
+echo "Slower Version: $slowParameter Faster Version: $fastParameter Type: $workload"
 
 parent="sizeEvolution/"
 rm -rf $parent/*
