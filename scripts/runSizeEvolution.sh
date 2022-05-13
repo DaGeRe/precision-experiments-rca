@@ -137,7 +137,7 @@ do
 		echo $(generateMethodDiffFile $resultfolder $version "de.dagere.peass.C1_0" "method0")
 	fi
 	
-	if (( $nodeCount == 4 ))
+	if (( $nodeCount >= 8 ))
 	then
 		echo $(generateMethodDiffFile $resultfolder $version "de.dagere.peass.C1_0" "method1")
 		echo $(generateMethodDiffFile $resultfolder $version "de.dagere.peass.C1_1" "method0")
@@ -151,6 +151,8 @@ do
 	sleep 1
 	
 	mv ../target/"$folder"_peass/ $resultfolder/
+	
+	java -cp target/precision-experiments-rca-0.1-SNAPSHOT.jar de.dagere.peass.precision.rca.analyze.GetRelativeStandardDeviation $resultfolder/"$folder"_peass
 
 checkResultExistence $resultfolder
 done
