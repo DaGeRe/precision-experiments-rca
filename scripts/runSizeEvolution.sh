@@ -103,7 +103,6 @@ fi
 echo "Slower Version: $slowParameter Faster Version: $fastParameter Type: $workload"
 
 parent="sizeEvolution/"
-rm -rf $parent/*
 sync
 
 folder=project_$treedepth
