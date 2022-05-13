@@ -83,7 +83,7 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
       MeasurementConfig measurementConfiguration = new MeasurementConfig(measurementConfigMixin, executionMixin, statisticConfigMixin, new KiekerConfigMixin());
       measurementConfiguration.getExecutionConfig().setCommit(version);
       measurementConfiguration.getExecutionConfig().setCommitOld(predecessor);
-      measurementConfiguration.setUseKieker(true);
+      measurementConfiguration.getKiekerConfig().setUseKieker(true);
 
       List<CallTreeNode> includedNodes = getIncludedNodes(causeSearchConfig, folders, measurementConfiguration);
 
