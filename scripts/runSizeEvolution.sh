@@ -95,7 +95,7 @@ else
 	treedepth=$1
 fi
 
-parent="deviationEstimation/"
+parent="sizeEvolution/"
 rm -rf $parent/*
 sync
 
@@ -105,7 +105,7 @@ echo "Treedepth: $treedepth Slower: $slower"
 
 for nodeCount in 1 2 4 8
 do
-	resultfolder=$parent/deviation_"$treedepth"_"$nodeCount"
+	resultfolder=$parent/deviation_"$treedepth"_"$nodeCount"_"$workload"
 	mkdir -p $resultfolder
 
 	rm -rf ../target/$folder*
