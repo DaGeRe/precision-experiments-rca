@@ -152,7 +152,7 @@ do
 	
 	mv ../target/"$folder"_peass/ $resultfolder/
 	
-	java -cp target/precision-experiments-rca-0.1-SNAPSHOT.jar de.dagere.peass.precision.rca.analyze.GetRelativeStandardDeviation $resultfolder/"$folder"_peass
+	java -cp ../target/precision-experiments-rca-0.1-SNAPSHOT.jar de.dagere.peass.precision.rca.analyze.GetRelativeStandardDeviation $resultfolder/"$folder"_peass
 
 checkResultExistence $resultfolder
 done
