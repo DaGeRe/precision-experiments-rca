@@ -29,7 +29,7 @@ then
 	percentualDiff=0.3
 fi
 
-echo "Nodes: $nodes Slower: $slower Workload: $workload Repetitions: $repetitions VMs: $vms RCA_STRATEGY: $RCA_STRATEGY Diff: $percentualDiff Levels: $levels"
+echo "TreeDepth: $nodes Slower: $slower Workload: $workload Repetitions: $repetitions VMs: $vms RCA_STRATEGY: $RCA_STRATEGY Diff: $percentualDiff Levels: $levels"
 
 workloadsize=300
 fastParameter=$workloadsize
