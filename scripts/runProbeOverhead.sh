@@ -240,20 +240,20 @@ function measure {
 function checkResultExistence {
 	resultFolder=$1
 	
-	expectedFiles="$resultfolder/project_*_peass/rca/tree/*/MainTest/testMe.json"
+	expectedFiles="$resultfolder/project_*_peass/rca/treeMeasurementResults/*/MainTest/testMe.json"
 	expectedFile=( $expectedFiles )
 	if [ ! -f "${expectedFile[0]}" ]
 	then
 		echo "Warning: $expectedFile did not exist"
 	else
-		potentialNaN=$(cat $resultfolder/project_*_peass/rca/tree/*/MainTest/testMe.json | grep -v tvalue | grep NaN)
+		potentialNaN=$(cat $resultfolder/project_*_peass/rca/treeMeasurementResults/*/MainTest/testMe.json | grep -v tvalue | grep NaN)
 		if [ ! -z "$potentialNaN" ]
 		then
 			echo "Warning: $expectedFile did contain NaN: "
 			nanString=$(echo $potentialNaN | head)
 			echo ${nanString:0:100}
 		else
-			potentialCallProblem=$(cat $resultfolder/project_*_peass/rca/tree/*/MainTest/testMe.json | grep "calls\"" | tr -d " " | uniq)
+			potentialCallProblem=$(cat $resultfolder/project_*_peass/rca/treeMeasurementResults/*/MainTest/testMe.json | grep "calls\"" | tr -d " " | uniq)
 			callLength=$(echo $potentialCallProblem | wc -l)
 			if [ ! $callLength -eq 1 ]
 			then
