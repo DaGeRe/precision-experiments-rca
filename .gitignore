@@ -26,6 +26,8 @@ scripts/analysis_strategy/COMPLETE/
 scripts/analysis_strategy/LEVELWISE
 scripts/analysis_strategy/UNTIL_SOURCE_CHANGE/
 scripts/analysis_strategy/
+scripts/sizeEvolution/*csv
+scripts/sizeEvolution/*pdf
 scripts/results/
 scripts/strategy
 /bin/
