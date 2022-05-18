@@ -1,13 +1,18 @@
 package de.dagere.peass.precision.rca.analyze;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.Callable;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.databind.DatabindException;
+
 import de.dagere.peass.config.StatisticsConfig;
 import de.dagere.peass.folders.CauseSearchFolders;
+import de.dagere.peass.measurement.rca.RCAStrategy;
 import de.dagere.peass.measurement.rca.data.CauseSearchData;
 import de.dagere.peass.measurement.rca.serialization.MeasuredNode;
 import de.dagere.peass.measurement.statistics.Relation;
@@ -57,23 +62,43 @@ public class GenerateRCAPrecisionPlot implements Callable<Void> {
       config.setType1error(type1error);
       
       for (String folder : data) {
-         final File basicFolder = new File(folder);
-         CauseSearchFolders folders = new CauseSearchFolders(basicFolder);
-         System.out.println(folders.getRcaTreeFolder().getAbsolutePath());
-         File versionFolder = folders.getRcaTreeFolder().listFiles()[0];
-         File testclazzFolder = versionFolder.listFiles()[0];
-         File detailsFolder = new File(testclazzFolder, "details");
-         File detailsFile = new File(detailsFolder, "testMe.json");
-         CauseSearchData data = Constants.OBJECTMAPPER.readValue(detailsFile, CauseSearchData.class);
-
-         File resultFolder = new File(basicFolder.getParentFile(), precisionConfig.isRemoveOutliers() ? "results_outlierRemoval" : "results_noOutlierRemoval");
-         resultFolder.mkdirs();
-         
-         final MeasuredNode rootNode = data.getNodes();
-         plotNode(rootNode, resultFolder, precisionConfig);
+         if (!folder.endsWith(RCAStrategy.COMPLETE.name()) && 
+               !folder.endsWith(RCAStrategy.LEVELWISE.name()) && 
+               !folder.endsWith(RCAStrategy.UNTIL_SOURCE_CHANGE.name())) {
+            final File basicFolder = new File(folder);
+            plotFolderContent(precisionConfig, basicFolder);
+         }else {
+            LOG.info("Found folder " + folder + " to be a strategy folder; "
+                  + "assuming that in $STRATEGY/$SIZE/$SIZE_$STRATEGY_$PERCENTUALCHANGE_$WORKLOAD_1 the plottable data exist");
+            File strategyFolder = new File(folder);
+            for (File sizeFolder : strategyFolder.listFiles()) {
+               for (File workloadPercentualChangeFolder : sizeFolder.listFiles()) {
+                  if (workloadPercentualChangeFolder.isDirectory()) {
+                     File basicFolder = new File(workloadPercentualChangeFolder, "project_peass");
+                     plotFolderContent(precisionConfig, basicFolder);
+                  }
+               }
+            }
+         }
       }
 
       return null;
+   }
+
+   private void plotFolderContent(PrecisionConfig precisionConfig, File basicFolder) throws IOException, StreamReadException, DatabindException {
+      CauseSearchFolders folders = new CauseSearchFolders(basicFolder);
+      System.out.println(folders.getRcaTreeFolder().getAbsolutePath());
+      File versionFolder = folders.getRcaTreeFolder().listFiles()[0];
+      File testclazzFolder = versionFolder.listFiles()[0];
+      File detailsFolder = new File(testclazzFolder, "details");
+      File detailsFile = new File(detailsFolder, "testMe.json");
+      CauseSearchData data = Constants.OBJECTMAPPER.readValue(detailsFile, CauseSearchData.class);
+
+      File resultFolder = new File(basicFolder.getParentFile(), precisionConfig.isRemoveOutliers() ? "results_outlierRemoval" : "results_noOutlierRemoval");
+      resultFolder.mkdirs();
+      
+      final MeasuredNode rootNode = data.getNodes();
+      plotNode(rootNode, resultFolder, precisionConfig);
    }
 
    private void plotNode(final MeasuredNode rootNode, final File resultFolder, final PrecisionConfig precisionConfig) {
