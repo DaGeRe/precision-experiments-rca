@@ -11,13 +11,12 @@ function plotStuff {
                 java -cp ../../target/precision-experiments-rca-0.1-SNAPSHOT.jar \
                 de.dagere.peass.precision.rca.analyze.GenerateRCAPrecisionPlot \
                 -data $dataFolder \
-                -removeOutliers -alsoPlotChilds \
+                -outlierRemoval \
                 &> $resultfolder"_outlierremoval".txt \
                 && \
                 java -cp ../../target/precision-experiments-rca-0.1-SNAPSHOT.jar \
                 de.dagere.peass.precision.rca.analyze.GenerateRCAPrecisionPlot \
                 -data $dataFolder \
-                -alsoPlotChilds \
                 &> $resultfolder"_nooutlierremoval".txt \
                 && \
                 ./plotAll.sh $dataFolder/../ $resultfolder
@@ -37,25 +36,27 @@ function eventuallyAnalyze {
         fi
 }
 
-BASEFOLDER=rawData
-parallelFolder=$BASEFOLDER
+parallelFolder=$1
 
 mkdir results
 for depth in 2 4 6 8
 do
-        for percent in 1.003 1.010 1.020
+        for percent in 1.003 1.010 1.020 1.030 1.050
         do
-                inputFolder=$parallelFolder/LEVELWISE/$depth/$depth"_LEVELWISE_"$percent"_ADD_1"/project_peass
-                eventuallyAnalyze $inputFolder results/LEVELWISE_1/$depth/$percent
-                inputFolder=$parallelFolder/LEVELWISE/$depth/$depth"_LEVELWISE_"$percent"_ADD_2"/project_peass
-                eventuallyAnalyze $inputFolder results/LEVELWISE_2/$depth/$percent
-                inputFolder=$parallelFolder/COMPLETE/$depth/$depth"_COMPLETE_"$percent"_ADD"/project_peass
-                eventuallyAnalyze $inputFolder results/COMPLETE/$depth/$percent
-                inputFolder=$parallelFolder/UNTIL_SOURCE_CHANGE/$depth/$depth"_UNTIL_SOURCE_CHANGE_"$percent"_ADD"/project_peass
-                eventuallyAnalyze $inputFolder results/UNTIL_SOURCE_CHANGE/$depth/$percent
+                #inputFolder=$parallelFolder/LEVELWISE/$depth/$depth"_LEVELWISE_"$percent"_ADD_1"/project_peass
+                #eventuallyAnalyze $inputFolder results/LEVELWISE_1/$depth/$percent
+                #inputFolder=$parallelFolder/LEVELWISE/$depth/$depth"_LEVELWISE_"$percent"_ADD_2"/project_peass
+                #eventuallyAnalyze $inputFolder results/LEVELWISE_2/$depth/$percent
+                #inputFolder=$parallelFolder/COMPLETE/$depth/$depth"_COMPLETE_"$percent"_ADD_1"/project_peass
+                #eventuallyAnalyze $inputFolder results/COMPLETE/$depth/$percent
+                #inputFolder=$parallelFolder/UNTIL_SOURCE_CHANGE/$depth/$depth"_UNTIL_SOURCE_CHANGE_"$percent"_ADD_1"/project_peass
+                #eventuallyAnalyze $inputFolder results/UNTIL_SOURCE_CHANGE/$depth/$percent
 
-		for strategy in LEVELWISE_1 LEVELWISE_2 COMPLETE UNTIL_SOURCE_CHANGE
+		for strategy in LEVELWISE COMPLETE UNTIL_SOURCE_CHANGE
 		do
+			inputFolder=$parallelFolder/$strategy/$depth/$depth"_"$strategy"_"$percent"_ADD_1"/project_peass
+                	eventuallyAnalyze $inputFolder results/$strategy/$depth/$percent
+                
 			echo "Test $strategy"
 			resultfile=results/$strategy/$depth/$percent"_outlierRemoval"/depeassMainTest_testMe.pdf
 			if [ -f $resultfile ]
@@ -67,24 +68,9 @@ do
 			fi
 		done
         done
+        wait
 done
 
-#plotStuff $parallelFolder/COMPLETE/2/2_COMPLETE_0.3_ADD/project_peass COMPLETE/2/0.3 &
-#plotStuff $parallelFolder/COMPLETE/2/2_COMPLETE_0.3_ADD/project_peass COMPLETE/2/0.3 &
-#plotStuff $parallelFolder/COMPLETE/4/2_COMPLETE_0.3_ADD/ COMPLETE/4/0.3 &
-#plotStuff $parallelFolder/COMPLETE/6/2_COMPLETE_0.3_ADD/ COMPLETE/6/0.3 &
-#plotStuff /home/reichelt/daten3/diss/repos/precision-experiments-rca/sampling_comparison/sampling/03promille/project_3_peass LEVELWISE/3
 
-#plotStuff $parallelFolder/UNTIL_SOURCE_CHANGE/9_8/*/project_9_peass parallel/UNTIL_SOURCE_CHANGE/9 &
 
-wait
-
-#dataFolder=/home/reichelt/daten3/diss/repos/precision-experiments-rca/strategies/COMPLETE/300_5_4_COMPLETE_1.103/project_5_peass/
-#java -cp ../../target/precision-experiments-rca-0.1-SNAPSHOT.jar de.peass.precision.rca.analyze.GenerateRCAPrecisionPlot -data $dataFolder &> 1.txt
-#java -cp ../../target/precision-experiments-rca-0.1-SNAPSHOT.jar de.peass.precision.rca.analyze.GenerateRCAPrecisionPlot -data $dataFolder -removeOutliers &> 2.txt
-#./plotAll.sh $dataFolder/../ COMPLETE
-
-#dataFolder=/home/reichelt/daten3/diss/repos/precision-experiments-rca/strategies/LEVELWISE/300_5_4_LEVELWISE_1.103/project_5_peass/
-#java -cp ../../target/precision-experiments-rca-0.1-SNAPSHOT.jar de.peass.precision.rca.analyze.GenerateRCAPrecisionPlot -data $dataFolder &> 1.txt
-#java -cp ../../target/precision-experiments-rca-0.1-SNAPSHOT.jar de.peass.precision.rca.analyze.GenerateRCAPrecisionPlot -data $dataFolder -removeOutliers &> 2.txt
 #./plotAll.sh $dataFolder/../ LEVELWISE

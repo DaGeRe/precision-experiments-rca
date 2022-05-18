@@ -1,6 +1,6 @@
 set encoding iso_8859_1
 
-set terminal unknown
+set terminal fig
 plot ARG1 u 1:2:3 with image
 
 set terminal pdf size 10,5
@@ -15,7 +15,7 @@ set cbrange [0:100]
 set xlabel 'VMs'
 
 # english
-set cblabel 'F1 Score'
+set cblabel 'F_1 Score'
 set ylabel 'Iterations'
 
 # german
