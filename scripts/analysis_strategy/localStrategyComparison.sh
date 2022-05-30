@@ -36,6 +36,12 @@ function eventuallyAnalyze {
         fi
 }
 
+if (( "$#" < 1 ))
+then
+	echo "Please pass folder that should be analyzed"
+	exit 1
+fi
+
 parallelFolder=$1
 
 mkdir results
