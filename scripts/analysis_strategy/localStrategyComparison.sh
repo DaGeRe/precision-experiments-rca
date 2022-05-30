@@ -1,8 +1,8 @@
 function plotStuff {
         dataFolder=$1
-        resultfolder=$2
+        outputFolder=$2
 
-        mkdir -p $resultfolder
+        mkdir -p $outputFolder
 
         echo "Plotting $dataFolder"
 
@@ -12,14 +12,14 @@ function plotStuff {
                 de.dagere.peass.precision.rca.analyze.GenerateRCAPrecisionPlot \
                 -data $dataFolder \
                 -outlierRemoval \
-                &> $resultfolder"_outlierremoval".txt \
+                &> $outputFolder"_outlierremoval".txt \
                 && \
                 java -cp ../../target/precision-experiments-rca-0.1-SNAPSHOT.jar \
                 de.dagere.peass.precision.rca.analyze.GenerateRCAPrecisionPlot \
                 -data $dataFolder \
-                &> $resultfolder"_nooutlierremoval".txt \
+                &> $outputFolder"_nooutlierremoval".txt \
                 && \
-                ./plotAll.sh $dataFolder/../ $resultfolder
+                ./plotAll.sh $dataFolder/../ $outputFolder
 
         echo "Plotting $dataFolder finished"
         echo
