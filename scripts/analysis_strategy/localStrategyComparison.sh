@@ -70,12 +70,26 @@ function createMergedData {
 		resultFolder=results/MERGED/$strategy
 		mkdir -p $resultFolder
 		folder=results/$strategy/$depth
+		heatmaps=""
+		if [ -f results/$strategy/ADD/$depth/"$percent"_noOutlierRemoval_mannWhitney/de.dagere.peass.MainTest_testMe.csv ]
+		then
+			heatmaps="results/$strategy/ADD/$depth/"$percent"_noOutlierRemoval_mannWhitney/de.dagere.peass.MainTest_testMe.csv"
+		fi
+		if [ -f results/$strategy/RAM/$depth/"$percent"_noOutlierRemoval_mannWhitney/de.dagere.peass.MainTest_testMe.csv ]
+		then
+			heatmaps="$heatmaps results/$strategy/RAM/$depth/"$percent"_noOutlierRemoval_mannWhitney/de.dagere.peass.MainTest_testMe.csv"
+		fi
+		if [ -f results/$strategy/SYSOUT/$depth/"$percent"_noOutlierRemoval_mannWhitney/de.dagere.peass.MainTest_testMe.csv ]
+		then
+			heatmaps="$heatmaps results/$strategy/SYSOUT/$depth/"$percent"_noOutlierRemoval_mannWhitney/de.dagere.peass.MainTest_testMe.csv"
+		fi
+		
 		java -cp ../../target/precision-experiments-rca-0.1-SNAPSHOT.jar \
 			de.precision.analysis.heatmap.MergeHeatmaps \
-			results/$strategy/ADD/$depth/"$percent"_noOutlierRemoval_mannWhitney/de.dagere.peass.MainTest_testMe.csv \
-			results/$strategy/RAM/$depth/"$percent"_noOutlierRemoval_mannWhitney/de.dagere.peass.MainTest_testMe.csv \
-			results/$strategy/SYSOUT/$depth/"$percent"_noOutlierRemoval_mannWhitney/de.dagere.peass.MainTest_testMe.csv
+			$heatmaps
 		mv result.csv $resultFolder/"$depth"_"$percent".csv
+		
+		gnuplot -c plotHeatmap.plt $resultFolder/"$depth"_"$percent".csv $resultFolder/"$depth"_"$percent".pdf
 	done
 }
 
