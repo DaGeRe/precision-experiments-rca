@@ -278,7 +278,13 @@ echo "Slower Version: $slowParameter Faster Version: $fastParameter Type: $workl
 
 folderName=$(getFolder $folderIndex $MEASURE)
 parent="probeOverhead/$folderName"
-rm -rf $parent/*
+if [ -d $parent ]
+then
+	echo "Cleaning $parent"
+	rm -rf $parent/*
+else
+	echo "$parent not existing; not cleaning"
+fi
 sync
 
 #for treedepth in 2 4 8 16 32 48 64 80 96 128 
