@@ -287,6 +287,12 @@ else
 fi
 sync
 
+if [ ! -f $PEASS_PROJECT/peass ]
+then
+	echo "Environment variable PEASS_PROJECT needs to be defined and point to a Peass installation!"
+	exit 1
+fi
+
 #for treedepth in 2 4 8 16 32 48 64 80 96 128 
 for treedepth in 2 4 8 16 32 64 128
 do
