@@ -12,6 +12,19 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.io.Files;
 
+/**
+ * This finds the lowest iteration configuration that is possible for the given data
+ * 
+ * For the current dataset (https://zenodo.org/record/5995320#.YqSigTlBxhE), this does not make sense, as the main limiting factor was the time of the cluster for every root cause
+ * analysis (which was 10 days), therefore, we were able to analyze up to a tree depth of 8 and LEVELWISE and COMPLETE were not able to finish for the tree depth of 8. In this
+ * case, one should choose a strategy based on the expected place of the regression (if one excects it to be inside a changed node, UNTIL_SOURCE_CHANGE is fine) and the available
+ * computation time.
+ * 
+ * It might make sense to use this class again if data of different tree structures or different strategies are evaluated.
+ * 
+ * @author DaGeRe
+ *
+ */
 public class FindLowestIterationConfiguration {
 
    private static final int BOUNDARY_VALUE = 99;
@@ -95,11 +108,11 @@ public class FindLowestIterationConfiguration {
 
    private static Values getCurrentTestMinimum(final File strategyfolder, final String percentage, final String statisticalTest) throws IOException {
       Values statisticalTestMinimum = null;
-      
-      for (int depth : new int[] {2, 4, 6, 8}) {
-         File f1ScoreFile = new File(strategyfolder, depth+"_" + percentage + ".csv");
+
+      for (int depth : new int[] { 2, 4, 6, 8 }) {
+         File f1ScoreFile = new File(strategyfolder, depth + "_" + percentage + ".csv");
          // File f1ScoreFile = new File(f1scoreFile, percentage + "_outlierRemoval" + statisticalTest + File.separator + "de.peass.MainTest_testMe.csv");
-         
+
          if (f1ScoreFile.exists() && f1ScoreFile.getName().endsWith(".csv")) {
             List<String> lines = Files.readLines(f1ScoreFile, StandardCharsets.UTF_8);
 
@@ -129,7 +142,7 @@ public class FindLowestIterationConfiguration {
                   statisticalTestMinimum = new Values(newVMs, newIterations, newF1, statisticalTest);
                }
             }
-         }else {
+         } else {
             return new Values(Integer.MAX_VALUE, Integer.MAX_VALUE, 0, statisticalTest);
          }
       }
