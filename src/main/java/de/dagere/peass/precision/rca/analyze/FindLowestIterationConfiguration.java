@@ -52,13 +52,13 @@ public class FindLowestIterationConfiguration {
       if (!folder.exists()) {
          throw new RuntimeException("Could not find " + folder);
       }
-      String[] percentages = new String[] { "1.003", "1.010", "1.020", "1.030", "1.050" };
+      String[] percentages = new String[] { "1.010", "1.020", "1.030", "1.050" };
       System.out.print("Strategie ");
       for (String percentage : percentages) {
          System.out.print(" & " + percentage);
       }
       System.out.println("\\\\");
-      for (String strategy : new String[] { "COMPLETE", "UNTIL_SOURCE_CHANGE", "LEVELWISE_1", "LEVELWISE_2" }) {
+      for (String strategy : new String[] { "COMPLETE", "UNTIL_SOURCE_CHANGE", "LEVELWISE" }) {
          // for (String strategy : new String[] { "UNTIL_SOURCE_CHANGE" }) {
          System.out.print("\\textbf{" + strategy.replace("_", "-") + "} & \\\\");
 
@@ -95,9 +95,12 @@ public class FindLowestIterationConfiguration {
 
    private static Values getCurrentTestMinimum(final File strategyfolder, final String percentage, final String statisticalTest) throws IOException {
       Values statisticalTestMinimum = null;
-      for (File depthFolder : strategyfolder.listFiles()) {
-         File f1ScoreFile = new File(depthFolder, percentage + "_outlierRemoval" + statisticalTest + File.separator + "de.peass.MainTest_testMe.csv");
-         if (f1ScoreFile.exists()) {
+      
+      for (int depth : new int[] {2, 4, 6, 8}) {
+         File f1ScoreFile = new File(strategyfolder, depth+"_" + percentage + ".csv");
+         // File f1ScoreFile = new File(f1scoreFile, percentage + "_outlierRemoval" + statisticalTest + File.separator + "de.peass.MainTest_testMe.csv");
+         
+         if (f1ScoreFile.exists() && f1ScoreFile.getName().endsWith(".csv")) {
             List<String> lines = Files.readLines(f1ScoreFile, StandardCharsets.UTF_8);
 
             List<Values> f1scores = new LinkedList<>();
@@ -114,7 +117,7 @@ public class FindLowestIterationConfiguration {
             Values minimum = getLowestConfiguration(f1scores);
             LOG.trace(f1ScoreFile);
             if (minimum == null) { // if one depth / percentage combination does not find a value, we cannot find a suitable configuration
-               LOG.trace("No combination for " + percentage + " " + statisticalTest + " " + depthFolder.getName());
+               LOG.trace("No combination for " + percentage + " " + statisticalTest + " " + f1ScoreFile.getName());
                statisticalTestMinimum = new Values(Integer.MAX_VALUE, Integer.MAX_VALUE, 0, statisticalTest);
             } else {
                if (statisticalTestMinimum == null) {
@@ -126,6 +129,8 @@ public class FindLowestIterationConfiguration {
                   statisticalTestMinimum = new Values(newVMs, newIterations, newF1, statisticalTest);
                }
             }
+         }else {
+            return new Values(Integer.MAX_VALUE, Integer.MAX_VALUE, 0, statisticalTest);
          }
       }
       return statisticalTestMinimum;
