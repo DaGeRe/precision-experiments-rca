@@ -21,7 +21,7 @@ import de.dagere.peass.config.parameters.StatisticsConfigMixin;
 import de.dagere.peass.dependency.analysis.data.TestCase;
 import de.dagere.peass.dependency.persistence.StaticTestSelection;
 import de.dagere.peass.dependency.persistence.VersionStaticSelection;
-import de.dagere.peass.dependencyprocessors.VersionComparatorInstance;
+import de.dagere.peass.dependencyprocessors.CommitComparatorInstance;
 import de.dagere.peass.dependencyprocessors.ViewNotFoundException;
 import de.dagere.peass.execution.utils.EnvironmentVariables;
 import de.dagere.peass.folders.CauseSearchFolders;
@@ -88,7 +88,7 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
 
       List<CallTreeNode> includedNodes = getIncludedNodes(causeSearchConfig, folders, measurementConfiguration);
 
-      VersionComparatorInstance comparator = new VersionComparatorInstance(dependencies);
+      CommitComparatorInstance comparator = new CommitComparatorInstance(dependencies);
       CauseTester tester = new CauseTester(folders, measurementConfiguration, causeSearchConfig, new EnvironmentVariables(), comparator);
 
       // tester.measureVersion(includedNodes);
