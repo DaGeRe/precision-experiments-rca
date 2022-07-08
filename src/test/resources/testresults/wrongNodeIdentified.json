@@ -9,8 +9,7 @@
     "useKieker" : true,
     "useGC" : false,
     "javaVersion" : "1.8.0_252",
-    "executionConfig": {
-    	"timeout" : 7200000,
+    "fixedCommitConfig": {
     	"commit" : "20b511cbe608c97e5b3020858202fda01bbbe004",
     	"commitOld" : "20b511cbe608c97e5b3020858202fda01bbbe004~1"
     },
