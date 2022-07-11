@@ -3,9 +3,6 @@ package de.dagere.peass.validate_rca;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.dagere.peass.validate_rca.DurationCreator;
-import de.dagere.peass.validate_rca.SlowerNodeInfos;
-
 
 public class TestDurationCreator {
    

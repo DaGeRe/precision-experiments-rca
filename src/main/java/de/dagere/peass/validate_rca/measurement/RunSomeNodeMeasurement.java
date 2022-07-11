@@ -118,12 +118,12 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
 
       root.setConfig(measurementConfiguration);
       
-      root.initVersions();
+      root.initCommitData();
       includedNodes.add(root);
       for (int i = 0; i < nodeCount; i++) {
          final CallTreeNode measurementNode = root.getChildren().get(i);
          includedNodes.add(measurementNode);
-         measurementNode.initVersions();
+         measurementNode.initCommitData();
       }
       return includedNodes;
    }

@@ -7,8 +7,6 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.dagere.peass.validate_rca.GenerateTreeExampleProject;
-import de.dagere.peass.validate_rca.SlowerNodeInfos;
 import de.pmdcheck.peassgeneration.GenerateProject;
 
 public class GenerationIT {

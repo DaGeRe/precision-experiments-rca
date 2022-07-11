@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import de.dagere.peass.measurement.rca.data.CauseSearchData;
 import de.dagere.peass.utils.Constants;
-import de.dagere.peass.validate_rca.SlowerNodeInfos;
 import de.dagere.peass.validate_rca.checking.Checker;
 
 public class TestTreeCheck {
