@@ -20,7 +20,7 @@ import de.dagere.peass.config.parameters.MeasurementConfigurationMixin;
 import de.dagere.peass.config.parameters.StatisticsConfigMixin;
 import de.dagere.peass.dependency.analysis.data.TestCase;
 import de.dagere.peass.dependency.persistence.StaticTestSelection;
-import de.dagere.peass.dependency.persistence.VersionStaticSelection;
+import de.dagere.peass.dependency.persistence.CommitStaticSelection;
 import de.dagere.peass.dependencyprocessors.CommitComparatorInstance;
 import de.dagere.peass.dependencyprocessors.ViewNotFoundException;
 import de.dagere.peass.execution.utils.EnvironmentVariables;
@@ -74,7 +74,7 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
    @Override
    public Void call() throws Exception {
       StaticTestSelection dependencies = Constants.OBJECTMAPPER.readValue(staticSelectionFile, StaticTestSelection.class);
-      final VersionStaticSelection versionInfo = dependencies.getVersions().get(version);
+      final CommitStaticSelection versionInfo = dependencies.getVersions().get(version);
       final String predecessor = versionInfo.getPredecessor();
 
       CauseSearcherConfig causeSearchConfig = new CauseSearcherConfig(new TestCase("de.peass.MainTest#testMe"), causeSearchConfigMixin);
