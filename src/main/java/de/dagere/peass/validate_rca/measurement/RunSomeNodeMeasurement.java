@@ -62,8 +62,8 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
    @Option(names = { "-staticSelectionFile", "--staticSelectionFile" }, description = "Path to the staticSelectionFile")
    protected File staticSelectionFile;
 
-   @Option(names = { "-version", "--version" }, description = "Only version to analyze - do not use together with startversion and endversion!")
-   protected String version;
+   @Option(names = { "-commit", "--commit" }, description = "Only commit to analyze - do not use together with startcommit and endcommit!")
+   protected String commit;
 
    public static void main(final String[] args) {
       final RunSomeNodeMeasurement command = new RunSomeNodeMeasurement();
@@ -74,7 +74,7 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
    @Override
    public Void call() throws Exception {
       StaticTestSelection dependencies = Constants.OBJECTMAPPER.readValue(staticSelectionFile, StaticTestSelection.class);
-      final CommitStaticSelection versionInfo = dependencies.getVersions().get(version);
+      final CommitStaticSelection versionInfo = dependencies.getCommits().get(commit);
       final String predecessor = versionInfo.getPredecessor();
 
       CauseSearcherConfig causeSearchConfig = new CauseSearcherConfig(new TestCase("de.peass.MainTest#testMe"), causeSearchConfigMixin);
@@ -82,7 +82,7 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
       CauseSearchFolders folders = new CauseSearchFolders(projectFolder);
 
       MeasurementConfig measurementConfiguration = new MeasurementConfig(measurementConfigMixin, executionMixin, statisticConfigMixin, new KiekerConfigMixin());
-      measurementConfiguration.getFixedCommitConfig().setCommit(version);
+      measurementConfiguration.getFixedCommitConfig().setCommit(commit);
       measurementConfiguration.getFixedCommitConfig().setCommitOld(predecessor);
       measurementConfiguration.getKiekerConfig().setUseKieker(true);
 
@@ -94,7 +94,7 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
       // tester.measureVersion(includedNodes);
       tester.setIncludedMethods(new HashSet<>(includedNodes));
       final File logFolder = folders.getMeasureLogFolder(measurementConfiguration.getFixedCommitConfig().getCommit(), causeSearchConfig.getTestCase());
-      tester.setCurrentVersion(version);
+      tester.setCurrentVersion(commit);
       for (int i = 0; i < measurementConfiguration.getVms(); i++) {
          tester.runOnce(causeSearchConfig.getTestCase(), predecessor, i, logFolder);
       }
