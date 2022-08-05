@@ -18,8 +18,8 @@ import de.dagere.peass.config.parameters.ExecutionConfigMixin;
 import de.dagere.peass.config.parameters.KiekerConfigMixin;
 import de.dagere.peass.config.parameters.MeasurementConfigurationMixin;
 import de.dagere.peass.config.parameters.StatisticsConfigMixin;
-import de.dagere.peass.dependency.analysis.data.TestCase;
 import de.dagere.peass.dependency.persistence.StaticTestSelection;
+import de.dagere.peass.dependency.analysis.testData.TestMethodCall;
 import de.dagere.peass.dependency.persistence.CommitStaticSelection;
 import de.dagere.peass.dependencyprocessors.CommitComparatorInstance;
 import de.dagere.peass.dependencyprocessors.ViewNotFoundException;
@@ -43,13 +43,13 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
 
    @Mixin
    ExecutionConfigMixin executionMixin;
-   
+
    @Mixin
    CauseSearcherConfigMixin causeSearchConfigMixin;
 
    @Mixin
    MeasurementConfigurationMixin measurementConfigMixin;
-   
+
    @Mixin
    private StatisticsConfigMixin statisticConfigMixin;
 
@@ -77,7 +77,7 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
       final CommitStaticSelection versionInfo = dependencies.getCommits().get(commit);
       final String predecessor = versionInfo.getPredecessor();
 
-      CauseSearcherConfig causeSearchConfig = new CauseSearcherConfig(new TestCase("de.peass.MainTest#testMe"), causeSearchConfigMixin);
+      CauseSearcherConfig causeSearchConfig = new CauseSearcherConfig(new TestMethodCall("de.peass.MainTest", "testMe"), causeSearchConfigMixin);
 
       CauseSearchFolders folders = new CauseSearchFolders(projectFolder);
 
@@ -108,7 +108,7 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
       final TreeReader resultsManager = TreeReaderFactory.createTreeReader(folders, measurementConfiguration.getFixedCommitConfig().getCommitOld(),
             measurementConfiguration,
             causeSearchConfig.isIgnoreEOIs(), new EnvironmentVariables());
-      CallTreeNode root = resultsManager.getTree(new TestCase("de.peass.MainTest#testMe"), measurementConfiguration.getFixedCommitConfig().getCommitOld());
+      CallTreeNode root = resultsManager.getTree(new TestMethodCall("de.peass.MainTest", "testMe"), measurementConfiguration.getFixedCommitConfig().getCommitOld());
 
       File potentialCacheFileOld = new File(folders.getTreeCacheFolder(measurementConfiguration.getFixedCommitConfig().getCommit(), causeSearchConfig.getTestCase()),
             measurementConfiguration.getFixedCommitConfig().getCommitOld());
@@ -117,7 +117,7 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
       List<CallTreeNode> includedNodes = new LinkedList<>();
 
       root.setConfig(measurementConfiguration);
-      
+
       root.initCommitData();
       includedNodes.add(root);
       for (int i = 0; i < nodeCount; i++) {
