@@ -22,7 +22,6 @@ import de.dagere.peass.dependency.persistence.StaticTestSelection;
 import de.dagere.peass.dependency.analysis.testData.TestMethodCall;
 import de.dagere.peass.dependency.persistence.CommitStaticSelection;
 import de.dagere.peass.dependencyprocessors.CommitComparatorInstance;
-import de.dagere.peass.dependencyprocessors.ViewNotFoundException;
 import de.dagere.peass.execution.utils.EnvironmentVariables;
 import de.dagere.peass.folders.CauseSearchFolders;
 import de.dagere.peass.measurement.rca.CauseSearcherConfig;
@@ -103,7 +102,7 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
    }
 
    private List<CallTreeNode> getIncludedNodes(final CauseSearcherConfig causeSearchConfig, final CauseSearchFolders folders, final MeasurementConfig measurementConfiguration)
-         throws InterruptedException, IOException, FileNotFoundException, XmlPullParserException, ViewNotFoundException, AnalysisConfigurationException, JsonGenerationException,
+         throws InterruptedException, IOException, FileNotFoundException, AnalysisConfigurationException, JsonGenerationException,
          JsonMappingException {
       final TreeReader resultsManager = TreeReaderFactory.createTreeReader(folders, measurementConfiguration.getFixedCommitConfig().getCommitOld(),
             measurementConfiguration,
