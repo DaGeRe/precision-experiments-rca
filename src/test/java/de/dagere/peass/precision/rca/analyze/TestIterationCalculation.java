@@ -9,8 +9,6 @@ import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import de.dagere.peass.precision.rca.analyze.SummaryInterpolator;
-
 public class TestIterationCalculation {
 
    private List<StatisticalSummary> oneVM = new LinkedList<>();
