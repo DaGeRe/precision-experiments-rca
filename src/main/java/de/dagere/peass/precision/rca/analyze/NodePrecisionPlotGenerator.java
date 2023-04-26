@@ -19,6 +19,8 @@ import de.precision.analysis.repetitions.ExecutionData;
 import de.precision.analysis.repetitions.PrecisionComparer;
 import de.precision.analysis.repetitions.PrecisionConfig;
 import de.precision.analysis.repetitions.PrecisionWriter;
+import de.precision.analysis.repetitions.StatisticalTestResult;
+import de.precision.analysis.repetitions.StatisticalTests;
 import de.precision.processing.repetitions.sampling.SamplingConfig;
 import de.precision.processing.repetitions.sampling.SamplingExecutor;
 
@@ -93,12 +95,12 @@ public class NodePrecisionPlotGenerator {
    private void writeResults(final BufferedWriter writer, final int iterations, final int vms, final PrecisionComparer comparer) throws IOException {
       final ExecutionData metadata = new ExecutionData(vms, iterations, iterations, 1);
       final PrecisionWriter precisionWriter = new PrecisionWriter(comparer, metadata);
-      final Map<String, Map<String, Integer>> results = comparer.getOverallResults().getResults();
+      final Map<StatisticalTests, Map<StatisticalTestResult, Integer>> results = comparer.getOverallResults().getResults();
       precisionWriter.writeTestcase(writer, results);
    }
 
    private void executeComparison(final CompareData data, final SamplingConfig config, final PrecisionComparer comparer, final Relation expected) {
-      SamplingExecutor executor = new SamplingExecutor(config, statisticsConfig, data, comparer);
+      SamplingExecutor executor = new SamplingExecutor(config, data, comparer);
       executor.executeComparisons(expected);
    }
 
