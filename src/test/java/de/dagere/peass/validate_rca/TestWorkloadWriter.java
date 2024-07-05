@@ -9,7 +9,7 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
-public class TestWorloadWriter {
+public class TestWorkloadWriter {
 
    @Test
    public void testWriterRegular() throws IOException {
