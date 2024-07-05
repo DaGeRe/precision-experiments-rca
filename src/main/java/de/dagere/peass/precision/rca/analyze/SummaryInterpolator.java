@@ -21,7 +21,7 @@ public class SummaryInterpolator {
     * @return
     */
    public static StatisticalSummary getInterpolatedStatistics(final List<StatisticalSummary> summaries, final int count) {
-      return getInterpolatedStatistics(summaries, count / 2, count / 2);
+      return getInterpolatedStatistics(summaries, count, count / 2);
    }
 
    public static StatisticalSummary getInterpolatedStatistics(final List<StatisticalSummary> summaries, final int count, final int warmup) {
