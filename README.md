@@ -7,11 +7,10 @@ The performance changes currently can be used for an addition and RAM workloads.
 
 # Before all tests
 
-To be able to use all measurement methods, the following commands need to be run to locally install dependencies in the correct version:
-- kieker:
-- KoPeMe:
-- peass:
-TODO
+To be able to use all measurement methods, JDK 11 or above needs to be installed. Afterwards, the following commands need to be run to locally install dependencies in the correct version:
+- precision-experiments: `git clone -b develop https://github.com/DaGeRe/precision-experiments.git && cd precision-experiments/precision-analysis/ && ../gradlew publishToMavenLocal`
+- pmd-check: `git clone https://github.com/DaGeRe/pmd-check.git && cd pmd-check/analysis && ./mvnw clean install`
+Afterwards, just run `./mvnw clean install` in the current folder.
 
 # Test Execution
 
@@ -40,7 +39,7 @@ The performance of respective method execution needs to be gaussian distributed.
 
 It is assumed that only one method changed its performance (and possibly method calling these method). If two methods change their performance and the effects of the change overlay, different effects may happen.
 
-= Approach =
+## Approach =
 
 We want to find what is the minimal time difference in the average execution times which is measurable in which tree depth. 
 
