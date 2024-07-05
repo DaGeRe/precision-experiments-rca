@@ -21,7 +21,7 @@ public class TestWorloadWriter {
       outputStream.flush();
 
       String result = new String(stream.toByteArray());
-      MatcherAssert.assertThat(result, Matchers.containsString("rm.addSomething(300)"));
+      MatcherAssert.assertThat(result, Matchers.containsString("rm.doSomething(300)"));
    }
    
    @Test
