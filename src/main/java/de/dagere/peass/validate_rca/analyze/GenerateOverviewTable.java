@@ -63,9 +63,10 @@ public class GenerateOverviewTable {
    private static boolean checkHasNoDifference(final CauseSearchData data, final MeasuredNode next2) {
       boolean noWrongDifference = true;
       for (MeasuredNode child : next2.getChildren()) {
-         if (StatisticUtil.agnosticTTest(child.getStatistic().getStatisticsCurrent(), 
+         Relation currentChildResult = StatisticUtil.agnosticTTest(child.getStatistic().getStatisticsCurrent(), 
                child.getStatistic().getStatisticsOld(), 
-               data.getMeasurementConfig().getStatisticsConfig()) == Relation.UNEQUAL) {
+               data.getMeasurementConfig().getStatisticsConfig());
+         if (currentChildResult == Relation.LESS_THAN || currentChildResult == Relation.GREATER_THAN) {
             noWrongDifference = false;
             System.out.println("Wrong difference: " + child);
          }
