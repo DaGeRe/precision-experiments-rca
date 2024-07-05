@@ -10,6 +10,7 @@ The performance changes currently can be used for an addition and RAM workloads.
 To be able to use all measurement methods, JDK 11 or above needs to be installed. Afterwards, the following commands need to be run to locally install dependencies in the correct version:
 - precision-experiments: `git clone -b develop https://github.com/DaGeRe/precision-experiments.git && cd precision-experiments/precision-analysis/ && ../gradlew publishToMavenLocal`
 - pmd-check: `git clone https://github.com/DaGeRe/pmd-check.git && cd pmd-check/analysis && ./mvnw clean install`
+
 Afterwards, just run `./mvnw clean install` in the current folder.
 
 # Test Execution
