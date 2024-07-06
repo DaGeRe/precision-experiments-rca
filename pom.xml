@@ -32,7 +32,7 @@
 							<transformers>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>validate_rca.GenerateExampleProject</mainClass>
+									<mainClass>de.dagere.peass.validate_rca.GenerateTreeExampleProject</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>

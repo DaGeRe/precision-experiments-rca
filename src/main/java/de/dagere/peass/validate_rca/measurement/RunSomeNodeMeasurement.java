@@ -38,6 +38,8 @@ import picocli.CommandLine.Option;
 @Command(description = "Measures the given count of nodes in an artificial validation project", name = "measuresNodes")
 public class RunSomeNodeMeasurement implements Callable<Void> {
 
+   private static final TestMethodCall TEST_CALL = new TestMethodCall("de.dagere.peass.MainTest", "testMe");
+   
    @Mixin
    ExecutionConfigMixin executionMixin;
 
@@ -74,7 +76,8 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
       final CommitStaticSelection versionInfo = dependencies.getCommits().get(commit);
       final String predecessor = versionInfo.getPredecessor();
 
-      CauseSearcherConfig causeSearchConfig = new CauseSearcherConfig(new TestMethodCall("de.peass.MainTest", "testMe"), causeSearchConfigMixin);
+      
+      CauseSearcherConfig causeSearchConfig = new CauseSearcherConfig(TEST_CALL, causeSearchConfigMixin);
 
       CauseSearchFolders folders = new CauseSearchFolders(projectFolder);
 
@@ -105,7 +108,7 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
       final TreeReader resultsManager = TreeReaderFactory.createTreeReader(folders, measurementConfiguration.getFixedCommitConfig().getCommitOld(),
             measurementConfiguration,
             causeSearchConfig.isIgnoreEOIs(), new EnvironmentVariables());
-      CallTreeNode root = resultsManager.getTree(new TestMethodCall("de.peass.MainTest", "testMe"), measurementConfiguration.getFixedCommitConfig().getCommitOld());
+      CallTreeNode root = resultsManager.getTree(TEST_CALL, measurementConfiguration.getFixedCommitConfig().getCommitOld());
 
       File potentialCacheFileOld = new File(folders.getTreeCacheFolder(measurementConfiguration.getFixedCommitConfig().getCommit(), causeSearchConfig.getTestCase()),
             measurementConfiguration.getFixedCommitConfig().getCommitOld());
