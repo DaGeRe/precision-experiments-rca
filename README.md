@@ -7,7 +7,18 @@ The performance changes currently can be used for an addition and RAM workloads.
 
 # Before all tests
 
-To be able to use all measurement methods, JDK 11 or above needs to be installed. Afterwards, the following commands need to be run to locally install dependencies in the correct version:
+To be able to use all measurement methods, JDK 11 or above needs to be installed. The following graph shows the dependency tree of precision-experiments-rca
+
+```mermaid
+graph TD;
+	Kieker-->KoPeMe;
+	KoPeMe-->Peass;
+	Peass-->precision-analysis;
+	Peass-->pmd-check;
+	precision-analysis-- SNAPSHOT -->precision-experiments-rca;
+	pmd-check-- SNAPSHOT -->precision-experiments-rca;
+```
+As the graph shows, Kieker, KoPeMe and Peass are included as release versions; precision-analysis and pmd-check are included as Snapshots. Therefore, they have to be installed in the local maven repo:
 - precision-experiments: `git clone -b develop https://github.com/DaGeRe/precision-experiments.git && cd precision-experiments/precision-analysis/ && ../gradlew publishToMavenLocal`
 - pmd-check: `git clone https://github.com/DaGeRe/pmd-check.git && cd pmd-check/analysis && ./mvnw clean install`
 
