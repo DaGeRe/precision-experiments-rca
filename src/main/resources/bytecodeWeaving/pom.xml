@@ -4,7 +4,7 @@
 	xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>de.peass.validate_rca</groupId>
+	<groupId>de.dagere.peass.validate_rca</groupId>
 	<artifactId>validate_rca_bytecodeweaving</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>validate_rca_bytecodeweaving</name>
