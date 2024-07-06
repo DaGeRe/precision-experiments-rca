@@ -26,6 +26,7 @@ import de.dagere.peass.measurement.rca.CauseSearcherConfig;
 import de.dagere.peass.measurement.rca.CauseSearcherConfigMixin;
 import de.dagere.peass.measurement.rca.CauseTester;
 import de.dagere.peass.measurement.rca.data.CallTreeNode;
+import de.dagere.peass.measurement.rca.data.CauseSearchData;
 import de.dagere.peass.measurement.rca.kieker.TreeReader;
 import de.dagere.peass.measurement.rca.kieker.TreeReaderFactory;
 import de.dagere.peass.utils.Constants;
@@ -96,7 +97,7 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
       final File logFolder = folders.getMeasureLogFolder(measurementConfiguration.getFixedCommitConfig().getCommit(), causeSearchConfig.getTestCase());
       tester.setCurrentVersion(commit);
       for (int i = 0; i < measurementConfiguration.getVms(); i++) {
-         tester.runOnce(causeSearchConfig.getTestCase(), predecessor, i, logFolder);
+         tester.runSequential(logFolder, causeSearchConfig.getTestCase(), i, new String[] {predecessor} );
       }
 
       return null;
@@ -120,10 +121,12 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
 
       root.initCommitData();
       includedNodes.add(root);
+      root.setOtherKiekerPattern(CauseSearchData.ADDED);
       for (int i = 0; i < nodeCount; i++) {
          final CallTreeNode measurementNode = root.getChildren().get(i);
          includedNodes.add(measurementNode);
          measurementNode.initCommitData();
+         measurementNode.setOtherKiekerPattern(CauseSearchData.ADDED);
       }
       return includedNodes;
    }
