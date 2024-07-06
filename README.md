@@ -57,9 +57,10 @@ After successfull execution of the experiment, the easiest way to get the result
 
 ## RCA Strategy and Configuration
 
-Methods need to be distinguishable by their signature. If recursion occurs or equal methods are called in different parts of the tree, the measurements need to be distinguished or it needs to be asures that the performance of their respective executions is equal. This could be done by measuring the parents method as well and taking the position in the tree into account to distinguish methods. 
+This step predicts how the RCA strategy and the RCA configuration (VMs, iterations, warmup, repetitions) influence the type 2 error of an root cause analysis. It is assumed that only one method changed its performance (and the performance of callers), which has a unique signature. If two methods change their performance and the effects of the change overlay (or a changed method cannot be easily identified, because what it is doing depends heavily on the call context), different effects may happen.
 
-The performance of respective method execution needs to be gaussian distributed. 
-
-It is assumed that only one method changed its performance (and possibly method calling these method). If two methods change their performance and the effects of the change overlay, different effects may happen.
+Testing an RCA strategy and configuration is done nearly as above:
+- Generating a demo project, using `java -jar target/precision-experiments-rca-0.1-SNAPSHOT.jar` (`--treeDepth` can configure amount of call tree node levels, 3 by default)
+- Generating a test specification file, using `java -jar $PEASS_PROJECT/starter/target/peass-starter-*-SNAPSHOT.jar select -folder target/project_3/` (to be saved in `staticTestSelection_project_X.json`)
+- **This differes** Finally, a performance root cause analysis is done, executing both versions and determining which call tree nodes of both commits have performance changes, using `java -jar $PEASS_PROJECT/starter/target/peass-starter-*-SNAPSHOT.jar searchcause -folder target/project_X -test "de.dagere.peass.MainTest#testMe" -staticSelectionFile results/staticTestSelection_project_X.json -commit $COMMIT`. (Note that the newer `$COMMIT` needs to be specified, and that performance changes with a depth of more than 6 are, given all technical circumstances we tried, are unmeasurable.)
 
