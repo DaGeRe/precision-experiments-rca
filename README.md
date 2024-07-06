@@ -33,17 +33,29 @@ These will be described in the following.
 
 ## Overhead Examination
 
-When measuring the performance of single methods, these need to be instrumented (sampling-based techniques are not considered here). This instrumentation causes performance overhead. Additionally, the measurement itself causes overhead if it is activated (if Kiekers adaptive instrumentation feature is used, instrumentation may be activated and deactivated at runtime). It is possibe to instrument using AspectJ or to instrument using peass source instrumentation. The measurement may be done using Kieker's `OperationexecutionRecord` or the `ReducedOperationExecutionRecord`, which omits every information of the original record except start time, end time and method name (potentially increasing performance). Furthermore, as a baseline, measurement may be done with no instrumentation at all.
+When measuring the performance of single methods, these need to be instrumented (sampling-based techniques are not considered here). This instrumentation causes performance overhead. Additionally, the measurement itself causes overhead if it is activated (if Kiekers adaptive instrumentation feature is used, instrumentation may be activated and deactivated at runtime). It is possibe to instrument using AspectJ or to instrument using peass source instrumentation. The measurement may be done using Kieker's `OperationexecutionRecord` or the `DurationRecord`, which omits every information of the original record except start time, end time and method name (potentially increasing performance). Furthermore, as a baseline, measurement may be done with no instrumentation at all.
 
-The experiments may be executed using TODO
+This is done using three steps:
+- Generating a demo project, using `java -jar target/precision-experiments-rca-0.1-SNAPSHOT.jar` (`--treeDepth` can configure amount of call tree node levels, 3 by default)
+- Generating a test specification file, using `java -jar $PEASS_PROJECT/starter/target/peass-starter-0.3.11-SNAPSHOT.jar select -folder target/project_3/` (to be saved in `staticTestSelection_project_X.json`)
+- Executing the real measurement, using `java -cp target/precision-experiments-rca-0.1-SNAPSHOT.jar de.dagere.peass.validate_rca.measurement.RunSomeNodeMeasurement -folder target/project_3/ --nodeCount=3 --staticSelectionFile=results/staticTestSelection_project_3.json --repetitions=1000`
 
-After successfull execution of the experiments, the results may be analyzed using `./analyzeSingleNodeAll.sh`. This may result in the following graph:
 
-TODO
+This is summarized in the following graph:
+
+```mermaid
+graph LR;
+	id1([precision-experiments-rca-XX.jar])-->project_X;
+	project_X-->id2([Peass]);
+	id2([Peass])-->staticTestSelection_project_X.json;
+	id1([precision-experiments-rca-XX.jar])-->MainTest_testMe.json;
+	staticTestSelection_project_X.json-->MainTest_testMe.json;
+	project_X-->MainTest_testMe.json;
+```
+
+After successfull execution of the experiment, the easiest way to get the resulting data is `cat target/project_3_peass/measurementsFull/MainTest_testMe.json | grep value | awk '{print $NF}' | tr -d ","`. Afterwards they can be plotted etc.
 
 ## RCA Strategy and Configuration
-
-
 
 Methods need to be distinguishable by their signature. If recursion occurs or equal methods are called in different parts of the tree, the measurements need to be distinguished or it needs to be asures that the performance of their respective executions is equal. This could be done by measuring the parents method as well and taking the position in the tree into account to distinguish methods. 
 
@@ -51,15 +63,3 @@ The performance of respective method execution needs to be gaussian distributed.
 
 It is assumed that only one method changed its performance (and possibly method calling these method). If two methods change their performance and the effects of the change overlay, different effects may happen.
 
-## Approach =
-
-We want to find what is the minimal time difference in the average execution times which is measurable in which tree depth. 
-
-We test 3 variants:
-- Measuring the whole tree
-- Measuring one level at a time saving every execution
-- Measuring one level at a time using aggregated data saving
-
-and for every variant, which tree depth (10, 100, 1000, 10000) and which average execution time differences (1 ns, 10 ns, 100 ns, 1mikrosekunde, 10 mikrosekunden) is measurable.
-
-In order to create distinguishable programs, we insert performance regressions of every size (1 ns, 10 ns, ..) to every tree size (10, 100, ..) at level 5, 25, 125, 625 and 3125 if present. 
