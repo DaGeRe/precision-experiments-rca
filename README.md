@@ -37,7 +37,7 @@ When measuring the performance of single methods, these need to be instrumented 
 
 This is done using three steps:
 - Generating a demo project, using `java -jar target/precision-experiments-rca-0.1-SNAPSHOT.jar` (`--treeDepth` can configure amount of call tree node levels, 3 by default)
-- Generating a test specification file, using `java -jar $PEASS_PROJECT/starter/target/peass-starter-0.3.11-SNAPSHOT.jar select -folder target/project_3/` (to be saved in `staticTestSelection_project_X.json`)
+- Generating a test specification file, using `java -jar $PEASS_PROJECT/starter/target/peass-starter-*-SNAPSHOT.jar select -folder target/project_3/` (to be saved in `staticTestSelection_project_X.json`)
 - Executing the real measurement, using `java -cp target/precision-experiments-rca-0.1-SNAPSHOT.jar de.dagere.peass.validate_rca.measurement.RunSomeNodeMeasurement -folder target/project_3/ --nodeCount=3 --staticSelectionFile=results/staticTestSelection_project_3.json --repetitions=1000`
 
 
