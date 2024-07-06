@@ -40,7 +40,7 @@ import picocli.CommandLine.Option;
 public class RunSomeNodeMeasurement implements Callable<Void> {
 
    private static final TestMethodCall TEST_CALL = new TestMethodCall("de.dagere.peass.MainTest", "testMe");
-   
+
    @Mixin
    ExecutionConfigMixin executionMixin;
 
@@ -74,10 +74,15 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
    @Override
    public Void call() throws Exception {
       StaticTestSelection dependencies = Constants.OBJECTMAPPER.readValue(staticSelectionFile, StaticTestSelection.class);
-      final CommitStaticSelection versionInfo = dependencies.getCommits().get(commit);
-      final String predecessor = versionInfo.getPredecessor();
+      final CommitStaticSelection commitInfo;
+      if (commit != null) {
+         commitInfo = dependencies.getCommits().get(commit);
+      } else {
+         commit = dependencies.getCommits().keySet().iterator().next();
+         commitInfo = dependencies.getCommits().values().iterator().next();
+      }
+      final String predecessor = commitInfo.getPredecessor();
 
-      
       CauseSearcherConfig causeSearchConfig = new CauseSearcherConfig(TEST_CALL, causeSearchConfigMixin);
 
       CauseSearchFolders folders = new CauseSearchFolders(projectFolder);
@@ -95,9 +100,9 @@ public class RunSomeNodeMeasurement implements Callable<Void> {
       // tester.measureVersion(includedNodes);
       tester.setIncludedMethods(new HashSet<>(includedNodes));
       final File logFolder = folders.getMeasureLogFolder(measurementConfiguration.getFixedCommitConfig().getCommit(), causeSearchConfig.getTestCase());
-      tester.setCurrentVersion(commit);
+      tester.setCurrentCommit(commit);
       for (int i = 0; i < measurementConfiguration.getVms(); i++) {
-         tester.runSequential(logFolder, causeSearchConfig.getTestCase(), i, new String[] {predecessor} );
+         tester.runSequential(logFolder, causeSearchConfig.getTestCase(), i, new String[] { predecessor });
       }
 
       return null;
