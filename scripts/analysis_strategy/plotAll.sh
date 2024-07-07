@@ -61,13 +61,19 @@ else
         echo "$folder/results_noOutlierRemoval not found"
 fi
 
-cd $folder/results_"outlierRemoval"
-createPlotableFile $output $folder "outlierRemoval_ttest" 13
-createPlotableFile $output $folder "outlierRemoval_bimodal" 17
+if [ -d $folder/results_"outlierRemoval" ]
+then
+	cd $folder/results_"outlierRemoval"
+	createPlotableFile $output $folder "outlierRemoval_ttest" 13
+	createPlotableFile $output $folder "outlierRemoval_bimodal" 17
 
-createPlotableFile $output $folder "outlierRemoval_mannWhitney" 25
+	createPlotableFile $output $folder "outlierRemoval_mannWhitney" 25
 
-cd $start
+	cd $start
+else
+	echo "$folder/results_outlierRemoval not found"
+fi
+	
 #plot "$output"_noOutlierRemoval
 plot "$output"_outlierRemoval_ttest
 plot "$output"_outlierRemoval_bimodal
