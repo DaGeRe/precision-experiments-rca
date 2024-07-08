@@ -70,4 +70,4 @@ Testing an RCA strategy and configuration is done nearly as above:
 
 ![Example Result Graph](example_graph.png)
 
-In this graph, light yellow marks 100% F1 score, and where it gets darker, the F1-score decreases, indicating that performance changes are either overlooked or detected falsely.  Since we never have light yellow, even with the maximum configuration of 20 VMs and 10 iterations, the change measured here could not be identified safely.
+In this graph, light yellow marks 100% F1 score, and where it gets darker, the F1-score decreases, indicating that performance changes are either overlooked or detected falsely.  This graph indicates that roughly 50 VMs are necessary to detect the performance change safely, either with only one iteration (so before warmup) or with more than 4 iterations (after warmup). For 2 and 3 iterations, the performance change is not detectable (due to warmup).
