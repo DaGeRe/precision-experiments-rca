@@ -34,11 +34,14 @@ do
 	mv results_outlierRemoval/ $folder"_results"
 	cd $folder"_results"
 	
-	echo "Renaming"
+	echo "Renaming (Fix for old Peass error, can be removed in the future)"
 	for file in *
 	do
-		filename=$(echo $file | awk '{print $2}' | tr -d "\(\)")
-		mv "$file" $filename
+		if [[ $file == *"()" ]]
+		then
+			filename=$(echo $file | awk '{print $2}' | tr -d "\(\)")
+			mv "$file" $filename
+		fi
 	done
 	
 	mkdir graph-results
