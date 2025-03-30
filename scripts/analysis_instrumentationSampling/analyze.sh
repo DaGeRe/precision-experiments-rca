@@ -37,7 +37,7 @@ do
 	echo "Renaming (Fix for old Peass error, can be removed in the future)"
 	for file in *
 	do
-		if [[ $file == *"()" ]]
+		if [[ $file == *"().csv" ]]
 		then
 			filename=$(echo $file | awk '{print $2}' | tr -d "\(\)")
 			mv "$file" $filename
