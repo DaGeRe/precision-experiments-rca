@@ -27,6 +27,13 @@ cd $1
 
 for folder in *_peass
 do
+	echo $folder | awk -F'[_]' '{print $2, ($3/300-1)*100" "}' | tr -d "\n"
+	cat $folder/rca/treeMeasurementResults/*/MainTest/testMe.json \
+		 | jq -r '.nodes.statistic | "\((.deviationOld / .meanOld * 1000000 | floor) / 1000000) \((.deviationCurrent / .meanCurrent * 1000000 | floor) / 1000000) \((.tvalue * 1000000 | floor) / 1000000)"'
+done | sort -n -k 1,2 > relativeDeviations.csv 
+
+for folder in *_peass
+do
 	java -cp $start/../../target/precision-experiments-rca-0.1-SNAPSHOT.jar de.dagere.peass.precision.rca.analyze.GenerateRCAPrecisionPlot \
 		-outlierRemoval \
 		-data=$folder
