@@ -75,11 +75,16 @@ do
 		fi
 	done
 	
-	mkdir graph-results
-	getHeatmapData 13 graph-results
+	mkdir t-test
+	getHeatmapData 9 t-test
+	gnuplot -c $start/plotHeatmap.plt t-test/de.dagere.peass.MainTest_testMe.csv
+	mv resultTemp.pdf ../"$folder"-t-test.pdf
 	
-	gnuplot -c $start/plotHeatmap.plt graph-results/de.dagere.peass.MainTest_testMe.csv
-	mv resultTemp.pdf ../$folder.pdf
+	mkdir mann-whitney
+	getHeatmapData 25 mann-whitney
+	gnuplot -c $start/plotHeatmap.plt mann-whitney/de.dagere.peass.MainTest_testMe.csv
+	mv resultTemp.pdf ../"$folder"-mann-whitney.pdf
+	
 	cd ..
 done
 

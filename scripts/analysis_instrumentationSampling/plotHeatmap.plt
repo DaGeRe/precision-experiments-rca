@@ -11,10 +11,10 @@ set xrange [0:200]
 set xlabel 'VMs'
 set ylabel 'Iterationen'
 #set cblabel 'F1-Ma{\337}'
-set cblabel 'F1 Score'
+set cblabel 'F_1 Score'
 set yrange [0:100]
 
-set title 'T-Test'
+# set title 'Mann-Whitney-Test'
 set colorbox
 unset ylabel
 plot ARG1 u 1:2:3 with image
