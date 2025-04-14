@@ -57,8 +57,12 @@ public class NodePrecisionPlotGenerator {
             LOG.info(node.getStatistic().getCalls() + " " + fullVmCount + " " + iterationCount);
             int stepsize = (int) Math.max(1, node.getStatistic().getCalls() / fullVmCount / iterationCount);
             LOG.info("Iteration step size: " + stepsize);
-            for (int iterations = stepsize * 1; iterations <= stepsize * iterationCount; iterations += stepsize) {
-               tryIterationCount(resultFolder, writer, iterations);
+//            for (int iterations = stepsize * 1; iterations <= stepsize * iterationCount; iterations += stepsize) {
+//               tryIterationCount(resultFolder, writer, 0, iterations);
+//            }
+
+            for (int iterations = stepsize * 1; iterations <= stepsize * iterationCount / 2; iterations += stepsize) {
+               tryIterationCount(resultFolder, writer, iterations, iterations);
             }
          } catch (IOException e) {
             e.printStackTrace();
@@ -66,9 +70,9 @@ public class NodePrecisionPlotGenerator {
       }
    }
 
-   private void tryIterationCount(final File resultFolder, final BufferedWriter writer, final int iterations) throws IOException {
-      final double[] aggregatedPredecessor = getIterationDurationArray(node.getValuesPredecessor(), iterations);
-      final double[] aggregatedCurrent = getIterationDurationArray(node.getValues(), iterations);
+   private void tryIterationCount(final File resultFolder, final BufferedWriter writer, final int warmup, final int iterations) throws IOException {
+      final double[] aggregatedPredecessor = getIterationDurationArray(node.getValuesPredecessor(), warmup, iterations);
+      final double[] aggregatedCurrent = getIterationDurationArray(node.getValues(), warmup, iterations);
 
       new HistogramWriter(aggregatedPredecessor, aggregatedCurrent, resultFolder, iterations, node.getCall().replace("#", "_")).write();
 
@@ -76,7 +80,7 @@ public class NodePrecisionPlotGenerator {
       final CompareData data_equal = new CompareData(aggregatedPredecessor, aggregatedPredecessor);
 
       final int vmStepSize = node.getPureVMs() / vmCount;
-      LOG.info("VM step size: " + vmStepSize + " Iterations: " + iterations); // Need at least 2 VMs for t test
+      LOG.info("VM step size: {} Iterations: {} Warmup: {} ", vmStepSize, iterations, warmup); // Need at least 2 VMs for t test
       for (int vms = Math.max(2, vmStepSize); vms <= vmStepSize * vmCount; vms += vmStepSize) {
          final SamplingConfig config = new SamplingConfig(vms, "TestMe", repetitionsOfAnalysis);
          final PrecisionComparer comparer = new PrecisionComparer(statisticsConfig, precisionConfig);
@@ -89,12 +93,13 @@ public class NodePrecisionPlotGenerator {
             executeComparison(data_equal, config, comparer, Relation.EQUAL);
          }
 
-         writeResults(writer, iterations, vms, comparer);
+         writeResults(writer, warmup, iterations, vms, comparer);
       }
    }
 
-   private void writeResults(final BufferedWriter writer, final int iterations, final int vms, final PrecisionComparer comparer) throws IOException {
-      final ExecutionData metadata = new ExecutionData(vms, iterations, iterations, 1);
+   private void writeResults(final BufferedWriter writer, final int warmup, final int iterations,
+         final int vms, final PrecisionComparer comparer) throws IOException {
+      final ExecutionData metadata = new ExecutionData(vms, warmup, iterations, 1);
       final PrecisionWriter precisionWriter = new PrecisionWriter(comparer, metadata);
       final Map<StatisticalTests, Map<StatisticalTestResult, Integer>> results = comparer.getOverallResults().getResults();
       precisionWriter.writeTestcase(writer, results);
@@ -105,11 +110,11 @@ public class NodePrecisionPlotGenerator {
       executor.executeComparisons(expected);
    }
 
-   private double[] getIterationDurationArray(final MeasuredValues values, final int iterations) {
+   private double[] getIterationDurationArray(final MeasuredValues values, final int warmup, final int iterations) {
       double[] aggregated = new double[values.getValues().size()];
       for (int i = 0; i < values.getValues().size(); i++) {
          List<StatisticalSummary> iterationData = values.getValues().get(i);
-         StatisticalSummary summary = SummaryInterpolator.getInterpolatedStatistics(iterationData, iterations, 0);
+         StatisticalSummary summary = SummaryInterpolator.getInterpolatedStatistics(iterationData, iterations + warmup, warmup);
          aggregated[i] = summary.getMean();
          LOG.debug("Mean " + i + " " + aggregated[i]);
       }
