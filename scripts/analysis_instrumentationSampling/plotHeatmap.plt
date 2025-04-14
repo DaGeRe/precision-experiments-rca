@@ -7,17 +7,17 @@ set out 'resultTemp.pdf'
 
 set cbrange [0:100]
 
-set xrange [0:200]
+set xrange [0:100]
 set xlabel 'VMs'
-set ylabel 'Iterationen'
+set ylabel 'Iterations'
 #set cblabel 'F1-Ma{\337}'
 set cblabel 'F_1 Score'
-set yrange [0:100]
+set yrange [0:50]
 
 # set title 'Mann-Whitney-Test'
 set colorbox
 unset ylabel
-plot ARG1 u 1:2:3 with image
+plot ARG1 u ($1-5):($2-5):3 with image
 
 unset output
 
