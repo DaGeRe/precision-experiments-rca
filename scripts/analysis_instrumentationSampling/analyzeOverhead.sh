@@ -25,25 +25,20 @@ then
 	exit 1
 fi
 
-if [ ! -d $1/instrumentation ]
-then
-	echo "instrumentation folder needs to be present"
-	exit 1
-fi
-
-if [ ! -d $1/sampling ]
-then
-	echo "sampling folder needs to be present"
-	exit 1
-fi
+folders=("overhead-pure" "sampling-interval1" "sampling-interval10" "sampling-interval20" "instrumentation-usc" "instrumentation-complete")
 
 start=$(pwd)
 
-cd $1/sampling
-getOverhead &> $1/sampling.csv
-
-cd $1/instrumentation
-getOverhead &> $1/instrumentation.csv
+for folder in "${folders[@]}"
+do
+	if [ ! -d $1/$folder ]
+	then
+		echo "Folder $1/$folder needs to be present"
+		exit 1
+	fi
+	cd $1/$folder
+	getOverhead &> $1/$folder.csv
+done
 
 cd $1
 gnuplot -c $start/plotOverhead.plt
