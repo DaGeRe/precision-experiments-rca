@@ -6,7 +6,7 @@ function getSum {
 
 function getOverhead {
 	echo "#CallTreeDepth Deviation Mean"
-	for size in 2 4 6 8 10
+	for size in 2 4 6 8 10 12 14 16
 	do
 		resultFile=project_"$size"_303_peass/measurementsFull/MainTest_testMe.json
 		if [ -f $resultFile ]
@@ -33,11 +33,11 @@ for folder in "${folders[@]}"
 do
 	if [ ! -d $1/$folder ]
 	then
-		echo "Folder $1/$folder needs to be present"
-		exit 1
+		echo "Folder $1/$folder should be present; skipping"
+	else
+		cd $1/$folder
+		getOverhead &> $1/$folder.csv
 	fi
-	cd $1/$folder
-	getOverhead &> $1/$folder.csv
 done
 
 cd $1
