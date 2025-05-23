@@ -6,15 +6,15 @@ set out 'requiredVMs.pdf'
 set xlabel 'Change in %'
 set ylabel 'Required VMs'
 
-set multiplot layout 5,1
+set multiplot layout 4,1
 
 set key top left
 
-set title 'Instrumentation-Complete'
-plot "instrumentation-complete_2.csv" using 2:3 w linespoint linewidth 2 title "Depth=2", \
-	"instrumentation-complete_4.csv" using 2:3 w linespoint linewidth 2 title "Depth=4", \
-	"instrumentation-complete_6.csv" using 2:3 w linespoint linewidth 2 title "Depth=6", \
-	"instrumentation-complete_8.csv" using 2:3 w linespoint linewidth 2 title "Depth=8"
+#set title 'Instrumentation-Complete'
+#plot "instrumentation-complete_2.csv" using 2:3 w linespoint linewidth 2 title "Depth=2", \
+#	"instrumentation-complete_4.csv" using 2:3 w linespoint linewidth 2 title "Depth=4", \
+#	"instrumentation-complete_6.csv" using 2:3 w linespoint linewidth 2 title "Depth=6", \
+#	"instrumentation-complete_8.csv" using 2:3 w linespoint linewidth 2 title "Depth=8"
 
 set title 'Instrumentation-USC'
 set key top left
